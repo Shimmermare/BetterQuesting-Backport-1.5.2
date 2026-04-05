@@ -228,8 +228,10 @@ public class ThemeRegistry implements IThemeRegistry
             
             for(IResource iresource : list)
             {
-                try(InputStreamReader isr = new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8))
+                InputStreamReader isr = null;
+                try
                 {
+                    isr = new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8);
                     JsonArray jAry = GSON.fromJson(isr, JsonArray.class);
                     isr.close();
                     
@@ -358,6 +360,12 @@ public class ThemeRegistry implements IThemeRegistry
                 } catch (Exception e)
                 {
                     BetterQuesting.logger.log(Level.SEVERE, "Error reading bq_themes.json from " + domain, e);
+                } finally
+                {
+                    if(isr != null)
+                    {
+                        try { isr.close(); } catch(Exception ignored) {}
+                    }
                 }
             }
         }

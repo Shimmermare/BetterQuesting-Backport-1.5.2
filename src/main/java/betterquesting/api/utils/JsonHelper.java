@@ -170,8 +170,12 @@ public class JsonHelper
 			}
 			
 			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-			try(FileInputStream fis = new FileInputStream(file); InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8))
+			FileInputStream fis = null;
+			InputStreamReader fr = null;
+			try
 			{
+			    fis = new FileInputStream(file);
+			    fr = new InputStreamReader(fis, StandardCharsets.UTF_8);
 				JsonObject json = GSON.fromJson(fr, JsonObject.class);
 				fr.close();
 				return json;
@@ -192,6 +196,15 @@ public class JsonHelper
 				CopyPaste(file, bkup);
 				
 				return new JsonObject(); // Just a safety measure against NPEs
+			} finally
+			{
+				if(fr != null)
+				{
+					try { fr.close(); } catch(Exception ignored) {}
+				} else if(fis != null)
+				{
+					try { fis.close(); } catch(Exception ignored) {}
+				}
 			}
 		});
 		
@@ -229,8 +242,12 @@ public class JsonHelper
 			}
 			
 			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-			try(FileOutputStream fos = new FileOutputStream(tmp); OutputStreamWriter fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8))
+			FileOutputStream fos = null;
+			OutputStreamWriter fw = null;
+			try
 			{
+			    fos = new FileOutputStream(tmp);
+			    fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
 			    // Attempt writing
 				GSON.toJson(jObj, fw);
 				fw.flush();
@@ -238,17 +255,39 @@ public class JsonHelper
 			{
 				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while saving JSON to file (File write):", e);
 				return;
+			} finally
+			{
+				if(fw != null)
+				{
+					try { fw.close(); } catch(Exception ignored) {}
+				} else if(fos != null)
+				{
+					try { fos.close(); } catch(Exception ignored) {}
+				}
 			}
 			
 			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-			try(FileInputStream fis = new FileInputStream(tmp); InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8))
+			FileInputStream fis = null;
+			InputStreamReader fr = null;
+			try
             {
+			    fis = new FileInputStream(tmp);
+			    fr = new InputStreamReader(fis, StandardCharsets.UTF_8);
 				// Readback what we wrote to validate it
                 GSON.fromJson(fr, JsonObject.class);
             } catch(Exception e)
             {
 				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while saving JSON to file (Validation check):", e);
 				return;
+            } finally
+            {
+				if(fr != null)
+				{
+					try { fr.close(); } catch(Exception ignored) {}
+				} else if(fis != null)
+				{
+					try { fis.close(); } catch(Exception ignored) {}
+				}
             }
 			
 			try
