@@ -20,16 +20,15 @@ val modBaseName: String by project
 val jdkVersion = 11
 val compileTargetVersion = 6
 
-//val shadowConfig by configurations.creating
-
 dependencies {
     minecraft(libs.minecraft)
     forge(variantOf(libs.forge) { classifier("universal"); artifactType("zip") })
     mappings(variantOf(libs.forge) { classifier("src"); artifactType("zip") })
 
     compileOnly(libs.jsr305)
-    //shadowConfig("com.google.code.gson:gson:2.8.9")
-    //compileOnly(shadowConfig)
+
+    // FIXME Configure shadow plugin for GSON
+    implementation(libs.gson)
 }
 
 java {
@@ -50,11 +49,6 @@ tasks {
     }
     jar {
         archiveBaseName.set(modBaseName)
-        // TODO: Shadow package too
-        //from(shadowConfig.map { if (it.isDirectory) it else zipTree(it) }) {
-        //    exclude("module-info.class")
-        //    exclude("META-INF/MANIFEST.MF")
-        //}
     }
 }
 
