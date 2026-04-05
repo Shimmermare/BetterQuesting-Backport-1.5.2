@@ -5,34 +5,36 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import betterquesting.backport.LiquidUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.liquids.LiquidStack;
 import org.lwjgl.opengl.GL11;
 
 public class FluidTexture implements IGuiTexture
 {
     private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
     
-    private final FluidStack fluid;
+    private final LiquidStack liquid;
     private final boolean showCount;
     private final boolean keepAspect;
     
     // Dummy value
     private final IGuiRect bounds = new GuiRectangle(0, 0, 16, 16);
     
-    public FluidTexture(FluidStack fluid)
+    public FluidTexture(LiquidStack liquid)
     {
-        this(fluid, false, true);
+        this(liquid, false, true);
     }
     
     // TODO: Add tiling option
-    public FluidTexture(FluidStack fluid, boolean showCount, boolean keepAspect)
+    public FluidTexture(LiquidStack liquid, boolean showCount, boolean keepAspect)
     {
-        this.fluid = fluid;
+        this.liquid = liquid;
         this.showCount = showCount;
         this.keepAspect = keepAspect;
     }
@@ -69,23 +71,32 @@ public class FluidTexture implements IGuiTexture
     
         GL11.glTranslated(x + dx, y + dy, 0);
         GL11.glScalef(sx, sy, 1F);
-        
-        int fCol = fluid.getFluid().getColor(fluid);
-        float a = (fCol >> 24 & 255) / 255F;
-        float r = (fCol >> 16 & 255) / 255F;
-        float g = (fCol >> 8 & 255) / 255F;
-        float b = (fCol & 255) / 255F;
-        a = a + color.getAlpha() / 2F;
-        r = r + color.getRed() / 2F;
-        g = g + color.getGreen() / 2F;
-        b = b + color.getBlue() / 2F;
+
+        // In 1.5.2 there's no default liquid color
+        //int fCol = fluid.getFluid().getColor(fluid);
+        //float a = (fCol >> 24 & 255) / 255F;
+        //float r = (fCol >> 16 & 255) / 255F;
+        //float g = (fCol >> 8 & 255) / 255F;
+        //float b = (fCol & 255) / 255F;
+        //a = a + color.getAlpha() / 2F;
+        //r = r + color.getRed() / 2F;
+        //g = g + color.getGreen() / 2F;
+        //b = b + color.getBlue() / 2F;
+
+        float a = color.getAlpha();
+        float r = color.getRed();
+        float g = color.getGreen();
+        float b = color.getBlue();
         GL11.glColor4f(r, g, b, a);
         
         // TODO: Add tiling option
         
         Minecraft mc = Minecraft.getMinecraft();
         mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-        IIcon icon = fluid.getFluid().getIcon() != null ? fluid.getFluid().getIcon() : ((TextureMap)mc.renderEngine.getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missigno");
+        Icon icon = LiquidUtils.getIcon(liquid);
+        if (icon == null) {
+            icon = ((TextureMap)mc.renderEngine.getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missigno");
+        }
         this.drawTexturedModalRect(0, 0, 0, icon, 16, 16);
         
         // TODO: Draw amount

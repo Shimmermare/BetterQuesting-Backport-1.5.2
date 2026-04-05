@@ -8,22 +8,23 @@ import betterquesting.api2.client.gui.resources.textures.FluidTexture;
 import betterquesting.api2.client.gui.resources.textures.LayeredTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import betterquesting.backport.LiquidUtils;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.liquids.LiquidStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PanelFluidSlot extends PanelButtonStorage<FluidStack>
+public class PanelFluidSlot extends PanelButtonStorage<LiquidStack>
 {
     private final boolean showCount;
     
-    public PanelFluidSlot(IGuiRect rect, int id, FluidStack value)
+    public PanelFluidSlot(IGuiRect rect, int id, LiquidStack value)
     {
         this(rect, id, value, false);
     }
     
-    public PanelFluidSlot(IGuiRect rect, int id, FluidStack value, boolean showCount)
+    public PanelFluidSlot(IGuiRect rect, int id, LiquidStack value, boolean showCount)
     {
         super(rect, id, "", value);
         this.showCount = showCount;
@@ -34,7 +35,7 @@ public class PanelFluidSlot extends PanelButtonStorage<FluidStack>
     }
     
     @Override
-    public PanelFluidSlot setStoredValue(FluidStack value)
+    public PanelFluidSlot setStoredValue(LiquidStack value)
     {
         super.setStoredValue(value);
         
@@ -42,7 +43,7 @@ public class PanelFluidSlot extends PanelButtonStorage<FluidStack>
         {
             this.setIcon(new FluidTexture(value, showCount, true), 1);
             List<String> tooltip = new ArrayList<String>();
-            tooltip.add(value.getLocalizedName());
+            tooltip.add(LiquidUtils.getLocalizedName(value));
             tooltip.add(EnumChatFormatting.GRAY.toString() + value.amount + "mB");
             this.setTooltip(tooltip);
         } else

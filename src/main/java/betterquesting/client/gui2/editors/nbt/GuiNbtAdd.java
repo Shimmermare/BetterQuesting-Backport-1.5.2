@@ -29,8 +29,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector4f;
 

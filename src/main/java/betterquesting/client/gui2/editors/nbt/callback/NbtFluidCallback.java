@@ -1,12 +1,13 @@
 package betterquesting.client.gui2.editors.nbt.callback;
 
+import betterquesting.backport.LiquidUtils;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import betterquesting.api.misc.ICallback;
 import betterquesting.api.utils.JsonHelper;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 
-public class NbtFluidCallback implements ICallback<FluidStack>
+public class NbtFluidCallback implements ICallback<LiquidStack>
 {
 	private final NBTTagCompound json;
 	
@@ -15,16 +16,16 @@ public class NbtFluidCallback implements ICallback<FluidStack>
 		this.json = json;
 	}
 	
-	public void setValue(FluidStack stack)
+	public void setValue(LiquidStack stack)
 	{
-		FluidStack baseStack;
+        LiquidStack baseStack;
 		
 		if(stack != null)
 		{
 			baseStack = stack;
 		} else
 		{
-			baseStack = new FluidStack(FluidRegistry.WATER, 1000);
+            baseStack = LiquidDictionary.getLiquid(LiquidUtils.WATER_NAME, 1000);
 		}
 		
 		JsonHelper.ClearCompoundTag(json);

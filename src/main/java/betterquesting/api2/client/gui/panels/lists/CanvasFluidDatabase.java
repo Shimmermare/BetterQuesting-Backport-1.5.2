@@ -4,15 +4,16 @@ import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.content.PanelFluidSlot;
 import betterquesting.core.BetterQuesting;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.logging.Level;
 
-public class CanvasFluidDatabase extends CanvasSearch<FluidStack, Fluid>
+public class CanvasFluidDatabase extends CanvasSearch<LiquidStack, String>
 {
     private final int btnId;
     
@@ -24,35 +25,43 @@ public class CanvasFluidDatabase extends CanvasSearch<FluidStack, Fluid>
     }
     
     @Override
-    protected Iterator<Fluid> getIterator()
+    protected Iterator<String> getIterator()
     {
-        return FluidRegistry.getRegisteredFluids().values().iterator();
+        return LiquidDictionary.getLiquids().keySet().iterator();
     }
     
     @Override
-    protected void queryMatches(Fluid fluid, String query, final ArrayDeque<FluidStack> results)
+    protected void queryMatches(String liquidName, String query, final ArrayDeque<LiquidStack> results)
     {
-        if(fluid == null || fluid.getName() == null)
+        if(liquidName == null)
         {
+            return;
+        }
+        LiquidStack liquidStack = LiquidDictionary.getLiquid(liquidName, 1000);
+        if (liquidStack == null) {
             return;
         }
         
         try
         {
-            FluidStack stack = new FluidStack(fluid, 1000);
+            ItemStack itemStack = liquidStack.asItemStack();
+            Item item = itemStack.getItem();
 
-            if(fluid.getUnlocalizedName().toLowerCase().contains(query) || fluid.getLocalizedName(stack).toLowerCase().contains(query) || fluid.getName().toLowerCase().contains(query))
+            if(item.getUnlocalizedName().toLowerCase().contains(query)
+                    || item.getLocalizedName(itemStack).toLowerCase().contains(query)
+                    || liquidName.toLowerCase().contains(query))
             {
-                results.add(stack);
+                results.add(liquidStack);
             }
         } catch(Exception e)
         {
-            BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching fluid \"" + fluid.getName() + "\" (" + fluid.getClass().getName() + ")", e);
+            BetterQuesting.logger.log(Level.SEVERE, "An error occurred while searching fluid \"" + liquidName
+                    + "\" (" + liquidName.getClass().getName() + ")", e);
         }
     }
     
     @Override
-    protected boolean addResult(FluidStack stack, int index, int cachedWidth)
+    protected boolean addResult(LiquidStack stack, int index, int cachedWidth)
     {
         if(stack == null)
         {

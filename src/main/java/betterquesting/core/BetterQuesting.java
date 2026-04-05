@@ -35,7 +35,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.logging.Logger;
 
@@ -83,6 +82,7 @@ public class BetterQuesting
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        // FIXME: fluidPlaceholder
     	FluidRegistry.registerFluid(FluidPlaceholder.fluidPlaceholder);
     	
     	GameRegistry.registerItem(ItemPlaceholder.placeholder, "placeholder");

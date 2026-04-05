@@ -11,9 +11,9 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+
 import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
@@ -31,7 +31,7 @@ import java.util.concurrent.Future;
  * Used to read JSON data with pre-made checks for null entries and casting.
  * Missing entries will return a default/blank value instead of null without
  * editing the parent JSON.<br>
- * In the event the requested item, fluid or entity is missing, a place holder will be substituted
+ * In the event the requested item, liquid or entity is missing, a place holder will be substituted
  */
 public class JsonHelper
 {
@@ -304,7 +304,10 @@ public class JsonHelper
 	
 	public static boolean isFluid(NBTTagCompound json)
 	{
-		return json != null && json.hasKey("FluidName", 8) && json.hasKey("Amount", 99) && FluidRegistry.getFluid(json.getString("FluidName")) != null;
+		return json != null
+                && json.hasKey("FluidName", 8)
+                && json.hasKey("Amount", 99)
+                && LiquidDictionary.getCanonicalLiquid(json.getString("FluidName")) != null;
 	}
 	
 	public static boolean isEntity(NBTTagCompound tags)
@@ -341,22 +344,22 @@ public class JsonHelper
 		return nbt;
 	}
 	
-	public static FluidStack JsonToFluidStack(NBTTagCompound json)
+	public static LiquidStack JsonToFluidStack(NBTTagCompound json)
 	{
 		String name = json.hasKey("FluidName", 8) ? json.getString("FluidName") : "water";
 		int amount = json.getInteger("Amount");
 		NBTTagCompound tags = !json.hasKey("Tag", 10) ? null : json.getCompoundTag("Tag");
-		Fluid fluid = FluidRegistry.getFluid(name);
+		LiquidStack fluid = LiquidDictionary.getCanonicalLiquid(name);
 		
 		return PlaceholderConverter.convertFluid(fluid, name, amount, tags);
 	}
 	
-	public static NBTTagCompound FluidStackToJson(FluidStack stack, NBTTagCompound json)
+	public static NBTTagCompound FluidStackToJson(LiquidStack stack, NBTTagCompound json)
 	{
 		if(stack == null) return json;
-		json.setString("FluidName", FluidRegistry.getFluidName(stack));
+		json.setString("FluidName", LiquidDictionary.findLiquidName(stack));
 		json.setInteger("Amount", stack.amount);
-		if(stack.tag != null) json.setTag("Tag", stack.tag);
+		if(stack.extra != null) json.setTag("Tag", stack.extra);
 		return json;
 	}
 	

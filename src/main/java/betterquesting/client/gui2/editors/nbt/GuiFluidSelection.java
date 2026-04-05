@@ -35,25 +35,25 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector4f;
 
 public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListener, IVolatileScreen
 {
-    private final ICallback<FluidStack> callback;
-    private FluidStack itemStack;
+    private final ICallback<LiquidStack> callback;
+    private LiquidStack itemStack;
     
     private PanelTextField<Integer> fieldSize;
     private PanelFluidSlot itemPreview;
     
-    public GuiFluidSelection(GuiScreen parent, NBTTagCompound tag, ICallback<FluidStack> callback)
+    public GuiFluidSelection(GuiScreen parent, NBTTagCompound tag, ICallback<LiquidStack> callback)
     {
         this(parent, JsonHelper.JsonToFluidStack(tag), callback);
     }
     
-    public GuiFluidSelection(GuiScreen parent, FluidStack stack, ICallback<FluidStack> callback)
+    public GuiFluidSelection(GuiScreen parent, LiquidStack stack, ICallback<LiquidStack> callback)
     {
         super(parent);
         this.callback = callback;
@@ -183,7 +183,7 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
             mc.displayGuiScreen(this.parent);
         } else if(btn.getButtonID() == 1 && btn instanceof PanelButtonStorage)
         {
-            FluidStack fluid = ((PanelButtonStorage<FluidStack>)btn).getStoredValue();
+            LiquidStack fluid = ((PanelButtonStorage<LiquidStack>)btn).getStoredValue();
             
             if(fluid != null)
             {
@@ -194,7 +194,7 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
         } else if(btn.getButtonID() == 2 && btn instanceof PanelButtonStorage)
         {
             BigItemStack tmp = ((PanelButtonStorage<BigItemStack>)btn).getStoredValue();
-            FluidStack fluid = tmp == null ? null : FluidContainerRegistry.getFluidForFilledItem(tmp.getBaseStack());
+            LiquidStack fluid = tmp == null ? null : LiquidContainerRegistry.getLiquidForFilledItem(tmp.getBaseStack());
             
             if(fluid != null)
             {

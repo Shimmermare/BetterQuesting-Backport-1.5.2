@@ -354,6 +354,7 @@ public class EventHandler
 	{
 		if(event.map.getTextureType() == 0)
 		{
+            // FIXME: fluidPlaceholder
             IIcon icon = event.map.registerIcon("betterquesting:fluid_placeholder");
             FluidPlaceholder.fluidPlaceholder.setIcons(icon);
 		}

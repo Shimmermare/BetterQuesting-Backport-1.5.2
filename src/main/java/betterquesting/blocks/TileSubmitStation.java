@@ -20,17 +20,17 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.ITankContainer;
+import net.minecraftforge.liquids.LiquidStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
-public class TileSubmitStation extends TileEntity implements IFluidHandler, ISidedInventory
+public class TileSubmitStation extends TileEntity implements ITankContainer, ISidedInventory
 {
 	private ItemStack[] itemStack = new ItemStack[2];
 	private boolean needsUpdate = false;
@@ -186,15 +186,15 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
 		
 		return t != null && itemStack[idx] == null && !t.isComplete(owner) && t.canAcceptItem(owner, getQuest(), stack);
 	}
- 
-	@Override
-	public int fill(ForgeDirection from, FluidStack fluid, boolean doFill)
+
+    @Override
+	public int fill(ForgeDirection from, LiquidStack fluid, boolean doFill)
 	{
 		IFluidTask t = getFluidTask();
 		
 		if(!isSetup() || t == null) return 0;
-		
-		FluidStack remainder;
+
+        LiquidStack remainder;
 		int amount = fluid.amount;
 		int consumed = 0;
 		
@@ -218,18 +218,18 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
 		return consumed;
 	}
 
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
-	{
-		return null;
-	}
+    @Override
+    public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    {
+        return null;
+    }
 
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
-	{
-		return null;
-	}
-	
+    @Override
+    public LiquidStack drain(int from, int maxDrain, boolean doDrain) {
+        return null;
+    }
+
+    // FIXME IFluidHandler.canFill
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
@@ -237,18 +237,18 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
 		
 		return t != null && !t.isComplete(owner) && t.canAcceptFluid(owner, getQuest(), new FluidStack(fluid, 1));
 	}
-	
+
+    // FIXME IFluidHandler.canDrain
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid)
 	{
 		return false;
 	}
 
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from)
-	{
-		return new FluidTankInfo[0];
-	}
+    @Override
+    public ILiquidTank[] getTanks(ForgeDirection from) {
+        return new ILiquidTank[0];
+    }
 	
 	@Override
 	public void updateEntity()
@@ -340,7 +340,7 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
 		}
 		
 		this.owner = owner;
-		this.markDirty();
+		this.onInventoryChanged();
 	}
 	
 	public boolean isSetup()
@@ -354,7 +354,7 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
 		questID = -1;
 		taskID = -1;
 		qCached = null;
-		this.markDirty();
+		this.onInventoryChanged();
 	}
     
     /**

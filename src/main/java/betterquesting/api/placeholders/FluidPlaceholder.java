@@ -1,7 +1,7 @@
 package betterquesting.api.placeholders;
 
-import net.minecraftforge.fluids.Fluid;
 
+// FIXME: fluidPlaceholder
 public class FluidPlaceholder extends Fluid
 {
 	public static Fluid fluidPlaceholder = new FluidPlaceholder();

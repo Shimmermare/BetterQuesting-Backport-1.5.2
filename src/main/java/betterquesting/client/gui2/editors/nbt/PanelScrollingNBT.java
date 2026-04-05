@@ -23,6 +23,7 @@ import betterquesting.api2.client.gui.panels.lists.CanvasScrolling;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.LiquidUtils;
 import betterquesting.client.gui2.editors.GuiTextEditor;
 import betterquesting.client.gui2.editors.nbt.callback.NbtEntityCallback;
 import betterquesting.client.gui2.editors.nbt.callback.NbtFluidCallback;
@@ -31,7 +32,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.*;
 import net.minecraft.nbt.NBTBase.NBTPrimitive;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.liquids.LiquidStack;
 import org.lwjgl.input.Keyboard;
 
 import java.util.*;
@@ -464,8 +465,8 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
 			return QuestTranslation.translate("betterquesting.btn.item") + ": " + (stack == null ? "NULL" : stack.getBaseStack().getDisplayName());
         } else if(JsonHelper.isFluid(tag))
         {
-			FluidStack fluid = JsonHelper.JsonToFluidStack(tag);
-			return QuestTranslation.translate("betterquesting.btn.fluid") + ": " + fluid.getLocalizedName();
+            LiquidStack fluid = JsonHelper.JsonToFluidStack(tag);
+			return QuestTranslation.translate("betterquesting.btn.fluid") + ": " + LiquidUtils.getLocalizedName(fluid);
         } else if(JsonHelper.isEntity(tag))
         {
 			Entity entity = JsonHelper.JsonToEntity(tag, this.mc.theWorld);

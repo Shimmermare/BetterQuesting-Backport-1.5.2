@@ -6,9 +6,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.liquids.LiquidStack;
 
 /**
  * In charge of safely converting to or from placeholder objects
@@ -78,11 +76,12 @@ public class PlaceholderConverter
 		return stack;
 	}
 	
-	public static FluidStack convertFluid(Fluid fluid, String name, int amount, NBTTagCompound nbt)
+	public static LiquidStack convertFluid(LiquidStack fluid, String name, int amount, NBTTagCompound nbt)
 	{
+        // FIXME: fluidPlaceholder
 		if(fluid == null)
 		{
-			FluidStack stack = new FluidStack(FluidPlaceholder.fluidPlaceholder, amount);
+            LiquidStack stack = new LiquidStack(FluidPlaceholder.fluidPlaceholder, amount);
 			NBTTagCompound orig = new NBTTagCompound();
 			orig.setString("orig_id", name);
 			if(nbt != null) orig.setTag("orig_tag", nbt);
