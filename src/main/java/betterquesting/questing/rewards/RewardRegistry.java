@@ -7,7 +7,7 @@ import betterquesting.api2.registry.IRegistry;
 import betterquesting.core.BetterQuesting;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,14 +67,14 @@ public class RewardRegistry implements IRegistry<IFactoryData<IReward, NBTTagCom
 			
 			if(factory == null)
 			{
-				BetterQuesting.logger.log(Level.ERROR, "Tried to load missing reward type '" + registryName + "'! Are you missing an expansion pack?");
+				BetterQuesting.logger.log(Level.SEVERE, "Tried to load missing reward type '" + registryName + "'! Are you missing an expansion pack?");
 				return null;
 			}
 			
 			return factory.createNew();
 		} catch(Exception e)
 		{
-			BetterQuesting.logger.log(Level.ERROR, "Unable to instatiate reward: " + registryName, e);
+			BetterQuesting.logger.log(Level.SEVERE, "Unable to instatiate reward: " + registryName, e);
 			return null;
 		}
 	}

@@ -21,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class ClientProxy extends CommonProxy
 {
@@ -41,7 +42,7 @@ public class ClientProxy extends CommonProxy
 		{
 			if(!Minecraft.getMinecraft().getFramebuffer().enableStencil())
 			{
-				BetterQuesting.logger.error("[!] FAILED TO ENABLE STENCIL BUFFER. GUIS WILL BREAK! [!]");
+				BetterQuesting.logger.severe("[!] FAILED TO ENABLE STENCIL BUFFER. GUIS WILL BREAK! [!]");
 			}
 		}*/
 		
@@ -64,7 +65,7 @@ public class ClientProxy extends CommonProxy
 			((SimpleReloadableResourceManager)Minecraft.getMinecraft().getResourceManager()).reloadResourcePack(qRes2); // Make sure the pack(s) are visible to everything
 		} catch(Exception e)
 		{
-			BetterQuesting.logger.error("Unable to install questing resource loaders", e);
+			BetterQuesting.logger.log(Level.SEVERE, "Unable to install questing resource loaders", e);
 		}
 		
 		ToolboxRegistry.INSTANCE.registerToolTab(new ResourceLocation(BetterQuesting.MODID, "main"), ToolboxTabMain.INSTANCE);

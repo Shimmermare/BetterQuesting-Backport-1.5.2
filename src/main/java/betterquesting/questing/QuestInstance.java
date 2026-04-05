@@ -27,7 +27,7 @@ import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -522,7 +522,7 @@ public class QuestInstance implements IQuest
                     completeUsers.put(uuid, entry);
                 } catch(Exception e)
                 {
-                    BetterQuesting.logger.log(Level.ERROR, "Unable to load UUID for quest", e);
+                    BetterQuesting.logger.log(Level.SEVERE, "Unable to load UUID for quest", e);
                 }
             }
     

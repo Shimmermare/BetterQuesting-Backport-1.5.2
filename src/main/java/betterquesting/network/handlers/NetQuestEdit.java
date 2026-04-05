@@ -26,7 +26,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,7 +61,7 @@ public class NetQuestEdit
 		
 		if(!isOP) // OP pre-check
 		{
-			BetterQuesting.logger.log(Level.WARN, "Player " + sender.getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit quests without OP permissions!");
+			BetterQuesting.logger.log(Level.WARNING, "Player " + sender.getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit quests without OP permissions!");
 			sender.addChatComponentMessage(new ChatComponentText(ChatFormatting.RED + "You need to be OP to edit quests!"));
 			return; // Player is not operator. Do nothing
 		}
@@ -95,7 +95,7 @@ public class NetQuestEdit
             }
             default:
             {
-                BetterQuesting.logger.log(Level.ERROR, "Invalid quest edit action '" + action + "'. Full payload:\n" + message.getFirst().toString());
+                BetterQuesting.logger.log(Level.SEVERE, "Invalid quest edit action '" + action + "'. Full payload:\n" + message.getFirst().toString());
             }
         }
     }

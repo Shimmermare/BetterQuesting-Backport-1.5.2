@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -140,7 +140,7 @@ public class JsonHelper
 			return (ArrayList<JsonElement>)field.get(array);
 		} catch(Exception e)
 		{
-			QuestingAPI.getLogger().log(Level.ERROR, "Unable to retrieve underlying JsonArray:", e);
+			QuestingAPI.getLogger().log(Level.SEVERE, "Unable to retrieve underlying JsonArray:", e);
 		}
 		
 		return null;
@@ -177,7 +177,7 @@ public class JsonHelper
 				return json;
 			} catch(Exception e)
 			{
-				QuestingAPI.getLogger().log(Level.ERROR, "An error occured while loading JSON from file:", e);
+				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while loading JSON from file:", e);
 				
 				int i = 0;
 				File bkup = new File(file.getParent(), "malformed_" + file.getName() + i + ".json");
@@ -188,7 +188,7 @@ public class JsonHelper
 					bkup = new File(file.getParent(), "malformed_" + file.getName() + i + ".json");
 				}
 				
-				QuestingAPI.getLogger().log(Level.ERROR, "Creating backup at: " + bkup.getAbsolutePath());
+				QuestingAPI.getLogger().log(Level.SEVERE, "Creating backup at: " + bkup.getAbsolutePath());
 				CopyPaste(file, bkup);
 				
 				return new JsonObject(); // Just a safety measure against NPEs
@@ -200,7 +200,7 @@ public class JsonHelper
 			return task.get(); // Wait for other scheduled file ops to finish
 		} catch(Exception e)
 		{
-		    QuestingAPI.getLogger().error("Unable to read from file " + file, e);
+		    QuestingAPI.getLogger().log(Level.SEVERE, "Unable to read from file " + file, e);
 			return new JsonObject();
 		}
 	}
@@ -224,7 +224,7 @@ public class JsonHelper
                 tmp.createNewFile();
 			} catch(Exception e)
 			{
-				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Directory setup):", e);
+				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while saving JSON to file (Directory setup):", e);
 				return;
 			}
 			
@@ -236,7 +236,7 @@ public class JsonHelper
 				fw.flush();
 			} catch(Exception e)
 			{
-				QuestingAPI.getLogger().error("An error occured while saving JSON to file (File write):", e);
+				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while saving JSON to file (File write):", e);
 				return;
 			}
 			
@@ -247,7 +247,7 @@ public class JsonHelper
                 GSON.fromJson(fr, JsonObject.class);
             } catch(Exception e)
             {
-				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Validation check):", e);
+				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while saving JSON to file (Validation check):", e);
 				return;
             }
 			
@@ -256,7 +256,7 @@ public class JsonHelper
                 Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch(Exception e)
             {
-				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Temp copy):", e);
+				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while saving JSON to file (Temp copy):", e);
             }
 		});
 	}
@@ -272,7 +272,7 @@ public class JsonHelper
 		    Files.copy(fileIn.toPath(), fileOut.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch(Exception e)
 		{
-			QuestingAPI.getLogger().log(Level.ERROR, "Failed copy paste", e);
+			QuestingAPI.getLogger().log(Level.SEVERE, "Failed copy paste", e);
 		}
 	}
 	

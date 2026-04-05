@@ -159,7 +159,7 @@ public class PartyInstance implements IParty
 			members.put(migrate, EnumPartyStatus.OWNER);
 		} else
         {
-            BetterQuesting.logger.error("Failed to find suitable host to migrate party " + this.pInfo.getProperty(NativeProps.NAME));
+            BetterQuesting.logger.severe("Failed to find suitable host to migrate party " + this.pInfo.getProperty(NativeProps.NAME));
         }
 	}
 	

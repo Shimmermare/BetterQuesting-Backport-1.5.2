@@ -33,7 +33,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -191,7 +191,7 @@ public class ThemeRegistry implements IThemeRegistry
 			ConfigHandler.config.save();
 		} else
 		{
-			BetterQuesting.logger.log(Level.WARN, "Unable to save theme setting");
+			BetterQuesting.logger.log(Level.WARNING, "Unable to save theme setting");
 		}
 	}
 	
@@ -239,7 +239,7 @@ public class ThemeRegistry implements IThemeRegistry
                         
                         if(!(je instanceof JsonObject))
                         {
-                            BetterQuesting.logger.log(Level.WARN, "Invalid theme entry at index " + i + " in " + domain);
+                            BetterQuesting.logger.log(Level.WARNING, "Invalid theme entry at index " + i + " in " + domain);
                             continue;
                         }
                         
@@ -247,8 +247,8 @@ public class ThemeRegistry implements IThemeRegistry
                         
                         if(jThm.has("themeType"))
                         {
-                            BetterQuesting.logger.warn("Deprecated legacy theme entry " + i + " in " + domain);
-                            BetterQuesting.logger.warn("Please convert this to the new format");
+                            BetterQuesting.logger.warning("Deprecated legacy theme entry " + i + " in " + domain);
+                            BetterQuesting.logger.warning("Please convert this to the new format");
                             loadLegacy(jThm, domain);
                             continue;
                         }
@@ -270,7 +270,7 @@ public class ThemeRegistry implements IThemeRegistry
                             resTheme = new ResourceTheme(parentID, themeId, themeName);
                         } catch(Exception e)
                         {
-                            BetterQuesting.logger.error("Failed to load theme entry " + i + " in " + domain, e);
+                            BetterQuesting.logger.log(Level.SEVERE, "Failed to load theme entry " + i + " in " + domain, e);
                             continue;
                         }
                         
@@ -285,7 +285,7 @@ public class ThemeRegistry implements IThemeRegistry
                             
                             if(tFact == null)
                             {
-                                BetterQuesting.logger.error("Unknown texture type " + typeID + " for theme " + themeName + " in " + domain);
+                                BetterQuesting.logger.severe("Unknown texture type " + typeID + " for theme " + themeName + " in " + domain);
                                 continue;
                             }
                             
@@ -293,7 +293,7 @@ public class ThemeRegistry implements IThemeRegistry
                             
                             if(gTex == null)
                             {
-                                BetterQuesting.logger.error("Failed to load texture type " + typeID + " for theme " + themeName + " in " + domain);
+                                BetterQuesting.logger.severe("Failed to load texture type " + typeID + " for theme " + themeName + " in " + domain);
                                 continue;
                             }
                             
@@ -311,7 +311,7 @@ public class ThemeRegistry implements IThemeRegistry
                             
                             if(cFact == null)
                             {
-                                BetterQuesting.logger.error("Unknown color type " + typeID + " for theme " + themeName + " in " + domain);
+                                BetterQuesting.logger.severe("Unknown color type " + typeID + " for theme " + themeName + " in " + domain);
                                 continue;
                             }
                             
@@ -319,7 +319,7 @@ public class ThemeRegistry implements IThemeRegistry
                             
                             if(gCol == null)
                             {
-                                BetterQuesting.logger.error("Failed to load color type " + typeID + " for theme " + themeName + " in " + domain);
+                                BetterQuesting.logger.severe("Failed to load color type " + typeID + " for theme " + themeName + " in " + domain);
                                 continue;
                             }
                             
@@ -337,7 +337,7 @@ public class ThemeRegistry implements IThemeRegistry
                             
                             if(lFact == null)
                             {
-                                BetterQuesting.logger.error("Unknown line type " + typeID + " for theme " + themeName + " in " + domain);
+                                BetterQuesting.logger.severe("Unknown line type " + typeID + " for theme " + themeName + " in " + domain);
                                 continue;
                             }
                             
@@ -345,7 +345,7 @@ public class ThemeRegistry implements IThemeRegistry
                             
                             if(gLine == null)
                             {
-                                BetterQuesting.logger.error("Failed to load line type " + typeID + " for theme " + themeName + " in " + domain);
+                                BetterQuesting.logger.severe("Failed to load line type " + typeID + " for theme " + themeName + " in " + domain);
                                 continue;
                             }
                             
@@ -357,7 +357,7 @@ public class ThemeRegistry implements IThemeRegistry
                     }
                 } catch (Exception e)
                 {
-                    BetterQuesting.logger.error("Error reading bq_themes.json from " + domain, e);
+                    BetterQuesting.logger.log(Level.SEVERE, "Error reading bq_themes.json from " + domain, e);
                 }
             }
         }
@@ -370,11 +370,11 @@ public class ThemeRegistry implements IThemeRegistry
         
         if(theme == null)
         {
-            BetterQuesting.logger.error("Failed to load legacy theme from " + domain);
+            BetterQuesting.logger.severe("Failed to load legacy theme from " + domain);
             return;
         } else if(themes.containsKey(theme.getID()))
         {
-            BetterQuesting.logger.error("Unable to register legacy resource theme with duplicate ID: " + theme.getID());
+            BetterQuesting.logger.severe("Unable to register legacy resource theme with duplicate ID: " + theme.getID());
         }
         
         themes.put(theme.getID(), theme);

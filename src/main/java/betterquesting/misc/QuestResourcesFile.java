@@ -9,7 +9,7 @@ import net.minecraft.client.resources.ResourcePackFileNotFoundException;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
@@ -168,7 +168,8 @@ public class QuestResourcesFile implements IResourcePack, Closeable
 
     protected void logNameNotLowercase(String name, String file)
     {
-        BetterQuesting.logger.log(Level.WARN, "ResourcePack: ignored non-lowercase namespace: {} in {}", name, file);
+        BetterQuesting.logger.log(Level.WARNING, "ResourcePack: ignored non-lowercase namespace: {0} in {1}",
+                new Object[]{ name, file });
     }
     
     @Override

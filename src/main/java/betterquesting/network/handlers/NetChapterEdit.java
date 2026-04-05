@@ -21,7 +21,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 public class NetChapterEdit
 {
@@ -53,7 +53,7 @@ public class NetChapterEdit
 		
 		if(!isOP) // OP pre-check
 		{
-			BetterQuesting.logger.log(Level.WARN, "Player " + sender.getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit chapters without OP permissions!");
+			BetterQuesting.logger.log(Level.WARNING, "Player " + sender.getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit chapters without OP permissions!");
 			sender.addChatComponentMessage(new ChatComponentText(ChatFormatting.RED + "You need to be OP to edit quests!"));
 			return; // Player is not operator. Do nothing
 		}
@@ -85,7 +85,7 @@ public class NetChapterEdit
             }
             default:
             {
-                BetterQuesting.logger.log(Level.ERROR, "Invalid chapter edit action '" + action + "'. Full payload:\n" + message.getFirst().toString());
+                BetterQuesting.logger.log(Level.SEVERE, "Invalid chapter edit action '" + action + "'. Full payload:\n" + message.getFirst().toString());
             }
         }
     }

@@ -3,7 +3,7 @@ package betterquesting.handlers;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.core.BetterQuesting;
 import net.minecraftforge.common.config.Configuration;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 public class ConfigHandler
 {
@@ -13,7 +13,7 @@ public class ConfigHandler
 	{
 		if(config == null)
 		{
-			BetterQuesting.logger.log(Level.ERROR, "Config attempted to be loaded before it was initialised!");
+			BetterQuesting.logger.log(Level.SEVERE, "Config attempted to be loaded before it was initialised!");
 			return;
 		}
 		

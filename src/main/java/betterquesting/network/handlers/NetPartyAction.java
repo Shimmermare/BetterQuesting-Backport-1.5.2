@@ -24,7 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import java.util.UUID;
 
@@ -94,7 +94,7 @@ public class NetPartyAction
             }
             default:
             {
-                BetterQuesting.logger.log(Level.ERROR, "Invalid party action '" + action + "'. Full payload:\n" + message.getFirst().toString());
+                BetterQuesting.logger.log(Level.SEVERE, "Invalid party action '" + action + "'. Full payload:\n" + message.getFirst().toString());
             }
         }
     }
@@ -145,7 +145,7 @@ public class NetPartyAction
             }
         } else
         {
-            BetterQuesting.logger.error("Unable to identify " + username + " to invite to party " + partyID); // No idea who this is
+            BetterQuesting.logger.severe("Unable to identify " + username + " to invite to party " + partyID); // No idea who this is
         }
     }
     
@@ -160,7 +160,7 @@ public class NetPartyAction
             NetNameSync.quickSync(sender, partyID);
         } else
         {
-            BetterQuesting.logger.error("Invalid invite for " + sender.getCommandSenderName() + " to party " + partyID);
+            BetterQuesting.logger.severe("Invalid invite for " + sender.getCommandSenderName() + " to party " + partyID);
         }
         NetInviteSync.sendSync(sender);
     }
@@ -169,7 +169,7 @@ public class NetPartyAction
     {
         if(party == null)
         {
-            BetterQuesting.logger.error("Tried to kick a player from a non-existant party (" + partyID + ")");
+            BetterQuesting.logger.severe("Tried to kick a player from a non-existant party (" + partyID + ")");
             return;
         }
         
@@ -180,7 +180,7 @@ public class NetPartyAction
         if(uuid == null) uuid = NameCache.INSTANCE.getUUID(username);
         if(uuid == null)
         {
-            BetterQuesting.logger.error("Unable to identify " + username + " to remove them from party " + partyID);
+            BetterQuesting.logger.severe("Unable to identify " + username + " to remove them from party " + partyID);
             return; // No idea who this is
         }
         
@@ -211,7 +211,7 @@ public class NetPartyAction
             }
         } else
         {
-            BetterQuesting.logger.error("Insufficient permissions to kick " + username + " from party " + partyID);
+            BetterQuesting.logger.severe("Insufficient permissions to kick " + username + " from party " + partyID);
         }
     }
     

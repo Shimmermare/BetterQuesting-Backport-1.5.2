@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.*;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -144,7 +144,7 @@ public class NBTConverter
 				{
 					if(tags.hasKey(key))
 					{
-						QuestingAPI.getLogger().log(Level.WARN, "JSON/NBT formatting conflict on key '" + key + "'. Skipping...");
+						QuestingAPI.getLogger().log(Level.WARNING, "JSON/NBT formatting conflict on key '" + key + "'. Skipping...");
 						continue;
 					}
 				}
@@ -242,10 +242,10 @@ public class NBTConverter
 			}
 		} catch(Exception e)
 		{
-			QuestingAPI.getLogger().log(Level.ERROR, "An error occured while parsing JsonElement to NBTBase (" + tagID + "):", e);
+			QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while parsing JsonElement to NBTBase (" + tagID + "):", e);
 		}
 		
-		QuestingAPI.getLogger().log(Level.WARN, "Unknown NBT representation for " + jObj.toString() + " (ID: " + tagID + ")");
+		QuestingAPI.getLogger().log(Level.WARNING, "Unknown NBT representation for " + jObj.toString() + " (ID: " + tagID + ")");
 		return new NBTTagString();
 	}
 	
@@ -402,7 +402,7 @@ public class NBTConverter
                 f_tagList.setAccessible(true);
             } catch(Exception e2)
             {
-                QuestingAPI.getLogger().log(Level.ERROR, "Unable to hook into NBTTagList!", e2);
+                QuestingAPI.getLogger().log(Level.SEVERE, "Unable to hook into NBTTagList!", e2);
             }
         }
     }

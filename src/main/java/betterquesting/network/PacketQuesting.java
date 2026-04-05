@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -51,7 +51,7 @@ public class PacketQuesting implements IMessage
 		{
 			if(packet == null || packet.tags == null || ctx.getServerHandler().playerEntity.mcServer == null)
 			{
-				BetterQuesting.logger.log(Level.ERROR, "A critical NPE error occured during while handling a BetterQuesting packet server side", new NullPointerException());
+				BetterQuesting.logger.log(Level.SEVERE, "A critical NPE error occured during while handling a BetterQuesting packet server side", new NullPointerException());
 				return null;
 			}
 			
@@ -63,7 +63,7 @@ public class PacketQuesting implements IMessage
 				return null;
 			} else if(!message.hasKey("ID"))
 			{
-				BetterQuesting.logger.log(Level.WARN, "Recieved a packet server side without an ID");
+				BetterQuesting.logger.log(Level.WARNING, "Recieved a packet server side without an ID");
 				return null;
 			}
 			
@@ -71,7 +71,7 @@ public class PacketQuesting implements IMessage
 			
 			if(method == null)
 			{
-				BetterQuesting.logger.log(Level.WARN, "Recieved a packet server side with an invalid ID: " + message.getString("ID"));
+				BetterQuesting.logger.log(Level.WARNING, "Recieved a packet server side with an invalid ID: " + message.getString("ID"));
 				return null;
 			} else if(sender != null)
 			{
@@ -89,7 +89,7 @@ public class PacketQuesting implements IMessage
 		{
 			if(packet == null || packet.tags == null)
 			{
-				BetterQuesting.logger.log(Level.ERROR, "A critical NPE error occured during while handling a BetterQuesting packet client side", new NullPointerException());
+				BetterQuesting.logger.log(Level.SEVERE, "A critical NPE error occured during while handling a BetterQuesting packet client side", new NullPointerException());
 				return null;
 			}
 			
@@ -100,7 +100,7 @@ public class PacketQuesting implements IMessage
 				return null;
 			} else if(!message.hasKey("ID"))
 			{
-				BetterQuesting.logger.log(Level.WARN, "Recieved a packet server side without an ID");
+				BetterQuesting.logger.log(Level.WARNING, "Recieved a packet server side without an ID");
 				return null;
 			}
 			
@@ -108,7 +108,7 @@ public class PacketQuesting implements IMessage
 			
 			if(method == null)
 			{
-				BetterQuesting.logger.log(Level.WARN, "Recieved a packet server side with an invalid ID: " + message.getString("ID"));
+				BetterQuesting.logger.log(Level.WARNING, "Recieved a packet server side with an invalid ID: " + message.getString("ID"));
 				return null;
 			} else
 			{

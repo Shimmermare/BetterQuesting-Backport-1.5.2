@@ -138,7 +138,7 @@ public class SaveLoadHandler
 			
 			if(fsVer.length() <= 0) fsVer = "pre-251";
 			
-			BetterQuesting.logger.warn("BetterQuesting has been updated to from \"" + fsVer + "\" to \"" + cVer + "\"! Creating back ups...");
+			BetterQuesting.logger.warning("BetterQuesting has been updated to from \"" + fsVer + "\" to \"" + cVer + "\"! Creating back ups...");
 			
 			JsonHelper.CopyPaste(fileDatabase,	new File(BQ_Settings.curWorldDir + "/backup/" + fsVer, "QuestDatabase_backup_" + fsVer + ".json"));
 			JsonHelper.CopyPaste(fileProgress,	new File(BQ_Settings.curWorldDir + "/backup/" + fsVer, "QuestProgress_backup_" + fsVer + ".json"));

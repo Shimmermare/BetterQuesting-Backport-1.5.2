@@ -1,11 +1,11 @@
 package betterquesting.api.api;
 
 import net.minecraft.entity.player.EntityPlayer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * Storage for all the questing API hooks. Includes built-in and custom APIs
@@ -67,7 +67,7 @@ public class QuestingAPI
 	{
 		if(logger == null)
 		{
-			logger = LogManager.getLogger("betterquesting");
+			logger = LogManager.getLogManager().getLogger("betterquesting");
 		}
 		
 		return logger;

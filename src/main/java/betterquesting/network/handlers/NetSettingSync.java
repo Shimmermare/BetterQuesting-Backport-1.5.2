@@ -15,7 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import javax.annotation.Nullable;
 
@@ -65,7 +65,7 @@ public class NetSettingSync
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if(!server.getConfigurationManager().func_152596_g(message.getSecond().getGameProfile()))
         {
-			BetterQuesting.logger.log(Level.WARN, "Player " + message.getSecond().getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(message.getSecond()) + ") tried to edit settings without OP permissions!");
+			BetterQuesting.logger.log(Level.WARNING, "Player " + message.getSecond().getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(message.getSecond()) + ") tried to edit settings without OP permissions!");
             sendSync(message.getSecond());
             return;
         }

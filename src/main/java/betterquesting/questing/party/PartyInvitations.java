@@ -26,7 +26,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
     {
         if(expiryTime <= 0)
         {
-            BetterQuesting.logger.error("Received an invite that has already expired!");
+            BetterQuesting.logger.severe("Received an invite that has already expired!");
             return; // Can't expire before being issued
         }
         

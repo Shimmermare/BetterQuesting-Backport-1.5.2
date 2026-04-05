@@ -37,6 +37,8 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
 
+import java.util.logging.Level;
+
 public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListener, IVolatileScreen
 {
     private final ICallback<Entity> callback;
@@ -130,7 +132,7 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
                 if(callback != null) callback.setValue(selEntity);
             } catch(Exception e)
             {
-                QuestingAPI.getLogger().error("Unable to return entity selection!", e);
+                QuestingAPI.getLogger().log(Level.SEVERE, "Unable to return entity selection!", e);
             }
             
             mc.displayGuiScreen(this.parent);

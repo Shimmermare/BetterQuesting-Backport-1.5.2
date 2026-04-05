@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Stack;
+import java.util.logging.Level;
 
 // TODO: Move text related stuff to its own utility class
 @SideOnly(Side.CLIENT)
@@ -115,7 +116,7 @@ public class RenderUtils
 			itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), stack, x, y, "");
 		} catch(Exception e)
 		{
-			BetterQuesting.logger.warn("Unabled to render item " + stack, e);
+			BetterQuesting.logger.log(Level.WARNING, "Unabled to render item " + stack, e);
 		}
 		
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -217,7 +218,7 @@ public class RenderUtils
 		
 		if(list.size() != noFormat.size())
 		{
-			//BetterQuesting.logger.error("Line count mismatch (" + list.size() + " != " + noFormat.size() + ") while drawing formatted text!");
+			//BetterQuesting.logger.severe("Line count mismatch (" + list.size() + " != " + noFormat.size() + ") while drawing formatted text!");
 			return;
 		}
 		

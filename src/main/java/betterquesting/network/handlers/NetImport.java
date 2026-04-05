@@ -19,7 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class NetImport
 		
 		if(!isOP)
 		{
-			BetterQuesting.logger.log(Level.WARN, "Player " + sender.getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to import quests without OP permissions!");
+			BetterQuesting.logger.log(Level.WARNING, "Player " + sender.getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to import quests without OP permissions!");
 			sender.addChatComponentMessage(new ChatComponentText(ChatFormatting.RED + "You need to be OP to edit quests!"));
 			return; // Player is not operator. Do nothing
 		}
@@ -64,7 +64,7 @@ public class NetImport
 		impQuestDB.readFromNBT(message.getFirst().getTagList("quests", 10), false);
 		impQuestLineDB.readFromNBT(message.getFirst().getTagList("chapters", 10), false);
 		
-		BetterQuesting.logger.log(Level.INFO, "Importing " + impQuestDB.size() + " quest(s) and " + impQuestLineDB.size() + " quest line(s) from " + sender.getGameProfile().getName());
+		BetterQuesting.logger.info("Importing " + impQuestDB.size() + " quest(s) and " + impQuestLineDB.size() + " quest line(s) from " + sender.getGameProfile().getName());
 		
 		HashMap<Integer,Integer> remapped = getRemappedIDs(impQuestDB.getEntries());
 		
@@ -99,7 +99,7 @@ public class NetImport
             {
                 if(!remapped.containsKey(qle.getID()))
                 {
-                    BetterQuesting.logger.error("Failed to import quest into quest line. Unable to remap ID " + qle.getID());
+                    BetterQuesting.logger.severe("Failed to import quest into quest line. Unable to remap ID " + qle.getID());
                     continue;
                 }
                 

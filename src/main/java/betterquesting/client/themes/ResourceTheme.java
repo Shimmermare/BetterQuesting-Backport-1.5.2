@@ -45,7 +45,7 @@ public class ResourceTheme implements IGuiTheme
             {
                 if(((ResourceTheme)checking).parentTheme == this)
                 {
-                    BetterQuesting.logger.error("Circular reference in resource theme " + ID);
+                    BetterQuesting.logger.severe("Circular reference in resource theme " + ID);
                     this.parentTheme = null;
                     cached = true;
                     return null;

@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 public class CanvasFluidDatabase extends CanvasSearch<FluidStack, Fluid>
 {
@@ -46,7 +47,7 @@ public class CanvasFluidDatabase extends CanvasSearch<FluidStack, Fluid>
             }
         } catch(Exception e)
         {
-            BetterQuesting.logger.error("An error occured while searching fluid \"" + fluid.getName() + "\" (" + fluid.getClass().getName() + ")", e);
+            BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching fluid \"" + fluid.getName() + "\" (" + fluid.getClass().getName() + ")", e);
         }
     }
     

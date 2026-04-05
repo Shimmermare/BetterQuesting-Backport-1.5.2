@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -65,7 +65,7 @@ public class NetQuestAction
             }
             default:
             {
-                BetterQuesting.logger.log(Level.ERROR, "Invalid quest user action '" + action + "'. Full payload:\n" + message.getFirst().toString());
+                BetterQuesting.logger.log(Level.SEVERE, "Invalid quest user action '" + action + "'. Full payload:\n" + message.getFirst().toString());
             }
         }
     }

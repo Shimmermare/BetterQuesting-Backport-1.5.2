@@ -7,7 +7,7 @@ import betterquesting.api2.registry.IRegistry;
 import betterquesting.core.BetterQuesting;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
+import java.util.logging.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,14 +70,14 @@ public class TaskRegistry implements IRegistry<IFactoryData<ITask, NBTTagCompoun
 			
 			if(factory == null)
 			{
-				BetterQuesting.logger.log(Level.ERROR, "Tried to load missing task type '" + registryName + "'! Are you missing an expansion pack?");
+				BetterQuesting.logger.log(Level.SEVERE, "Tried to load missing task type '" + registryName + "'! Are you missing an expansion pack?");
 				return null;
 			}
 			
 			return factory.createNew();
 		} catch(Exception e)
 		{
-			BetterQuesting.logger.log(Level.ERROR, "Unable to instatiate task: " + registryName, e);
+			BetterQuesting.logger.log(Level.SEVERE, "Unable to instatiate task: " + registryName, e);
 			return null;
 		}
 	}

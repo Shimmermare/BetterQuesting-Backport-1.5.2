@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
 {
@@ -65,12 +66,12 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
                     }
                 } catch(Exception e)
                 {
-                    BetterQuesting.logger.error("An error occured while searching itemstack " + subItem.toString() + " from item \"" + regName + "\" (" + item.getClass().getName() + ").\nNBT: " + subItem.writeToNBT(new NBTTagCompound()), e);
+                    BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching itemstack " + subItem.toString() + " from item \"" + regName + "\" (" + item.getClass().getName() + ").\nNBT: " + subItem.writeToNBT(new NBTTagCompound()), e);
                 }
             });
         } catch(Exception e)
         {
-            BetterQuesting.logger.error("An error occured while searching item \"" + regName + "\" (" + item.getClass().getName() + ")", e);
+            BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching item \"" + regName + "\" (" + item.getClass().getName() + ")", e);
         }
     }
     

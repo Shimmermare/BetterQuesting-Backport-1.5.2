@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 
 public final class PacketAssembly
@@ -61,7 +62,7 @@ public final class PacketAssembly
             return pkts;
 		} catch(Exception e)
 		{
-			BetterQuesting.logger.error("Unable to split build packet!", e);
+			BetterQuesting.logger.log(Level.SEVERE, "Unable to split build packet!", e);
 			return Collections.emptyList();
 		}
 	}
@@ -84,7 +85,7 @@ public final class PacketAssembly
 			setBuffer(owner, tmp);
 		} else if(tmp.length != size)
 		{
-			BetterQuesting.logger.error("Unexpected change in BQ packet byte length: " + size + " > " + tmp.length);
+			BetterQuesting.logger.severe("Unexpected change in BQ packet byte length: " + size + " > " + tmp.length);
 			clearBuffer(owner);
 			return null;
 		}
