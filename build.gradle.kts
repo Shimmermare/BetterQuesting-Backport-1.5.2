@@ -27,6 +27,7 @@ dependencies {
     forge(variantOf(libs.forge) { classifier("universal"); artifactType("zip") })
     mappings(variantOf(libs.forge) { classifier("src"); artifactType("zip") })
 
+    compileOnly(libs.jsr305)
     //shadowConfig("com.google.code.gson:gson:2.8.9")
     //compileOnly(shadowConfig)
 }
