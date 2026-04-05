@@ -21,7 +21,7 @@ import betterquesting.storage.QuestSettings;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.text.DecimalFormat;
@@ -70,7 +70,7 @@ public class PanelButtonQuest extends PanelButtonStorage<DBEntry<IQuest>>
         
         IGuiTexture btnTx = new GuiTextureColored(txFrame, txIconCol);
         setTextures(btnTx, btnTx, btnTx);
-        setIcon(new OreDictTexture(1F, value == null ? new BigItemStack(Items.nether_star) : value.getValue().getProperty(NativeProps.ICON), false, true), 4);
+        setIcon(new OreDictTexture(1F, value == null ? new BigItemStack(Item.netherStar) : value.getValue().getProperty(NativeProps.ICON), false, true), 4);
         //setTooltip(value == null ? Collections.emptyList() : value.getValue().getTooltip(player));
         setActive(QuestingAPI.getAPI(ApiReference.SETTINGS).canUserEdit(player) || !lock);
     }

@@ -21,7 +21,7 @@ import betterquesting.questing.tasks.TaskStorage;
 import betterquesting.storage.PropertyContainer;
 import betterquesting.storage.QuestSettings;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,7 +56,7 @@ public class QuestInstance implements IQuest
 		setupValue(NativeProps.NAME, "New Quest");
 		setupValue(NativeProps.DESC, "No Description");
 		
-		setupValue(NativeProps.ICON, new BigItemStack(Items.nether_star));
+		setupValue(NativeProps.ICON, new BigItemStack(Item.netherStar));
 		
 		setupValue(NativeProps.SOUND_COMPLETE);
 		setupValue(NativeProps.SOUND_UPDATE);

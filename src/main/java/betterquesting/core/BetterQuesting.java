@@ -30,8 +30,6 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
@@ -94,7 +92,7 @@ public class BetterQuesting
     	
     	GameRegistry.registerTileEntity(TileSubmitStation.class, "submit_station");
     	
-    	GameRegistry.addShapelessRecipe(new ItemStack(submitStation), new ItemStack(Items.book), new ItemStack(Blocks.glass), new ItemStack(Blocks.chest));
+    	GameRegistry.addShapelessRecipe(new ItemStack(submitStation), new ItemStack(Item.book), new ItemStack(Block.glass), new ItemStack(Block.chest));
     	
     	GameRegistry.addShapelessRecipe(new ItemStack(extraLife, 1, 0), new ItemStack(extraLife, 1, 2), new ItemStack(extraLife, 1, 2), new ItemStack(extraLife, 1, 2), new ItemStack(extraLife, 1, 2));
     	GameRegistry.addShapelessRecipe(new ItemStack(extraLife, 1, 0), new ItemStack(extraLife, 1, 2), new ItemStack(extraLife, 1, 2), new ItemStack(extraLife, 1, 1));
@@ -105,7 +103,7 @@ public class BetterQuesting
     	
     	GameRegistry.addShapelessRecipe(new ItemStack(extraLife, 2, 2), new ItemStack(extraLife, 1, 1));
     	
-    	GameRegistry.addShapelessRecipe(new ItemStack(submitStation), new ItemStack(Items.book), new ItemStack(Blocks.chest), new ItemStack(Blocks.glass));
+    	GameRegistry.addShapelessRecipe(new ItemStack(submitStation), new ItemStack(Item.book), new ItemStack(Block.chest), new ItemStack(Block.glass));
     	
     	EntityRegistry.registerModEntity(EntityPlaceholder.class, "placeholder", 0, this, 16, 1, false);
     	

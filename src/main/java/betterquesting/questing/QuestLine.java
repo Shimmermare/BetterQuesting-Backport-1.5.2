@@ -13,7 +13,7 @@ import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
 import betterquesting.storage.PropertyContainer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -37,7 +37,7 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
 	{
 		this.setupValue(NativeProps.NAME, "New Quest Line");
 		this.setupValue(NativeProps.DESC, "No Description");
-		this.setupValue(NativeProps.ICON, new BigItemStack(Items.book));
+		this.setupValue(NativeProps.ICON, new BigItemStack(Item.book));
 		this.setupValue(NativeProps.VISIBILITY, EnumQuestVisibility.NORMAL);
 		this.setupValue(NativeProps.BG_IMAGE);
 		this.setupValue(NativeProps.BG_SIZE);
