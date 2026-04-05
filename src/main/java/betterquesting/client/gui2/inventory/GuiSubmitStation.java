@@ -101,7 +101,12 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
         txtTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txtTitle);
     
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.done")).setClickAction((b) -> mc.displayGuiScreen(parent)));
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.done")).setClickAction(new betterquesting.backport.Consumer<PanelButton>() {
+            @Override
+            public void accept(PanelButton b) {
+                mc.displayGuiScreen(parent);
+            }
+        }));
         
         btnQstLeft = new PanelButton(new GuiTransform(new Vector4f(0.5F, 0F, 0.5F, 0F), 8, 32, 16, 16, 0), -1, "")
         {

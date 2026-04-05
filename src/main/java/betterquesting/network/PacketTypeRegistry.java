@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.function.Consumer;
+import betterquesting.backport.Consumer;
 
 public class PacketTypeRegistry implements IPacketRegistry
 {

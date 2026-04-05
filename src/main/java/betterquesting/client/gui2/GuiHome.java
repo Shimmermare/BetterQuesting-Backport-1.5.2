@@ -2,6 +2,7 @@ package betterquesting.client.gui2;
 
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api.storage.BQ_Settings;
@@ -155,38 +156,47 @@ public class GuiHome extends GuiScreenCanvas implements IPEventListener
 			mc.displayGuiScreen(new GuiThemes(this));
 		} else if(btn.getButtonID() == 4) // Editor
 		{
-			mc.displayGuiScreen(new GuiNbtEditor(this, QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound()), (NBTTagCompound value) ->
-			{
-				QuestSettings.INSTANCE.readFromNBT(value);
-                NetSettingSync.requestEdit();
-			}));
+            mc.displayGuiScreen(new GuiNbtEditor(
+                    this,
+                    QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound()),
+                    new ICallback<NBTTagCompound>() {
+                        @Override
+                        public void setValue(NBTTagCompound value) {
+                            QuestSettings.INSTANCE.readFromNBT(value);
+                            NetSettingSync.requestEdit();
+                        }
+                    }
+            ));
 		} else if(btn.getButtonID() == 5) // Update me
 		{
 			final File qFile = new File(BQ_Settings.defaultDir, "DefaultQuests.json");
 			
 			if(qFile.exists())
 			{
-				EventHandler.scheduleServerTask(Executors.callable(() -> {
-					boolean editMode = QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE);
-					boolean hardMode = QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE);
-					
-					NBTTagList jsonP = QuestDatabase.INSTANCE.writeProgressToNBT(new NBTTagList(), null);
-					NBTTagCompound j1 = NBTConverter.JSONtoNBT_Object(JsonHelper.ReadFromFile(qFile), new NBTTagCompound(), true);
-					QuestSettings.INSTANCE.readFromNBT(j1.getCompoundTag("questSettings"));
-					QuestDatabase.INSTANCE.readFromNBT(j1.getTagList("questDatabase", 10), false);
-					QuestLineDatabase.INSTANCE.readFromNBT(j1.getTagList("questLines", 10), false);
-					QuestDatabase.INSTANCE.readProgressFromNBT(jsonP, false);
-					
-					QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, editMode);
-					QuestSettings.INSTANCE.setProperty(NativeProps.HARDCORE, hardMode);
-					
-					NetSettingSync.sendSync(null);
-                    NetQuestSync.quickSync(-1, true, true);
-                    NetChapterSync.sendSync(null, null);
-					
-					SaveLoadHandler.INSTANCE.resetUpdate();
-					SaveLoadHandler.INSTANCE.markDirty();
-				}));
+				EventHandler.scheduleServerTask(Executors.callable(new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean editMode = QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE);
+                        boolean hardMode = QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE);
+
+                        NBTTagList jsonP = QuestDatabase.INSTANCE.writeProgressToNBT(new NBTTagList(), null);
+                        NBTTagCompound j1 = NBTConverter.JSONtoNBT_Object(JsonHelper.ReadFromFile(qFile), new NBTTagCompound(), true);
+                        QuestSettings.INSTANCE.readFromNBT(j1.getCompoundTag("questSettings"));
+                        QuestDatabase.INSTANCE.readFromNBT(j1.getTagList("questDatabase", 10), false);
+                        QuestLineDatabase.INSTANCE.readFromNBT(j1.getTagList("questLines", 10), false);
+                        QuestDatabase.INSTANCE.readProgressFromNBT(jsonP, false);
+
+                        QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, editMode);
+                        QuestSettings.INSTANCE.setProperty(NativeProps.HARDCORE, hardMode);
+
+                        NetSettingSync.sendSync(null);
+                        NetQuestSync.quickSync(-1, true, true);
+                        NetChapterSync.sendSync(null, null);
+
+                        SaveLoadHandler.INSTANCE.resetUpdate();
+                        SaveLoadHandler.INSTANCE.markDirty();
+                    }
+                }));
 				
 				//this.initGui(); // Reset the whole thing
 				mc.displayGuiScreen(null);

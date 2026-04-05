@@ -18,7 +18,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
-import java.util.function.Consumer;
+import betterquesting.backport.Consumer;
 
 public class PanelButton implements IPanelButton
 {

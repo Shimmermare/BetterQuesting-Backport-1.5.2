@@ -8,6 +8,7 @@ import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.BQThreadedIO;
 import betterquesting.api2.utils.Tuple2;
+import betterquesting.backport.Consumer;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -34,11 +35,21 @@ public class NetQuestSync
     
     public static void registerHandler()
     {
-        PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, NetQuestSync::onServer);
+        PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, new Consumer<Tuple2<NBTTagCompound, EntityPlayerMP>>() {
+            @Override
+            public void accept(Tuple2<NBTTagCompound, EntityPlayerMP> message) {
+                onServer(message);
+            }
+        });
         
         if(BetterQuesting.proxy.isClient())
         {
-            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, NetQuestSync::onClient);
+            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, new Consumer<NBTTagCompound>() {
+                @Override
+                public void accept(NBTTagCompound message) {
+                    onClient(message);
+                }
+            });
         }
     }
     
@@ -61,37 +72,42 @@ public class NetQuestSync
             }
         }
     }
-    
-    public static void sendSync(@Nullable EntityPlayerMP player, @Nullable int[] questIDs, boolean config, boolean progress)
-    {
+
+    public static void sendSync(
+            @Nullable final EntityPlayerMP player,
+            @Nullable final int[] questIDs,
+            final boolean config,
+            final boolean progress
+    ) {
         if((!config && !progress) || (questIDs != null && questIDs.length <= 0)) return;
         
         // Offload this to another thread as it could take a while to build
-        BQThreadedIO.INSTANCE.enqueue(() -> {
-            NBTTagList dataList = new NBTTagList();
-            final List<DBEntry<IQuest>> questSubset = questIDs == null ? QuestDatabase.INSTANCE.getEntries() : QuestDatabase.INSTANCE.bulkLookup(questIDs);
-            final List<UUID> pidList = player == null ? null : Collections.singletonList(QuestingAPI.getQuestingUUID(player));
-            
-            for(DBEntry<IQuest> entry : questSubset)
-            {
-                NBTTagCompound tag = new NBTTagCompound();
-                
-                if(config) tag.setTag("config", entry.getValue().writeToNBT(new NBTTagCompound()));
-                if(progress) tag.setTag("progress", entry.getValue().writeProgressToNBT(new NBTTagCompound(), pidList));
-                tag.setInteger("questID", entry.getID());
-                dataList.appendTag(tag);
-            }
-            
-            NBTTagCompound payload = new NBTTagCompound();
-            payload.setBoolean("merge", !config || questIDs != null);
-            payload.setTag("data", dataList);
-            
-            if(player == null)
-            {
-                PacketSender.INSTANCE.sendToAll(new QuestingPacket(ID_NAME, payload));
-            } else
-            {
-                PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), player);
+        BQThreadedIO.INSTANCE.enqueue(new Runnable() {
+            @Override
+            public void run() {
+                NBTTagList dataList = new NBTTagList();
+                final List<DBEntry<IQuest>> questSubset = questIDs == null ? QuestDatabase.INSTANCE.getEntries() : QuestDatabase.INSTANCE.bulkLookup(questIDs);
+                final List<UUID> pidList = player == null ? null : Collections.singletonList(QuestingAPI.getQuestingUUID(player));
+
+                for (DBEntry<IQuest> entry : questSubset) {
+                    NBTTagCompound tag = new NBTTagCompound();
+
+                    if (config) tag.setTag("config", entry.getValue().writeToNBT(new NBTTagCompound()));
+                    if (progress)
+                        tag.setTag("progress", entry.getValue().writeProgressToNBT(new NBTTagCompound(), pidList));
+                    tag.setInteger("questID", entry.getID());
+                    dataList.appendTag(tag);
+                }
+
+                NBTTagCompound payload = new NBTTagCompound();
+                payload.setBoolean("merge", !config || questIDs != null);
+                payload.setTag("data", dataList);
+
+                if (player == null) {
+                    PacketSender.INSTANCE.sendToAll(new QuestingPacket(ID_NAME, payload));
+                } else {
+                    PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), player);
+                }
             }
         });
     }

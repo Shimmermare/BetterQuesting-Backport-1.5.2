@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.logging.Level;
 
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
+import betterquesting.backport.Consumer;
 
 public class PacketQuesting implements IMessage
 {
@@ -69,13 +69,16 @@ public class PacketQuesting implements IMessage
 			
             final Consumer<Tuple2<NBTTagCompound, EntityPlayerMP>> method = PacketTypeRegistry.INSTANCE.getServerHandler(new ResourceLocation(message.getString("ID")));
 			
-			if(method == null)
-			{
-				BetterQuesting.logger.log(Level.WARNING, "Recieved a packet server side with an invalid ID: " + message.getString("ID"));
-				return null;
-			} else if(sender != null)
-			{
-				EventHandler.scheduleServerTask(Executors.callable(() -> method.accept(new Tuple2<NBTTagCompound, EntityPlayerMP>(message, sender))));
+			if(method == null) {
+                BetterQuesting.logger.log(Level.WARNING, "Recieved a packet server side with an invalid ID: " + message.getString("ID"));
+                return null;
+            } else if (sender != null) {
+				EventHandler.scheduleServerTask(Executors.callable(new Runnable() {
+                    @Override
+                    public void run() {
+                        method.accept(new Tuple2<NBTTagCompound, EntityPlayerMP>(message, sender));
+                    }
+                }));
 			}
 			
 			return null;
@@ -112,7 +115,12 @@ public class PacketQuesting implements IMessage
 				return null;
 			} else
 			{
-				Minecraft.getMinecraft().func_152343_a(Executors.callable(() -> method.accept(message)));
+				Minecraft.getMinecraft().func_152343_a(Executors.callable(new Runnable() {
+                    @Override
+                    public void run() {
+                        method.accept(message);
+                    }
+                }));
 			}
 			
 			return null;

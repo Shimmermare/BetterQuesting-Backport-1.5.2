@@ -2,6 +2,7 @@ package betterquesting.client.gui2.editors;
 
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestLine;
@@ -139,7 +140,12 @@ public class GuiQuestLineAddRemove extends GuiScreenCanvas implements IPEventLis
         };
         cvRight.addPanel(canvasDB);
         
-        searchBox.setCallback(canvasDB::setSearchFilter);
+        searchBox.setCallback(new ICallback<String>() {
+            @Override
+            public void setValue(String value) {
+                canvasDB.setSearchFilter(value);
+            }
+        });
     
         PanelVScrollBar scDb = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 32, 0, 24), 0));
         cvRight.addPanel(scDb);

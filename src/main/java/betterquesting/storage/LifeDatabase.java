@@ -22,7 +22,12 @@ public final class LifeDatabase implements ILifeDatabase
 	@Override
 	public synchronized int getLives(@Nonnull UUID uuid)
 	{
-		return playerLives.computeIfAbsent(uuid, (k) -> QuestSettings.INSTANCE.getProperty(NativeProps.LIVES_DEF));
+		Integer lives = playerLives.get(uuid);
+		if(lives == null) {
+			lives = QuestSettings.INSTANCE.getProperty(NativeProps.LIVES_DEF);
+			playerLives.put(uuid, lives);
+		}
+		return lives;
 	}
 	
 	@Override

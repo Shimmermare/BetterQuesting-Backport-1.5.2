@@ -404,10 +404,10 @@ public class QuestInstance implements IQuest
             {
                 if(uuid == null)
                 {
-                    completeUsers.forEach((key, value) -> {
-                        value.setBoolean("claimed", false);
-                        value.setLong("timestamp", 0);
-                    });
+                    for(Entry<UUID, NBTTagCompound> entry : completeUsers.entrySet()) {
+                        entry.getValue().setBoolean("claimed", false);
+                        entry.getValue().setLong("timestamp", 0);
+                    }
                 } else
                 {
                     NBTTagCompound entry = getCompletionInfo(uuid);
@@ -419,7 +419,9 @@ public class QuestInstance implements IQuest
                 }
             }
     
-            tasks.getEntries().forEach((value) -> value.getValue().resetUser(uuid));
+            for(DBEntry<ITask> value : tasks.getEntries()) {
+                value.getValue().resetUser(uuid);
+            }
         }
 	}
 	

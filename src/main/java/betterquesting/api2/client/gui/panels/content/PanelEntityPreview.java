@@ -11,6 +11,7 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class PanelEntityPreview implements IGuiPanel
 {
@@ -31,10 +32,20 @@ public class PanelEntityPreview implements IGuiPanel
 		this.transform = rect;
 		this.entity = entity;
 		
-		this.basePitch = new ValueFuncIO<Float>(() -> 15F);
+		this.basePitch = new ValueFuncIO<Float>(new Callable<Float>() {
+            @Override
+            public Float call() {
+                return 15F;
+            }
+        });
 		this.pitchDriver = basePitch;
 		
-		this.baseYaw = new ValueFuncIO<Float>(() -> -30F);
+		this.baseYaw = new ValueFuncIO<Float>(new Callable<Float>() {
+            @Override
+            public Float call() {
+                return -30F;
+            }
+        });
 		this.yawDriver = baseYaw;
     }
 	

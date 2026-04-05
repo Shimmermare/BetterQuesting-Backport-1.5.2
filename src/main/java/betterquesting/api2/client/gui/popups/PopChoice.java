@@ -14,11 +14,11 @@ import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.textures.ColorTexture;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import betterquesting.backport.Consumer;
 import org.lwjgl.util.vector.Vector4f;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.function.Consumer;
 
 public class PopChoice extends CanvasEmpty
 {
@@ -71,10 +71,13 @@ public class PopChoice extends CanvasEmpty
             int rowW = Math.min(3, options.length - (rowY * maxW)) * 112 - 16;
             
             PanelButton btn = new PanelButton(new GuiTransform(new Vector4f(0.5F, 0.6F, 0.5F, 0.6F), -rowW / 2 + rowX * 112, 8 + 24 * rowY, 96, 16, 0), -1, options[i]);
-            btn.setClickAction((b) -> {
-                callback.accept(index);
-                if(SceneController.getActiveScene() != null) SceneController.getActiveScene().closePopup();
-            });
+            btn.setClickAction(new Consumer<PanelButton>() {
+                @Override
+                public void accept(PanelButton panelButton) {
+                    callback.accept(index);
+                    if(SceneController.getActiveScene() != null) SceneController.getActiveScene().closePopup();
+                }
+			});
             this.addPanel(btn);
         }
     }

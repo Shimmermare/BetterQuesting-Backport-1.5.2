@@ -8,6 +8,7 @@ import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.client.gui.popups.PopChoice;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.Consumer;
 import betterquesting.client.BQ_Keybindings;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -223,7 +224,18 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
         {
         	if(this.isVolatile || this instanceof IVolatileScreen)
         	{
-        	    openPopup(new PopChoice(QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" + QuestTranslation.translate("betterquesting.gui.closing_confirm"), PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"), QuestTranslation.translate("gui.no")));
+                openPopup(new PopChoice(
+                        QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" + QuestTranslation.translate("betterquesting.gui.closing_confirm"),
+                        PresetIcon.ICON_NOTICE.getTexture(),
+                        new Consumer<Integer>() {
+                            @Override
+                            public void accept(Integer id) {
+                                confirmClose(id);
+                            }
+                        },
+                        QuestTranslation.translate("gui.yes"),
+                        QuestTranslation.translate("gui.no")
+                ));
         	} else
 			{
 				this.mc.displayGuiScreen(null);
@@ -365,7 +377,18 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 		{
         	if(this.isVolatile || this instanceof IVolatileScreen)
         	{
-        	    openPopup(new PopChoice(QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" + QuestTranslation.translate("betterquesting.gui.closing_confirm"), PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"), QuestTranslation.translate("gui.no")));
+                openPopup(new PopChoice(
+                        QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" + QuestTranslation.translate("betterquesting.gui.closing_confirm"),
+                        PresetIcon.ICON_NOTICE.getTexture(),
+                        new Consumer<Integer>() {
+                            @Override
+                            public void accept(Integer id) {
+                                confirmClose(id);
+                            }
+                        },
+                        QuestTranslation.translate("gui.yes"),
+                        QuestTranslation.translate("gui.no")
+                ));
         	} else
 			{
 				this.mc.displayGuiScreen(null);

@@ -9,6 +9,7 @@ import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
+import betterquesting.backport.Consumer;
 import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
@@ -38,11 +39,21 @@ public class NetQuestEdit
     
     public static void registerHandler()
     {
-        PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, NetQuestEdit::onServer);
+        PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, new Consumer<Tuple2<NBTTagCompound, EntityPlayerMP>>() {
+            @Override
+            public void accept(Tuple2<NBTTagCompound, EntityPlayerMP> t) {
+                onServer(t);
+            }
+        });
         
         if(BetterQuesting.proxy.isClient())
         {
-            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, NetQuestEdit::onClient);
+            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, new Consumer<NBTTagCompound>() {
+                @Override
+                public void accept(NBTTagCompound t) {
+                    onClient(t);
+                }
+            });
         }
     }
     

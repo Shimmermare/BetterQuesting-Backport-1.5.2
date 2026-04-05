@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.function.Function;
+import betterquesting.backport.Function;
 
 // Doesn't support anything fancy and is merely here to cut up the old layout into something usable in BQ3
 public class ThemeLegacy implements IGuiTheme

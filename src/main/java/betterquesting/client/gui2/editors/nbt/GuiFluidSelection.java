@@ -82,11 +82,16 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
         CanvasEmpty cvRight = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 32), 0));
         cvBackground.addPanel(cvRight);
         
-        CanvasFluidDatabase cvDatabase = new CanvasFluidDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
+        final CanvasFluidDatabase cvDatabase = new CanvasFluidDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
         cvRight.addPanel(cvDatabase);
         
         PanelTextField<String> searchBox = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
-        searchBox.setCallback(cvDatabase::setSearchFilter).setWatermark("Search...");
+        searchBox.setCallback(new ICallback<String>() {
+            @Override
+            public void setValue(String value) {
+                cvDatabase.setSearchFilter(value);
+            }
+        }).setWatermark("Search...");
         cvRight.addPanel(searchBox);
         
         PanelVScrollBar scEdit = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 16, 0, 0), 0));
@@ -111,7 +116,12 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
         
         fieldSize = new PanelTextField<Integer>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 16, 0, -32), 0), itemStack == null ? "1" : ("" + itemStack.amount), FieldFilterNumber.INT);
         cvTopLeft.addPanel(fieldSize);
-        fieldSize.setCallback(value -> { if(itemStack != null) itemStack.amount = value; });
+        fieldSize.setCallback(new ICallback<Integer>() {
+            @Override
+            public void setValue(Integer value) {
+                if(itemStack != null) itemStack.amount = value;
+            }
+        });
         
         // === BOTTOM LEFT PANEL ===
         

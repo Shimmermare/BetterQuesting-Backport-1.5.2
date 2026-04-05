@@ -4,6 +4,7 @@ import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
 import betterquesting.api.network.QuestingPacket;
+import betterquesting.backport.Consumer;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -29,7 +30,12 @@ public class NetInviteSync
     {
         if(BetterQuesting.proxy.isClient())
         {
-            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, NetInviteSync::onClient);
+            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, new Consumer<NBTTagCompound>() {
+                @Override
+                public void accept(NBTTagCompound t) {
+                    onClient(t);
+                }
+            });
         }
     }
     

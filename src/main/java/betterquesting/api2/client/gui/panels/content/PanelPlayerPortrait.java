@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
 public class PanelPlayerPortrait implements IGuiPanel
 {
@@ -50,10 +51,20 @@ public class PanelPlayerPortrait implements IGuiPanel
 			AbstractClientPlayer.getDownloadImageSkin(resource, player.getGameProfile().getName());
 		}
 		
-		this.basePitch = new ValueFuncIO<Float>(() -> 15F);
+		this.basePitch = new ValueFuncIO<Float>(new Callable<Float>() {
+            @Override
+            public Float call() {
+                return 15F;
+            }
+        });
 		this.pitchDriver = basePitch;
 		
-		this.baseYaw = new ValueFuncIO<Float>(() -> -30F);
+		this.baseYaw = new ValueFuncIO<Float>(new Callable<Float>() {
+            @Override
+            public Float call() {
+                return -30F;
+            }
+        });
 		this.yawDriver = baseYaw;
 	}
 	

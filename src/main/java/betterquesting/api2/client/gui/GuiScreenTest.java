@@ -13,6 +13,8 @@ import betterquesting.api2.client.gui.resources.colors.GuiColorTransition;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import net.minecraft.client.gui.GuiScreen;
 
+import java.util.concurrent.Callable;
+
 public class GuiScreenTest extends GuiScreenCanvas
 {
 	public GuiScreenTest(GuiScreen parent)
@@ -36,7 +38,12 @@ public class GuiScreenTest extends GuiScreenCanvas
         pvf.setFillColor(new GuiColorTransition(new GuiColorStatic(0xFFFF0000), new GuiColorStatic(0xFF00FF00)).setupBlending(true, 0.25F));
         cvt1.addPanel(pvf);
         
-        IValueIO<Float> fillDriver = new ValueFuncIO<Float>(() -> (int)Math.abs(System.currentTimeMillis()%5000L - 2500L)/2500F);
+        IValueIO<Float> fillDriver = new ValueFuncIO<Float>(new Callable<Float>() {
+            @Override
+            public Float call() {
+                return (int) Math.abs(System.currentTimeMillis() % 5000L - 2500L) / 2500F;
+            }
+        });
         
         GuiColorTransition transColor = new GuiColorTransition(new GuiColorStatic(0xFF00FF00), new GuiColorStatic(0xFFFF0000)).setupBlending(true, 0.25F);
         transColor.setBlendDriver(fillDriver);

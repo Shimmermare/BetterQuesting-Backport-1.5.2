@@ -3,7 +3,7 @@ package betterquesting.api2.client.gui.events;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import betterquesting.backport.Consumer;
 
 public class PEventEntry<T extends PanelEvent>
 {
@@ -29,6 +29,8 @@ public class PEventEntry<T extends PanelEvent>
 	public void fire(@Nonnull PanelEvent event)
 	{
 		if(!cType.isAssignableFrom(event.getClass())) return;
-        listeners.forEach((l) -> l.accept(event));
+        for (Consumer<PanelEvent> l : listeners) {
+            l.accept(event);
+        }
 	}
 }

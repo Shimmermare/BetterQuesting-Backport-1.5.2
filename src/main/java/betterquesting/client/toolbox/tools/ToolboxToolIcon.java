@@ -1,6 +1,7 @@
 package betterquesting.client.toolbox.tools;
 
 import betterquesting.api.client.toolbox.IToolboxTool;
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
@@ -51,25 +52,28 @@ public class ToolboxToolIcon implements IToolboxTool
 		return true;
 	}
 	
-	private void changeIcon(List<PanelButtonQuest> list, BigItemStack refItem)
+	private void changeIcon(final List<PanelButtonQuest> list, BigItemStack refItem)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        mc.displayGuiScreen(new GuiItemSelection(mc.currentScreen, refItem, value -> {
-            NBTTagList dataList = new NBTTagList();
-            for(PanelButtonQuest b : list)
-            {
-                b.getStoredValue().getValue().setProperty(NativeProps.ICON, value);
+        mc.displayGuiScreen(new GuiItemSelection(mc.currentScreen, refItem, new ICallback<BigItemStack>() {
+            @Override
+            public void setValue(BigItemStack value) {
+                NBTTagList dataList = new NBTTagList();
+                for(PanelButtonQuest b : list)
+                {
+                    b.getStoredValue().getValue().setProperty(NativeProps.ICON, value);
+                    
+                    NBTTagCompound entry = new NBTTagCompound();
+                    entry.setInteger("questID", b.getStoredValue().getID());
+                    entry.setTag("config", b.getStoredValue().getValue().writeToNBT(new NBTTagCompound()));
+                    dataList.appendTag(entry);
+                }
                 
-                NBTTagCompound entry = new NBTTagCompound();
-                entry.setInteger("questID", b.getStoredValue().getID());
-                entry.setTag("config", b.getStoredValue().getValue().writeToNBT(new NBTTagCompound()));
-                dataList.appendTag(entry);
+                NBTTagCompound payload = new NBTTagCompound();
+                payload.setTag("data", dataList);
+                payload.setInteger("action", 0);
+                NetQuestEdit.sendEdit(payload);
             }
-            
-            NBTTagCompound payload = new NBTTagCompound();
-            payload.setTag("data", dataList);
-            payload.setInteger("action", 0);
-            NetQuestEdit.sendEdit(payload);
         }));
     }
 	

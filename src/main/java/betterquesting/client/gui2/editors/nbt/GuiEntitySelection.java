@@ -37,6 +37,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
 
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 
 public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListener, IVolatileScreen
@@ -80,11 +81,16 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
         CanvasEmpty cvRight = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 32), 0));
         cvBackground.addPanel(cvRight);
         
-        CanvasEntityDatabase cvDatabase = new CanvasEntityDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
+        final CanvasEntityDatabase cvDatabase = new CanvasEntityDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
         cvRight.addPanel(cvDatabase);
         
         PanelTextField<String> searchBox = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
-        searchBox.setCallback(cvDatabase::setSearchFilter).setWatermark("Search...");
+        searchBox.setCallback(new ICallback<String>() {
+            @Override
+            public void setValue(String value) {
+                cvDatabase.setSearchFilter(value);
+            }
+        }).setWatermark("Search...");
         cvRight.addPanel(searchBox);
         
         PanelVScrollBar scEdit = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 16, 0, 0), 0));
@@ -97,8 +103,18 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
         cvBackground.addPanel(pnPreview);
         
         pnPreview.setRotationDriven(
-                new ValueFuncIO<Float>(() -> 15F),
-                new ValueFuncIO<Float>(() -> (float)(Minecraft.getSystemTime()%30000L / 30000D * 360D))
+                new ValueFuncIO<Float>(new Callable<Float>() {
+                    @Override
+                    public Float call() {
+                        return 15F;
+                    }
+                }),
+                new ValueFuncIO<Float>(new Callable<Float>() {
+                    @Override
+                    public Float call() {
+                        return (float)(Minecraft.getSystemTime()%30000L / 30000D * 360D);
+                    }
+                })
         );
         
         // === DIVIDERS ===

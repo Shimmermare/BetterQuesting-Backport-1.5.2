@@ -3,8 +3,10 @@ package betterquesting.client.gui2.editors;
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.enums.EnumQuestVisibility;
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuestLine;
+import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.GuiScreenCanvas;
 import betterquesting.api2.client.gui.controls.IPanelButton;
 import betterquesting.api2.client.gui.controls.PanelButton;
@@ -146,10 +148,17 @@ public class GuiQuestLinesEditor extends GuiScreenCanvas implements IPEventListe
             public void onButtonClick()
             {
                 if(selected == null) return;
-                mc.displayGuiScreen(new GuiItemSelection(GuiQuestLinesEditor.this, selected.getProperty(NativeProps.ICON), value -> {
-                    selected.setProperty(NativeProps.ICON, value);
-                    SendChanges(new DBEntry<IQuestLine>(selID, selected));
-                }));
+                mc.displayGuiScreen(new GuiItemSelection(
+                        GuiQuestLinesEditor.this,
+                        selected.getProperty(NativeProps.ICON),
+                        new ICallback<BigItemStack>() {
+                            @Override
+                            public void setValue(BigItemStack value) {
+                                selected.setProperty(NativeProps.ICON, value);
+                                SendChanges(new DBEntry<IQuestLine>(selID, selected));
+                            }
+                        }
+                ));
             }
         };
         btnIcon.setActive(selected != null);
@@ -307,14 +316,20 @@ public class GuiQuestLinesEditor extends GuiScreenCanvas implements IPEventListe
             if(order > 0) SendReorder(order);
         } else if(btn.getButtonID() == 8) // Big Description Editor
         {
-            mc.displayGuiScreen(new GuiTextEditor(this, tfDesc.getRawText(), value -> {
-                if(selected != null)
-                {
-                    tfDesc.setText(value);
-                    selected.setProperty(NativeProps.DESC, value);
-                    SendChanges(new DBEntry<IQuestLine>(selID, selected));
-                }
-            }));
+            mc.displayGuiScreen(new GuiTextEditor(
+                    this,
+                    tfDesc.getRawText(),
+                    new ICallback<String>() {
+                        @Override
+                        public void setValue(String value) {
+                            if (selected != null) {
+                                tfDesc.setText(value);
+                                selected.setProperty(NativeProps.DESC, value);
+                                SendChanges(new DBEntry<IQuestLine>(selID, selected));
+                            }
+                        }
+                    }
+            ));
         }
     }
     

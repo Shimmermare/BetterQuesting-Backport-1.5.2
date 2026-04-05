@@ -1,5 +1,6 @@
 package betterquesting.client.gui2.editors.nbt;
 
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
@@ -117,7 +118,7 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
         
         if(nbt.getId() == 10) // NBTTagCompound
         {
-            NBTTagCompound tag = (NBTTagCompound)nbt;
+            final NBTTagCompound tag = (NBTTagCompound)nbt;
             List<String> sortedKeys = new ArrayList<String>((Set<String>)tag.func_150296_c());
             Collections.sort(sortedKeys);
             Iterator<String> keys = sortedKeys.iterator();
@@ -153,19 +154,30 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                     this.addPanel(btn);
                 } else if(entry.getId() == 1) // Byte/Boolean
                 {
-                    PanelTextField<Byte> text = new PanelTextField<String>(new GuiRectangle(lw, i * 16, rw / 2, 16, 0), "" + ((NBTPrimitive)entry).func_150290_f(), FieldFilterNumber.BYTE);
+                    final PanelTextField<Byte> text = new PanelTextField<String>(new GuiRectangle(lw, i * 16, rw / 2, 16, 0), "" + ((NBTPrimitive)entry).func_150290_f(), FieldFilterNumber.BYTE);
                     text.setMaxLength(Integer.MAX_VALUE); // Put callback here
                     this.addPanel(text);
                     
-                    PanelButtonStorage<String> btn = new PanelButtonStorage<String>(new GuiRectangle(lw + rw / 2, i * 16, (int)Math.ceil(rw / 2F) - 32, 16, 0), btnEdit, ((NBTPrimitive)entry).func_150290_f() > 0 ? "true" : "false", k);
+                    final PanelButtonStorage<String> btn = new PanelButtonStorage<String>(new GuiRectangle(lw + rw / 2, i * 16, (int)Math.ceil(rw / 2F) - 32, 16, 0), btnEdit, ((NBTPrimitive)entry).func_150290_f() > 0 ? "true" : "false", k);
                     this.addPanel(btn);
                     
-                    text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<Byte>(new CallbackNBTPrimitive<Byte>(tag, k, Byte.class), value -> btn.setText(value > 0 ? "true" : "false")));
-                    btn.setCallback(value -> {
-                        boolean flag = tag.getByte(value) > 0;
-                        tag.setByte(value, flag ? (byte)0 : (byte)1);
-                        text.setText(flag ? "0" : "1");
-                        btn.setText(flag ? "false" : "true");
+                    text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<Byte>(
+                            new CallbackNBTPrimitive<Byte>(tag, k, Byte.class),
+                            new ICallback<Byte>() {
+                                @Override
+                                public void setValue(Byte value) {
+                                    btn.setText(value > 0 ? "true" : "false");
+                                }
+                            }
+                    ));
+                    btn.setCallback(new ICallback<String>() {
+                        @Override
+                        public void setValue(String value) {
+                            boolean flag = tag.getByte(value) > 0;
+                            tag.setByte(value, flag ? (byte) 0 : (byte) 1);
+                            text.setText(flag ? "0" : "1");
+                            btn.setText(flag ? "false" : "true");
+                        }
                     });
                 } else if(entry.getId() > 1 && entry.getId() < 7) // Number
                 {
@@ -232,7 +244,7 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
             this.addPanel(btnI);
         } else if(nbt.getId() == 9) // NBTTagList
         {
-            NBTTagList list = (NBTTagList)nbt;
+            final NBTTagList list = (NBTTagList)nbt;
             
             int i = 0;
             
@@ -266,18 +278,29 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                     this.addPanel(btn);
                 } else if(entry.getId() == 1) // Byte/Boolean
                 {
-                    PanelTextField<Byte> text = new PanelTextField<Byte>(new GuiRectangle(lw, i * 16, rw / 2, 16, 0), "" + ((NBTPrimitive)entry).func_150290_f(), FieldFilterNumber.BYTE);
+                    final PanelTextField<Byte> text = new PanelTextField<Byte>(new GuiRectangle(lw, i * 16, rw / 2, 16, 0), "" + ((NBTPrimitive)entry).func_150290_f(), FieldFilterNumber.BYTE);
                     this.addPanel(text);
                     
-                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<Integer>(new GuiRectangle(lw + rw / 2, i * 16, (int)Math.ceil(rw / 2F) - 32, 16, 0), btnEdit, ((NBTPrimitive)entry).func_150290_f() > 0 ? "true" : "false", i);
+                    final PanelButtonStorage<Integer> btn = new PanelButtonStorage<Integer>(new GuiRectangle(lw + rw / 2, i * 16, (int)Math.ceil(rw / 2F) - 32, 16, 0), btnEdit, ((NBTPrimitive)entry).func_150290_f() > 0 ? "true" : "false", i);
                     this.addPanel(btn);
-                    
-                    text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<Byte>(new CallbackNBTPrimitive<Byte>(list, i, Byte.class), value -> btn.setText(value > 0 ? "true" : "false")));
-                    btn.setCallback(value -> {
-                        boolean flag = ((NBTTagByte)tagList.get(value)).func_150290_f() > 0;
-                        list.func_150304_a(value, new NBTTagByte(null, flag ? (byte)0 : (byte)1));
-                        text.setText(flag ? "0" : "1");
-                        btn.setText(flag ? "false" : "true");
+
+                    text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<Byte>(
+                            new CallbackNBTPrimitive<Byte>(list, i, Byte.class),
+                            new ICallback<Byte>() {
+                                @Override
+                                public void setValue(Byte value) {
+                                    btn.setText(value > 0 ? "true" : "false");
+                                }
+                            }
+                    ));
+                    btn.setCallback(new ICallback<Integer>() {
+                        @Override
+                        public void setValue(Integer value) {
+                            boolean flag = ((NBTTagByte) tagList.get(value)).func_150290_f() > 0;
+                            list.func_150304_a(value, new NBTTagByte(null, flag ? (byte) 0 : (byte) 1));
+                            text.setText(flag ? "0" : "1");
+                            btn.setText(flag ? "false" : "true");
+                        }
                     });
                 } else if(entry.getId() > 1 && entry.getId() < 7) // Number
                 {

@@ -19,6 +19,7 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -34,7 +35,12 @@ public class QuestCache implements IExtendedEntityProperties
     private final TreeSet<Integer> activeQuests = new TreeSet<Integer>();
     
     // Quests and their scheduled time of being reset
-    private final TreeSet<QResetTime> resetSchedule = new TreeSet<QResetTime>((o1, o2) -> o1.questID == o2.questID ? 0 : Long.compare(o1.time, o2.time));
+    private final TreeSet<QResetTime> resetSchedule = new TreeSet<QResetTime>(new Comparator<QResetTime>() {
+        @Override
+        public int compare(QResetTime o1, QResetTime o2) {
+            return o1.questID == o2.questID ? 0 : (o1.time < o2.time ? -1 : (o1.time == o2.time ? 0 : 1));
+        }
+    });
     
     // Quests with pending auto claims (usually should be empty unless a condition needs to be met)
     private final TreeSet<Integer> autoClaims = new TreeSet<Integer>();
@@ -222,7 +228,7 @@ public class QuestCache implements IExtendedEntityProperties
         @Override
         public int compareTo(QResetTime o)
         {
-            return Long.compare(o.time, time);
+            return (o.time < time ? -1 : (o.time == time ? 0 : 1));
         }
         
         @Override

@@ -1,6 +1,7 @@
 package betterquesting.client.themes;
 
 import betterquesting.api.storage.BQ_Settings;
+import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.misc.GuiPadding;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -13,6 +14,10 @@ import betterquesting.api2.client.gui.resources.textures.SlicedTexture;
 import betterquesting.api2.client.gui.themes.GuiKey;
 import betterquesting.api2.client.gui.themes.IGuiTheme;
 import betterquesting.api2.client.gui.themes.IThemeRegistry;
+import betterquesting.api2.client.gui.themes.gui_args.GArgsCallback;
+import betterquesting.api2.client.gui.themes.gui_args.GArgsFileBrowser;
+import betterquesting.api2.client.gui.themes.gui_args.GArgsNBT;
+import betterquesting.api2.client.gui.themes.gui_args.GArgsNone;
 import betterquesting.api2.client.gui.themes.presets.*;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.client.gui2.GuiHome;
@@ -29,6 +34,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
@@ -42,7 +48,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.Function;
+import betterquesting.backport.Function;
+import net.minecraftforge.liquids.LiquidStack;
 
 public class ThemeRegistry implements IThemeRegistry
 {
@@ -72,29 +79,59 @@ public class ThemeRegistry implements IThemeRegistry
 		PresetLine.registerLines(this);
 		PresetColor.registerColors(this);
         
-        setDefaultGui(PresetGUIs.HOME, arg -> new GuiHome(arg.parent));
-        
-        setDefaultGui(PresetGUIs.EDIT_NBT, arg ->
-        {
-            if(arg.value instanceof NBTTagCompound)
-            {
-                //noinspection unchecked
-                return new GuiNbtEditor(arg.parent, (NBTTagCompound)arg.value, arg.callback);
-            } else if(arg.value instanceof NBTTagList)
-            {
-                //noinspection unchecked
-                return new GuiNbtEditor(arg.parent, (NBTTagList)arg.value, arg.callback);
-            } else
-            {
-                return null;
+        setDefaultGui(PresetGUIs.HOME, new Function<GArgsNone, GuiScreen>() {
+            @Override
+            public GuiScreen apply(GArgsNone arg) {
+                return new GuiHome(arg.parent);
+            }
+        });
+
+        setDefaultGui(PresetGUIs.EDIT_NBT, new Function<GArgsNBT, GuiScreen>() {
+            @Override
+            public GuiScreen apply(GArgsNBT arg) {
+                if (arg.value instanceof NBTTagCompound) {
+                    //noinspection unchecked
+                    return new GuiNbtEditor(arg.parent, (NBTTagCompound) arg.value, arg.callback);
+                } else if (arg.value instanceof NBTTagList) {
+                    //noinspection unchecked
+                    return new GuiNbtEditor(arg.parent, (NBTTagList) arg.value, arg.callback);
+                } else {
+                    return null;
+                }
             }
         });
         
-        setDefaultGui(PresetGUIs.EDIT_ITEM, arg -> new GuiItemSelection(arg.parent, arg.value, arg.callback));
-        setDefaultGui(PresetGUIs.EDIT_FLUID, arg -> new GuiFluidSelection(arg.parent, arg.value, arg.callback));
-        setDefaultGui(PresetGUIs.EDIT_ENTITY, arg -> new GuiEntitySelection(arg.parent, arg.value, arg.callback));
-        setDefaultGui(PresetGUIs.EDIT_TEXT, arg -> new GuiTextEditor(arg.parent, arg.value, arg.callback));
-        setDefaultGui(PresetGUIs.FILE_EXPLORE, arg -> new GuiFileBrowser(arg.parent, arg.callback, arg.root, arg.filter).allowMultiSelect(arg.multiSelect));
+        setDefaultGui(PresetGUIs.EDIT_ITEM, new Function<GArgsCallback<BigItemStack>, GuiScreen>() {
+                    @Override
+                    public GuiScreen apply(GArgsCallback<BigItemStack> arg) {
+                        return new GuiItemSelection(arg.parent, arg.value, arg.callback);
+                    }
+                });
+        setDefaultGui(PresetGUIs.EDIT_FLUID, new Function<GArgsCallback<LiquidStack>, GuiScreen>() {
+            @Override
+            public GuiScreen apply(GArgsCallback<LiquidStack> arg) {
+                return new GuiFluidSelection(arg.parent, arg.value, arg.callback);
+            }
+        });
+        setDefaultGui(PresetGUIs.EDIT_ENTITY, new Function<GArgsCallback<Entity>, GuiScreen>() {
+            @Override
+            public GuiScreen apply(GArgsCallback<Entity> arg) {
+                return new GuiEntitySelection(arg.parent, arg.value, arg.callback);
+            }
+        });
+        setDefaultGui(PresetGUIs.EDIT_TEXT, new Function<GArgsCallback<String>, GuiScreen>() {
+            @Override
+            public GuiScreen apply(GArgsCallback<String> arg) {
+                return new GuiTextEditor(arg.parent, arg.value, arg.callback);
+            }
+        });
+        setDefaultGui(PresetGUIs.FILE_EXPLORE, new Function<GArgsFileBrowser, GuiScreen>() {
+            @Override
+            public GuiScreen apply(GArgsFileBrowser arg) {
+                return new GuiFileBrowser(arg.parent, arg.callback, arg.root, arg.filter)
+                        .allowMultiSelect(arg.multiSelect);
+            }
+        });
 	}
 	
 	@Override
@@ -211,7 +248,9 @@ public class ThemeRegistry implements IThemeRegistry
     @SuppressWarnings("unchecked")
     public void loadResourceThemes()
     {
-        loadedThemes.forEach(themes::remove);
+        for(ResourceLocation resLoc : loadedThemes) {
+            themes.remove(resLoc);
+        }
         loadedThemes.clear();
         
         IResourceManager resManager = Minecraft.getMinecraft().getResourceManager();

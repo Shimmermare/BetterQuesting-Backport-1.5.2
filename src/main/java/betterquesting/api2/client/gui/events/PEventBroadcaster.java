@@ -1,12 +1,13 @@
 package betterquesting.api2.client.gui.events;
 
+import betterquesting.backport.Function;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
+import betterquesting.backport.Consumer;
 
 /*
     Provides a means of broadcasting various things to and around the currently open GUI.
@@ -20,34 +21,54 @@ public class PEventBroadcaster
             = new HashMap<Class<? extends PanelEvent>, PEventEntry<? extends PanelEvent>>();
 	
 	@Deprecated
-	public void register(@Nonnull IPEventListener l, @Nonnull Class<? extends PanelEvent> type)
+	public void register(@Nonnull final IPEventListener l, @Nonnull Class<? extends PanelEvent> type)
 	{
-	    register((Consumer<PanelEvent>)l::onPanelEvent, type);
+	    register(new Consumer<PanelEvent>() {
+			@Override
+			public void accept(PanelEvent panelEvent) {
+				l.onPanelEvent(panelEvent);
+			}
+		}, type);
 	}
 	
 	public void register(@Nonnull Consumer<PanelEvent> consumer, @Nonnull Class<? extends PanelEvent> type)
     {
-        PEventEntry<?> pe = entryList.computeIfAbsent(type, PEventEntry::new);
+        PEventEntry<?> pe = entryList.get(type);
+        if (pe == null) {
+            pe = new PEventEntry<PanelEvent>((Class)type);
+            entryList.put(type, pe);
+        }
         pe.registerListener(consumer);
     }
 	
 	public void register(@Nonnull Consumer<PanelEvent> consumer, @Nonnull Iterable<Class<? extends PanelEvent>> type)
     {
-        type.forEach((c) -> {
-            PEventEntry<?> pe = entryList.computeIfAbsent(c, PEventEntry::new);
+        for(Class<? extends PanelEvent> c : type) {
+            PEventEntry<?> pe = entryList.get(c);
+            if (pe == null) {
+                pe = new PEventEntry<PanelEvent>((Class)c);
+                entryList.put(c, pe);
+            }
             pe.registerListener(consumer);
-        });
+        }
     }
 	
     @Deprecated
-	public void unregister(IPEventListener l)
+	public void unregister(final IPEventListener l)
 	{
-		unregister((Consumer<PanelEvent>)l::onPanelEvent);
+		unregister(new Consumer<PanelEvent>() {
+			@Override
+			public void accept(PanelEvent panelEvent) {
+				l.onPanelEvent(panelEvent);
+			}
+		});
 	}
 	
 	public void unregister(@Nonnull Consumer<PanelEvent> consumer)
     {
-        entryList.values().forEach((value) -> value.unregisterListener(consumer));
+        for(PEventEntry<? extends PanelEvent> value : entryList.values()) {
+            value.unregisterListener(consumer);
+        }
     }
 	
 	public boolean postEvent(@Nonnull PanelEvent event)

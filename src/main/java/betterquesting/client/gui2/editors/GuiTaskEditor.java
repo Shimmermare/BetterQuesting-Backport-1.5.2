@@ -100,7 +100,12 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
             protected Iterator<IFactoryData<ITask, NBTTagCompound>> getIterator()
             {
                 List<IFactoryData<ITask, NBTTagCompound>> list = TaskRegistry.INSTANCE.getAll();
-                list.sort(Comparator.comparing(o -> o.getRegistryName().toString().toLowerCase()));
+                java.util.Collections.sort(list, new Comparator<IFactoryData<ITask, NBTTagCompound>>() {
+                    @Override
+                    public int compare(IFactoryData<ITask, NBTTagCompound> o1, IFactoryData<ITask, NBTTagCompound> o2) {
+                        return o1.getRegistryName().toString().toLowerCase().compareTo(o2.getRegistryName().toString().toLowerCase());
+                    }
+                });
                 return list.iterator();
             }
     
@@ -124,7 +129,12 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
         cvRegSearch.setScrollDriverY(scReg);
         
         PanelTextField<String> tfSearch = new PanelTextField<String>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "", FieldFilterString.INSTANCE);
-        tfSearch.setCallback(cvRegSearch::setSearchFilter);
+        tfSearch.setCallback(new betterquesting.api.misc.ICallback<String>() {
+            @Override
+            public void setValue(String value) {
+                cvRegSearch.setSearchFilter(value);
+            }
+        });
         tfSearch.setWatermark("Search...");
         cvBackground.addPanel(tfSearch);
         
@@ -180,7 +190,7 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
             }
         } else if(btn.getButtonID() == 3 && btn instanceof PanelButtonStorage) // Edit
         {
-            ITask task = ((PanelButtonStorage<ITask>)btn).getStoredValue();
+            final ITask task = ((PanelButtonStorage<ITask>)btn).getStoredValue();
             GuiScreen editor = task.getTaskEditor(this, new DBEntry<IQuest>(qID, quest));
             
             if(editor != null)
@@ -188,9 +198,12 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
                 mc.displayGuiScreen(editor);
             } else
             {
-                mc.displayGuiScreen(new GuiNbtEditor(this, task.writeToNBT(new NBTTagCompound()), value -> {
-                    task.readFromNBT(value);
-                    SendChanges();
+                mc.displayGuiScreen(new GuiNbtEditor(this, task.writeToNBT(new NBTTagCompound()), new betterquesting.api.misc.ICallback<NBTTagCompound>() {
+                    @Override
+                    public void setValue(NBTTagCompound value) {
+                        task.readFromNBT(value);
+                        SendChanges();
+                    }
                 }));
             }
         }

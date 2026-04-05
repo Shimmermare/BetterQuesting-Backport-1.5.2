@@ -5,6 +5,7 @@ import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.*;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
+import betterquesting.backport.Consumer;
 import betterquesting.client.importers.ImportedQuestLines;
 import betterquesting.client.importers.ImportedQuests;
 import betterquesting.core.BetterQuesting;
@@ -33,7 +34,12 @@ public class NetImport
     
     public static void registerHandler()
     {
-        PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, NetImport::onServer);
+        PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, new Consumer<Tuple2<NBTTagCompound, EntityPlayerMP>>() {
+            @Override
+            public void accept(Tuple2<NBTTagCompound, EntityPlayerMP> t) {
+                onServer(t);
+            }
+        });
     }
     
     public static void sendImport(@Nonnull IQuestDatabase questDB, @Nonnull IQuestLineDatabase chapterDB)

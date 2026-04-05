@@ -24,7 +24,9 @@ public class OreDictTexture extends SlideShowTexture
     private static List<ItemTexture> buildTextures(Collection<BigItemStack> subItems, boolean showCount, boolean keepAspect)
     {
         List<ItemTexture> list = new ArrayList<ItemTexture>();
-        subItems.forEach((is) -> list.add(new ItemTexture(is, showCount, keepAspect)));
+        for (BigItemStack subItem : subItems) {
+            list.add(new ItemTexture(subItem, showCount, keepAspect));
+        }
         return list;
     }
     
@@ -38,11 +40,11 @@ public class OreDictTexture extends SlideShowTexture
             {
                 List<ItemStack> subItems = new ArrayList<ItemStack>();
                 stack.getBaseStack().getItem().getSubItems(stack.getBaseStack().getItem(), CreativeTabs.tabAllSearch, subItems);
-                subItems.forEach((is) -> {
-                    BigItemStack bis = new BigItemStack(is);
+                for (ItemStack subItem : subItems) {
+                    BigItemStack bis = new BigItemStack(subItem);
                     bis.stackSize = stack.stackSize;
                     list.add(new ItemTexture(bis, showCount, keepAspect));
-                });
+                }
             } else
             {
                 list.add(new ItemTexture(stack));

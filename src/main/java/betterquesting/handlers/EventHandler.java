@@ -369,7 +369,12 @@ public class EventHandler
 	{
 		// TODO: Change this to a proper panel event. Also explain WHAT updated
 		final GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-		if(screen instanceof INeedsRefresh) Minecraft.getMinecraft().func_152343_a(Executors.callable(((INeedsRefresh)screen)::refreshGui));
+		if(screen instanceof INeedsRefresh) Minecraft.getMinecraft().func_152343_a(Executors.callable(new Runnable() {
+            @Override
+            public void run() {
+                ((INeedsRefresh)screen).refreshGui();
+            }
+        }));
 	}
 	
 	@SubscribeEvent

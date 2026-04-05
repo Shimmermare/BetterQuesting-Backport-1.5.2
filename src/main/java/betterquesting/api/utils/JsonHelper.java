@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
@@ -161,9 +162,11 @@ public class JsonHelper
 		}
 	}
 	
-	public static JsonObject ReadFromFile(File file)
+	public static JsonObject ReadFromFile(final File file)
 	{
-		Future<JsonObject> task = BQThreadedIO.INSTANCE.enqueue(() -> {
+		Future<JsonObject> task = BQThreadedIO.INSTANCE.enqueue(new Callable<JsonObject>() {
+			@Override
+			public JsonObject call() {
 			if(file == null || !file.exists())
 			{
 				return new JsonObject();
@@ -206,6 +209,7 @@ public class JsonHelper
 					try { fis.close(); } catch(Exception ignored) {}
 				}
 			}
+			}
 		});
 		
 		try
@@ -223,7 +227,9 @@ public class JsonHelper
 	{
 	    final File tmp = new File(file.getAbsolutePath() + ".tmp");
 	    
-		BQThreadedIO.INSTANCE.enqueue(() -> {
+		BQThreadedIO.INSTANCE.enqueue(new Runnable() {
+			@Override
+			public void run() {
 			try
 			{
 	            if(tmp.exists())
@@ -297,6 +303,7 @@ public class JsonHelper
             {
 				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while saving JSON to file (Temp copy):", e);
             }
+			}
 		});
 	}
 	

@@ -2,6 +2,7 @@ package betterquesting.client.gui2.editors;
 
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.rewards.IReward;
 import betterquesting.api2.client.gui.GuiScreenCanvas;
@@ -38,6 +39,7 @@ import net.minecraft.nbt.NBTTagList;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -94,13 +96,18 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         
         cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
     
-        CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>>((new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 48, 24, 32), 0)))
+        final CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>>((new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 48, 24, 32), 0)))
         {
             @Override
             protected Iterator<IFactoryData<IReward, NBTTagCompound>> getIterator()
             {
                 List<IFactoryData<IReward, NBTTagCompound>> list = RewardRegistry.INSTANCE.getAll();
-                list.sort(Comparator.comparing(o -> o.getRegistryName().toString().toLowerCase()));
+                Collections.sort(list, new Comparator<IFactoryData<IReward, NBTTagCompound>>() {
+                    @Override
+                    public int compare(IFactoryData<IReward, NBTTagCompound> o1, IFactoryData<IReward, NBTTagCompound> o2) {
+                        return o1.getRegistryName().toString().toLowerCase().compareTo(o2.getRegistryName().toString().toLowerCase());
+                    }
+                });
                 return list.iterator();
             }
     
@@ -124,7 +131,12 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         cvRegSearch.setScrollDriverY(scReg);
         
         PanelTextField<String> tfSearch = new PanelTextField<String>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "", FieldFilterString.INSTANCE);
-        tfSearch.setCallback(cvRegSearch::setSearchFilter);
+        tfSearch.setCallback(new ICallback<String>() {
+            @Override
+            public void setValue(String value) {
+                cvRegSearch.setSearchFilter(value);
+            }
+        });
         tfSearch.setWatermark("Search...");
         cvBackground.addPanel(tfSearch);
         
@@ -180,7 +192,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
             }
         } else if(btn.getButtonID() == 3 && btn instanceof PanelButtonStorage) // Edit
         {
-            IReward reward = ((PanelButtonStorage<IReward>)btn).getStoredValue();
+            final IReward reward = ((PanelButtonStorage<IReward>)btn).getStoredValue();
             GuiScreen editor = reward.getRewardEditor(this, new DBEntry<IQuest>(qID, quest));
             
             if(editor != null)
@@ -188,9 +200,12 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
                 mc.displayGuiScreen(editor);
             } else
             {
-                mc.displayGuiScreen(new GuiNbtEditor(this, reward.writeToNBT(new NBTTagCompound()), value -> {
-                    reward.readFromNBT(value);
-                    SendChanges();
+                mc.displayGuiScreen(new GuiNbtEditor(this, reward.writeToNBT(new NBTTagCompound()), new ICallback<NBTTagCompound>() {
+                    @Override
+                    public void setValue(NBTTagCompound value) {
+                        reward.readFromNBT(value);
+                        SendChanges();
+                    }
                 }));
             }
         }

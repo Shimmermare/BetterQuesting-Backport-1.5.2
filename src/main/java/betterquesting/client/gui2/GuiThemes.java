@@ -1,5 +1,6 @@
 package betterquesting.client.gui2;
 
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.GuiScreenCanvas;
 import betterquesting.api2.client.gui.controls.PanelButton;
@@ -27,6 +28,7 @@ import betterquesting.api2.client.gui.themes.presets.PresetGUIs;
 import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.Consumer;
 import betterquesting.client.themes.ThemeRegistry;
 import betterquesting.core.BetterQuesting;
 import net.minecraft.client.gui.GuiScreen;
@@ -63,7 +65,12 @@ public class GuiThemes extends GuiScreenCanvas
 		inCan.addPanel(panTxt);
 		
 		PanelButton btnExit = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, new GuiPadding(-100, -16, -100, 0), 0), 0, QuestTranslation.translate("gui.done"));
-		btnExit.setClickAction((b) -> mc.displayGuiScreen(ThemeRegistry.INSTANCE.getGui(PresetGUIs.HOME, GArgsNone.NONE)));
+		btnExit.setClickAction(new Consumer<PanelButton>() {
+            @Override
+            public void accept(PanelButton b) {
+                mc.displayGuiScreen(ThemeRegistry.INSTANCE.getGui(PresetGUIs.HOME, GArgsNone.NONE));
+            }
+        });
 		bgCan.addPanel(btnExit);
 		
 		CanvasScrolling canScroll = new CanvasScrolling(new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(0, 16, 16, 16), 0));
@@ -80,11 +87,14 @@ public class GuiThemes extends GuiScreenCanvas
 		    IGuiTheme theme = themes.get(i);
 			GuiRectangle trans = new GuiRectangle(0, i * 24, width, 24, 0);
 			PanelButtonStorage<ResourceLocation> pbs = new PanelButtonStorage<ResourceLocation>(trans, -1, theme.getName(), theme.getID());
-			pbs.setCallback((res) -> {
-			    float scroll = scrollPanel.readValueRaw();
-                ThemeRegistry.INSTANCE.setTheme(res);
-                this.initGui();
-                scrollPanel.writeValueRaw(scroll);
+			pbs.setCallback(new ICallback<ResourceLocation>() {
+                @Override
+                public void setValue(ResourceLocation res) {
+                    float scroll = scrollPanel.readValueRaw();
+                    ThemeRegistry.INSTANCE.setTheme(res);
+                    GuiThemes.this.initGui();
+                    scrollPanel.writeValueRaw(scroll);
+                }
             });
 			canScroll.addPanel(pbs);
 			pbs.setActive(curTheme == null || !curTheme.getID().equals(theme.getID()));

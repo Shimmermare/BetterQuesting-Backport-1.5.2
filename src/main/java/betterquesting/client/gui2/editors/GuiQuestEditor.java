@@ -4,8 +4,10 @@ import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.enums.EnumQuestVisibility;
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
+import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.GuiScreenCanvas;
 import betterquesting.api2.client.gui.controls.IPanelButton;
 import betterquesting.api2.client.gui.controls.PanelButton;
@@ -203,10 +205,17 @@ public class GuiQuestEditor extends GuiScreenCanvas implements IPEventListener, 
             }
             case 4: // Advanced
             {
-                mc.displayGuiScreen(new GuiNbtEditor(this, quest.writeToNBT(new NBTTagCompound()), value -> {
-                    quest.readFromNBT(value);
-                    SendChanges();
-                }));
+                mc.displayGuiScreen(new GuiNbtEditor(
+                        this,
+                        quest.writeToNBT(new NBTTagCompound()),
+                        new ICallback<NBTTagCompound>() {
+                            @Override
+                            public void setValue(NBTTagCompound value) {
+                                quest.readFromNBT(value);
+                                SendChanges();
+                            }
+                        }
+                ));
                 break;
             }
             case 5: // Visibility
@@ -231,18 +240,31 @@ public class GuiQuestEditor extends GuiScreenCanvas implements IPEventListener, 
             }
             case 7: // Description Editor
             {
-                mc.displayGuiScreen(new GuiTextEditor(this, quest.getProperty(NativeProps.DESC), value -> {
-                    quest.setProperty(NativeProps.DESC, value);
-                    SendChanges();
-                }));
+                mc.displayGuiScreen(new GuiTextEditor(
+                        this,
+                        quest.getProperty(NativeProps.DESC),
+                        new ICallback<String>() {
+                            @Override
+                            public void setValue(String value) {
+                                quest.setProperty(NativeProps.DESC, value);
+                                SendChanges();
+                            }
+                        }
+                ));
                 break;
             }
-            case 8:
-            {
-                mc.displayGuiScreen(new GuiItemSelection(this, quest.getProperty(NativeProps.ICON), value -> {
-                    quest.setProperty(NativeProps.ICON, value);
-                    SendChanges();
-                }));
+            case 8: {
+                mc.displayGuiScreen(new GuiItemSelection(
+                        this,
+                        quest.getProperty(NativeProps.ICON),
+                        new ICallback<BigItemStack>() {
+                            @Override
+                            public void setValue(BigItemStack value) {
+                                quest.setProperty(NativeProps.ICON, value);
+                                SendChanges();
+                            }
+                        }
+                ));
             }
         }
     }

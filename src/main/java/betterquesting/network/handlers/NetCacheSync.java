@@ -2,6 +2,7 @@ package betterquesting.network.handlers;
 
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api2.cache.QuestCache;
+import betterquesting.backport.Consumer;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -23,7 +24,12 @@ public class NetCacheSync
     {
         if(BetterQuesting.proxy.isClient())
         {
-            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, NetCacheSync::onClient);
+            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, new Consumer<NBTTagCompound>() {
+                @Override
+                public void accept(NBTTagCompound t) {
+                    onClient(t);
+                }
+            });
         }
     }
     

@@ -7,6 +7,7 @@ import betterquesting.api.questing.IQuestLine;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.BQThreadedIO;
 import betterquesting.api2.utils.Tuple2;
+import betterquesting.backport.Consumer;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -28,11 +29,21 @@ public class NetChapterSync
     
     public static void registerHandler()
     {
-        PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, NetChapterSync::onServer);
+        PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, new Consumer<Tuple2<NBTTagCompound, EntityPlayerMP>>() {
+            @Override
+            public void accept(Tuple2<NBTTagCompound, EntityPlayerMP> message) {
+                onServer(message);
+            }
+        });
         
         if(BetterQuesting.proxy.isClient())
         {
-            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, NetChapterSync::onClient);
+            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, new Consumer<NBTTagCompound>() {
+                @Override
+                public void accept(NBTTagCompound message) {
+                    onClient(message);
+                }
+            });
         }
     }
     
@@ -40,7 +51,9 @@ public class NetChapterSync
     {
         if(chapterIDs != null && chapterIDs.length <= 0) return;
         
-        BQThreadedIO.INSTANCE.enqueue(() -> {
+        BQThreadedIO.INSTANCE.enqueue(new Runnable() {
+            @Override
+            public void run() {
             NBTTagList data = new NBTTagList();
             final List<DBEntry<IQuestLine>> chapterSubset = chapterIDs == null ? QuestLineDatabase.INSTANCE.getEntries() : QuestLineDatabase.INSTANCE.bulkLookup(chapterIDs);
             
@@ -71,6 +84,7 @@ public class NetChapterSync
             } else
             {
                 PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), player);
+            }
             }
         });
     }

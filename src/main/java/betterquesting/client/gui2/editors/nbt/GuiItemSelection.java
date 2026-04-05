@@ -30,6 +30,7 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.Consumer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -83,11 +84,16 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         CanvasEmpty cvRight = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 32), 0));
         cvBackground.addPanel(cvRight);
         
-        CanvasItemDatabase cvDatabase = new CanvasItemDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
+        final CanvasItemDatabase cvDatabase = new CanvasItemDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
         cvRight.addPanel(cvDatabase);
         
-        PanelTextField<String> searchBox = new PanelTextField<Integer>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
-        searchBox.setCallback(cvDatabase::setSearchFilter).setWatermark("Search...");
+        PanelTextField<String> searchBox = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
+        searchBox.setCallback(new betterquesting.api.misc.ICallback<String>() {
+            @Override
+            public void setValue(String value) {
+                cvDatabase.setSearchFilter(value);
+            }
+        }).setWatermark("Search...");
         cvRight.addPanel(searchBox);
         
         PanelVScrollBar scEdit = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 16, 0, 0), 0));
@@ -112,7 +118,12 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         
         fieldSize = new PanelTextField<Integer>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 16, 0, -32), 0), itemStack == null ? "1" : ("" + itemStack.stackSize), FieldFilterNumber.INT);
         cvTopLeft.addPanel(fieldSize);
-        fieldSize.setCallback(value -> { if(itemStack != null) itemStack.stackSize = value; });
+        fieldSize.setCallback(new ICallback<Integer>() {
+            @Override
+            public void setValue(Integer value) {
+                if(itemStack != null) itemStack.stackSize = value;
+            }
+        });
         
         String oreName = "NONE";
         int oreIdx = -1;
@@ -134,11 +145,14 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         cvTopLeft.addPanel(btnOre);
         
         PanelButton btnWild = new PanelButton(new GuiTransform(GuiAlign.TOP_RIGHT, -16, 36, 16, 16, 0), 3, "*");
-        btnWild.setClickAction((b) -> {
-            if(itemStack != null)
-            {
-                itemStack.getBaseStack().setItemDamage(OreDictionary.WILDCARD_VALUE);
-                itemPreview.setStoredValue(itemStack);
+        btnWild.setClickAction(new Consumer<PanelButton>() {
+            @Override
+            public void accept(PanelButton b) {
+                if(itemStack != null)
+                {
+                    itemStack.getBaseStack().setItemDamage(OreDictionary.WILDCARD_VALUE);
+                    itemPreview.setStoredValue(itemStack);
+                }
             }
         });
         cvTopLeft.addPanel(btnWild);

@@ -115,11 +115,14 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
                     PanelButtonStorage<File> btnAdd = new PanelButtonStorage<File>(new GuiRectangle(0, index * 16, 16, 16, 0), -1, "", entry);
                     btnAdd.setIcon(PresetIcon.ICON_POSITIVE.getTexture());
                     btnAdd.setActive(!selList.contains(entry));
-                    btnAdd.setCallback( value -> {
-                        if(!multiSelect) selList.clear();
-                        selList.add(value);
-                        refreshSelected();
-                        refreshSearch();
+                    btnAdd.setCallback(new ICallback<File>() {
+                        @Override
+                        public void setValue(File value) {
+                            if(!multiSelect) selList.clear();
+                            selList.add(value);
+                            refreshSelected();
+                            refreshSearch();
+                        }
                     });
                     this.addPanel(btnAdd);
                 } else
@@ -131,10 +134,13 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
                 
                 PanelButtonStorage<File> btnEdit = new PanelButtonStorage<File>(new GuiRectangle(16, index * 16, width - 32, 16, 0), -1, curDirectory == null ? entry.getAbsolutePath() : entry.getName(), entry);
                 btnEdit.setActive(entry.isDirectory());
-                btnEdit.setCallback(value -> {
-                    curDirectory = value;
-                    this.setCurDirectory(curDirectory);
-                    txtTitle.setText(curDirectory == null ? "*" : curDirectory.getAbsolutePath());
+                btnEdit.setCallback(new ICallback<File>() {
+                    @Override
+                    public void setValue(File value) {
+                        curDirectory = value;
+                        cvDirectory.setCurDirectory(curDirectory);
+                        txtTitle.setText(curDirectory == null ? "*" : curDirectory.getAbsolutePath());
+                    }
                 });
                 this.addPanel(btnEdit);
                 
@@ -146,7 +152,12 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
         };
         cvRight.addPanel(cvDirectory);
         
-        searchBox.setCallback(cvDirectory::setSearchFilter);
+        searchBox.setCallback(new ICallback<String>() {
+            @Override
+            public void setValue(String value) {
+                cvDirectory.setSearchFilter(value);
+            }
+        });
     
         PanelVScrollBar scDb = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 32, 0, 0), 0));
         cvRight.addPanel(scDb);
@@ -211,10 +222,13 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
             
             PanelButtonStorage<File> btnFile = new PanelButtonStorage<File>(new GuiRectangle(width - 16, i* 16, 16, 16, 0), -1, "", f);
             btnFile.setIcon(PresetIcon.ICON_NEGATIVE.getTexture());
-            btnFile.setCallback(value -> {
-                selList.remove(value);
-                refreshSelected();
-                cvDirectory.refreshSearch();
+            btnFile.setCallback(new ICallback<File>() {
+                @Override
+                public void setValue(File value) {
+                    selList.remove(value);
+                    refreshSelected();
+                    cvDirectory.refreshSearch();
+                }
             });
             cvSelected.addPanel(btnFile);
         }

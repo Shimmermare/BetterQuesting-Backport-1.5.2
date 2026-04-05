@@ -34,7 +34,11 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
         IParty party = PartyManager.INSTANCE.getValue(id);
         if(party == null || party.getStatus(uuid) != null) return; // Party doesn't exist or user has already joined
         
-        HashMap<Integer,Long> list = invites.computeIfAbsent(uuid, (key) -> new HashMap<Integer, Long>());
+        HashMap<Integer,Long> list = invites.get(uuid);
+        if(list == null) {
+            list = new HashMap<Integer, Long>();
+            invites.put(uuid, list);
+        }
         list.put(id, System.currentTimeMillis() + expiryTime);
     }
     
@@ -69,14 +73,22 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
 	    if(userInvites == null || userInvites.size() <= 0) return Collections.emptyList();
 	    
 	    List<Entry<Integer,Long>> list = new ArrayList<Entry<Integer,Long>>(userInvites.entrySet());
-        list.sort(Comparator.comparing(Entry::getValue)); // Sort by expiry time
+        // Sort by expiry time
+        Collections.sort(list, new Comparator<Entry<Integer,Long>>() {
+            @Override
+            public int compare(Entry<Integer,Long> o1, Entry<Integer,Long> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+        });
         return list;
 	}
 	
 	// Primarily used when deleting parties to ensure that pending invites don't link to newly created parties under the same ID
 	public synchronized void purgeInvites(int partyID)
     {
-        invites.values().forEach((value) -> value.remove(partyID));
+        for(HashMap<Integer, Long> value : invites.values()) {
+            value.remove(partyID);
+        }
     }
     
     public synchronized void cleanExpired()
@@ -130,7 +142,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
     {
         if(subset != null)
         {
-            subset.forEach((uuid) -> {
+            for(UUID uuid : subset) {
                 NBTTagCompound userTag = new NBTTagCompound();
                 userTag.setString("uuid", uuid.toString());
                 
@@ -148,7 +160,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
                 
                 userTag.setTag("invites", invList);
                 nbt.appendTag(userTag);
-            });
+            }
         } else
         {
             for(Entry<UUID, HashMap<Integer, Long>> userMap : invites.entrySet())
@@ -188,7 +200,8 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
             }
             
             NBTTagList invList = userEntry.getTagList("invites", 10);
-            HashMap<Integer,Long> map = invites.compute(uuid, (key, old) -> new HashMap<Integer, Long>());
+            HashMap<Integer,Long> map = new HashMap<Integer, Long>();
+            invites.put(uuid, map);
             map.clear();
             for(int n = 0; n < invList.tagCount(); n++)
             {

@@ -53,22 +53,33 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
                 results.addAll(subList);
                 return;
             }
-            
-            subList.parallelStream().forEach((subItem) -> {
+
+            // FIXME: Return parallelism
+            for (ItemStack subItem : subList) {
                 try
                 {
                     if(subItem.getUnlocalizedName().toLowerCase().contains(query) || subItem.getDisplayName().toLowerCase().contains(query))
                     {
                         results.add(subItem);
-                    } else if(Arrays.stream(OreDictionary.getOreIDs(subItem)).anyMatch((id) -> OreDictionary.getOreName(id).toLowerCase().contains(query)))
-                    {
+                        continue;
+                    }
+
+                    boolean anyMatch = false;
+                    for (int id : OreDictionary.getOreIDs(subItem)) {
+                        if (OreDictionary.getOreName(id).toLowerCase().contains(query)) {
+                            anyMatch = true;
+                            break;
+                        }
+                    }
+                    if (anyMatch) {
                         results.add(subItem);
+                        continue;
                     }
                 } catch(Exception e)
                 {
                     BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching itemstack " + subItem.toString() + " from item \"" + regName + "\" (" + item.getClass().getName() + ").\nNBT: " + subItem.writeToNBT(new NBTTagCompound()), e);
                 }
-            });
+            }
         } catch(Exception e)
         {
             BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching item \"" + regName + "\" (" + item.getClass().getName() + ")", e);

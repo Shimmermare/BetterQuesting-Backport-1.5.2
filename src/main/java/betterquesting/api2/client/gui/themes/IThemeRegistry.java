@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
-import java.util.function.Function;
+import betterquesting.backport.Function;
 
 public interface IThemeRegistry
 {

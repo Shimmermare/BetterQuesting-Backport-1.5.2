@@ -22,7 +22,12 @@ public final class NameCache implements INameCache
     public synchronized boolean updateName(@Nonnull EntityPlayerMP player)
     {
         MinecraftServer server = player.mcServer;
-        NBTTagCompound tag = cache.computeIfAbsent(ProfileMapper.getUuid(player), (key) -> new NBTTagCompound());
+        UUID playerUuid = ProfileMapper.getUuid(player);
+        NBTTagCompound tag = cache.get(playerUuid);
+        if(tag == null) {
+            tag = new NBTTagCompound();
+            cache.put(playerUuid, tag);
+        }
         
         String name = player.username;
         boolean isOP = server.getConfigurationManager().getOps().contains(player.username.toLowerCase());

@@ -63,17 +63,20 @@ public class PanelTabMain extends CanvasEmpty
             public void onButtonClick()
             {
                 Minecraft mc = Minecraft.getMinecraft();
-                mc.displayGuiScreen(new GuiNbtEditor(mc.currentScreen, cvQuestLine.getQuestLine().writeToNBT(new NBTTagCompound(), null), value -> {
-                    NBTTagCompound payload = new NBTTagCompound();
-                    NBTTagList dataList = new NBTTagList();
-                    NBTTagCompound entry = new NBTTagCompound();
-                    entry.setInteger("chapterID", QuestLineDatabase.INSTANCE.getID(cvQuestLine.getQuestLine()));
-                    entry.setTag("config", value);
-                    dataList.appendTag(entry);
-                    payload.setTag("data", dataList);
-                    payload.setInteger("action", 0);
-                    NetChapterEdit.sendEdit(payload);
-                }));
+                mc.displayGuiScreen(new GuiNbtEditor(mc.currentScreen, cvQuestLine.getQuestLine().writeToNBT(new NBTTagCompound(), null), new betterquesting.api.misc.ICallback<NBTTagCompound>() {
+					@Override
+					public void setValue(NBTTagCompound value) {
+						NBTTagCompound payload = new NBTTagCompound();
+						NBTTagList dataList = new NBTTagList();
+						NBTTagCompound entry = new NBTTagCompound();
+						entry.setInteger("chapterID", QuestLineDatabase.INSTANCE.getID(cvQuestLine.getQuestLine()));
+						entry.setTag("config", value);
+						dataList.appendTag(entry);
+						payload.setTag("data", dataList);
+						payload.setInteger("action", 0);
+						NetChapterEdit.sendEdit(payload);
+					}
+				}));
             }
         }.setIcon(PresetIcon.ICON_PROPS.getTexture()).setTooltip(makeToolTip(QuestTranslation.translate("betterquesting.toolbox.tool.raw.name"), QuestTranslation.translate("betterquesting.toolbox.tool.raw.desc"))));
         
@@ -84,14 +87,19 @@ public class PanelTabMain extends CanvasEmpty
             ToolEntry entry = toolEntries.get(i);
             int x = (i % 2) * (w / 2);
             int y = (i / 2) * 16 + 24;
-            PanelButtonStorage<IToolboxTool> btn = new PanelButtonStorage<IToolboxTool>(new GuiRectangle(x, y, w / 2, 16, 0), -1, "", entry.tool);
+            final PanelButtonStorage<IToolboxTool> btn = new PanelButtonStorage<IToolboxTool>(new GuiRectangle(x, y, w / 2, 16, 0), -1, "", entry.tool);
             btn.setActive(toolController.getActiveTool() != entry.tool);
             btn.setIcon(entry.tex).setTooltip(entry.tt);
-            btn.setCallback(value -> {
-                toolController.setActiveTool(value);
-                toolBtns.forEach(b -> b.setActive(true));
-                btn.setActive(false);
-            });
+            btn.setCallback(new betterquesting.api.misc.ICallback<IToolboxTool>() {
+				@Override
+				public void setValue(IToolboxTool value) {
+					toolController.setActiveTool(value);
+					for(PanelButtonStorage<IToolboxTool> b : toolBtns) {
+						b.setActive(true);
+					}
+					btn.setActive(false);
+				}
+			});
             toolBtns.add(btn);
             this.addPanel(btn);
             

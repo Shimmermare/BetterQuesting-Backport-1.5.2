@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.function.Function;
+import betterquesting.backport.Function;
 
 public class ResourceTheme implements IGuiTheme
 {

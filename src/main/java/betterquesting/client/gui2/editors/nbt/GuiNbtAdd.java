@@ -1,6 +1,7 @@
 package betterquesting.client.gui2.editors.nbt;
 
 import betterquesting.api.client.gui.misc.IVolatileScreen;
+import betterquesting.api.misc.ICallback;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
@@ -85,26 +86,25 @@ public class GuiNbtAdd extends GuiScreenCanvas implements IPEventListener, IVola
         {
             btnConfirm.setActive(false);
             
-            PanelTextBox txKeyTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_CENTER, -100, 36, 200, 12, 0), EnumChatFormatting.RED + QuestTranslation.translate("betterquesting.gui.no_key"));
+            final PanelTextBox txKeyTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_CENTER, -100, 36, 200, 12, 0), EnumChatFormatting.RED + QuestTranslation.translate("betterquesting.gui.no_key"));
             txKeyTitle.setColor(PresetColor.TEXT_MAIN.getColor());
             cvBackground.addPanel(txKeyTitle);
             
             flKey = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_CENTER, -100, 48, 200, 16, 0), "", FieldFilterString.INSTANCE);
             cvBackground.addPanel(flKey);
             
-            flKey.setCallback(value -> {
-                if(value.isEmpty())
-                {
-                    txKeyTitle.setText(EnumChatFormatting.RED + QuestTranslation.translate("betterquesting.gui.no_key"));
-                } else if(((NBTTagCompound)nbt).hasKey(value))
-                {
-                    txKeyTitle.setText(EnumChatFormatting.RED + QuestTranslation.translate("betterquesting.gui.duplicate_key"));
-                } else
-                {
-                    txKeyTitle.setText(QuestTranslation.translate("betterquesting.gui.key"));
+            flKey.setCallback(new ICallback<String>() {
+                @Override
+                public void setValue(String value) {
+                    if (value.isEmpty()) {
+                        txKeyTitle.setText(EnumChatFormatting.RED + QuestTranslation.translate("betterquesting.gui.no_key"));
+                    } else if (((NBTTagCompound) nbt).hasKey(value)) {
+                        txKeyTitle.setText(EnumChatFormatting.RED + QuestTranslation.translate("betterquesting.gui.duplicate_key"));
+                    } else {
+                        txKeyTitle.setText(QuestTranslation.translate("betterquesting.gui.key"));
+                    }
+                    updateConfirm();
                 }
-                
-                updateConfirm();
             });
         }
         

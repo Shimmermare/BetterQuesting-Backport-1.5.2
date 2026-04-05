@@ -35,6 +35,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,12 +102,19 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener
         int columnNum = listWidth/nameSize;
         
         List<String> nameList = new ArrayList<String>();
-        ((List<GuiPlayerInfo>)mc.thePlayer.sendQueue.playerInfoList).forEach((info) -> nameList.add(info.name));
+        for (Object obj : mc.thePlayer.sendQueue.playerInfoList) {
+            GuiPlayerInfo info = (GuiPlayerInfo) obj;
+            nameList.add(info.name);
+        }
         
-        nameList.removeIf((entry) -> {
-           UUID memID = NameCache.INSTANCE.getUUID(entry);
-           return memID != null && party.getStatus(memID) != null;
-        });
+        Iterator<String> iterator = nameList.iterator();
+        while (iterator.hasNext()) {
+            String entry = iterator.next();
+            UUID memID = NameCache.INSTANCE.getUUID(entry);
+            if (memID != null && party.getStatus(memID) != null) {
+                iterator.remove();
+            }
+        }
         
         for(int i = 0; i < nameList.size(); i++)
         {

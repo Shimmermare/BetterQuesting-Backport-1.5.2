@@ -14,6 +14,7 @@ import betterquesting.api2.client.gui.resources.textures.ColorTexture;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.Consumer;
 import org.lwjgl.util.vector.Vector4f;
 
 import javax.annotation.Nonnull;
@@ -56,8 +57,11 @@ public class PopMessage extends CanvasEmpty
         
         cvBox.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(8, 8, 8, 8), 0), message).setAlignment(1));
         PanelButton btn = new PanelButton(new GuiTransform(new Vector4f(0.5F, 0.6F, 0.5F, 0.6F), -48, 8, 96, 16, 0), -1, QuestTranslation.translate("gui.back"));
-        btn.setClickAction((b) -> {
-            if(SceneController.getActiveScene() != null) SceneController.getActiveScene().closePopup();
+        btn.setClickAction(new Consumer<PanelButton>() {
+            @Override
+            public void accept(PanelButton panelButton) {
+                if(SceneController.getActiveScene() != null) SceneController.getActiveScene().closePopup();
+            }
         });
         this.addPanel(btn);
     }

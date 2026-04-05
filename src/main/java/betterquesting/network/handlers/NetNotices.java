@@ -1,6 +1,7 @@
 package betterquesting.network.handlers;
 
 import betterquesting.api.network.QuestingPacket;
+import betterquesting.backport.Consumer;
 import betterquesting.client.QuestNotification;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
@@ -23,7 +24,12 @@ public class NetNotices
     {
         if(BetterQuesting.proxy.isClient())
         {
-            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, NetNotices::onClient);
+            PacketTypeRegistry.INSTANCE.registerClientHandler(ID_NAME, new Consumer<NBTTagCompound>() {
+                @Override
+                public void accept(NBTTagCompound t) {
+                    onClient(t);
+                }
+            });
         }
     }
     

@@ -15,70 +15,85 @@ public class PacketSender implements IPacketSender
 	public static final PacketSender INSTANCE = new PacketSender();
 	
 	@Override
-	public void sendToPlayers(QuestingPacket payload, EntityPlayerMP... players)
+	public void sendToPlayers(final QuestingPacket payload, final EntityPlayerMP... players)
 	{
 		payload.getPayload().setString("ID", payload.getHandler().toString());
         
-        BQThreadedIO.INSTANCE.enqueue(() -> {
-            List<NBTTagCompound> fragments = PacketAssembly.INSTANCE.splitPacket(payload.getPayload());
-            for(EntityPlayerMP p : players)
-            {
-                for(NBTTagCompound tag : fragments)
+        BQThreadedIO.INSTANCE.enqueue(new Runnable() {
+            @Override
+            public void run() {
+                List<NBTTagCompound> fragments = PacketAssembly.INSTANCE.splitPacket(payload.getPayload());
+                for(EntityPlayerMP p : players)
                 {
-                    BetterQuesting.instance.network.sendTo(new PacketQuesting(tag), p);
+                    for(NBTTagCompound tag : fragments)
+                    {
+                        BetterQuesting.instance.network.sendTo(new PacketQuesting(tag), p);
+                    }
                 }
             }
         });
 	}
 	
 	@Override
-	public void sendToAll(QuestingPacket payload)
+	public void sendToAll(final QuestingPacket payload)
 	{
 		payload.getPayload().setString("ID", payload.getHandler().toString());
 		
-		BQThreadedIO.INSTANCE.enqueue(() -> {
-            for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
-            {
-                BetterQuesting.instance.network.sendToAll(new PacketQuesting(p));
+		BQThreadedIO.INSTANCE.enqueue(new Runnable() {
+            @Override
+            public void run() {
+                for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
+                {
+                    BetterQuesting.instance.network.sendToAll(new PacketQuesting(p));
+                }
             }
         });
 	}
 	
 	@Override
-	public void sendToServer(QuestingPacket payload)
+	public void sendToServer(final QuestingPacket payload)
 	{
 		payload.getPayload().setString("ID", payload.getHandler().toString());
 		
-		BQThreadedIO.INSTANCE.enqueue(() -> {
-            for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
-            {
-                BetterQuesting.instance.network.sendToServer(new PacketQuesting(p));
+		BQThreadedIO.INSTANCE.enqueue(new Runnable() {
+            @Override
+            public void run() {
+                for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
+                {
+                    BetterQuesting.instance.network.sendToServer(new PacketQuesting(p));
+                }
             }
         });
 	}
 	
 	@Override
-	public void sendToAround(QuestingPacket payload, TargetPoint point)
+	public void sendToAround(final QuestingPacket payload, final TargetPoint point)
 	{
 		payload.getPayload().setString("ID", payload.getHandler().toString());
 		
-		BQThreadedIO.INSTANCE.enqueue(() -> {
-            for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
-            {
-                BetterQuesting.instance.network.sendToAllAround(new PacketQuesting(p), point);
+		BQThreadedIO.INSTANCE.enqueue(new Runnable() {
+            @Override
+            public void run() {
+                for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
+                {
+                    BetterQuesting.instance.network.sendToAllAround(new PacketQuesting(p), point);
+                }
             }
         });
 	}
 	
 	@Override
-	public void sendToDimension(QuestingPacket payload, int dimension)
+	public void sendToDimension(final QuestingPacket payload, final int dimension)
 	{
 		payload.getPayload().setString("ID", payload.getHandler().toString());
 		
-		BQThreadedIO.INSTANCE.enqueue(() -> {
-            for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
-            {
-                BetterQuesting.instance.network.sendToDimension(new PacketQuesting(p), dimension);
+		BQThreadedIO.INSTANCE.enqueue(new Runnable() {
+            @Override
+            public void run() {
+                for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
+                {
+                    BetterQuesting.instance.network.sendToDimension(new PacketQuesting(p), dimension);
+                }
             }
         });
 	}

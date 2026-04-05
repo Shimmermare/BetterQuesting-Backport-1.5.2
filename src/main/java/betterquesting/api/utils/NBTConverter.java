@@ -163,7 +163,7 @@ public class NBTConverter
 	{
 		if(jObj == null)
 		{
-			return new NBTTagString(null, );
+			return new NBTTagString(null);
 		}
 		
 		byte tagID = id <= 0? fallbackTagID(jObj) : id;
