@@ -38,7 +38,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = BetterQuesting.MODID, name = BetterQuesting.NAME, guiFactory = "betterquesting.handlers.ConfigGuiFactory")
+@Mod(modid = BetterQuesting.MODID, name = BetterQuesting.NAME)
 public class BetterQuesting
 {
     public static final String MODID = "betterquesting";
