@@ -1,0 +1,11 @@
+[versions]
+minecraft = "1.5.2"
+forge = "1.5.2-7.8.1.738"
+voldeloom = "2.4-SNAPSHOT"
+
+[plugins]
+voldeloom = { id = "agency.highlysuspect.voldeloom", version.ref = "voldeloom" }
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
