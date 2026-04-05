@@ -3,6 +3,7 @@ package betterquesting.commands.admin;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.network.handlers.NetQuestSync;
 import betterquesting.questing.QuestDatabase;
@@ -82,7 +83,7 @@ public class QuestCommandReset extends QuestCommandBase
         {
             for(EntityPlayerMP p : (List<EntityPlayerMP>)server.getConfigurationManager().playerEntityList)
             {
-                if(p.getGameProfile().getId().equals(uuid))
+                if(ProfileMapper.getUuid(p).equals(uuid))
                 {
                     player = p;
                     break;

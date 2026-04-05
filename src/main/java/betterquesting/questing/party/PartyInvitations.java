@@ -3,6 +3,7 @@ package betterquesting.questing.party;
 import betterquesting.api.enums.EnumPartyStatus;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.INBTPartial;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.handlers.NetInviteSync;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -101,7 +102,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
             EntityPlayerMP player = null;
             for(Object o : server.getConfigurationManager().playerEntityList)
             {
-                if(((EntityPlayerMP)o).getGameProfile().getId().equals(userInvites.getKey()))
+                if(ProfileMapper.getUuid((EntityPlayerMP)o).equals(userInvites.getKey()))
                 {
                     player = (EntityPlayerMP)o;
                     break;

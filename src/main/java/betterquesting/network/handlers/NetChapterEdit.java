@@ -49,7 +49,7 @@ public class NetChapterEdit
         MinecraftServer server = sender.mcServer;
         if(server == null) return; // Here mostly just to keep intellisense happy
         
-        boolean isOP = server.getConfigurationManager().func_152596_g(sender.getGameProfile());
+        boolean isOP = server.getConfigurationManager().getOps().contains(sender.username.toLowerCase());
 		
 		if(!isOP) // OP pre-check
 		{

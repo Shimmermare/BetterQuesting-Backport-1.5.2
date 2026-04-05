@@ -6,6 +6,7 @@ import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -53,7 +54,7 @@ public class NetPartySync
             EntityPlayerMP p = null;
             for(Object o : server.getConfigurationManager().playerEntityList)
             {
-                if(((EntityPlayerMP)o).getGameProfile().getId().equals(uuid))
+                if(ProfileMapper.getUuid((EntityPlayerMP)o).equals(uuid))
                 {
                     p = (EntityPlayerMP)o;
                 }

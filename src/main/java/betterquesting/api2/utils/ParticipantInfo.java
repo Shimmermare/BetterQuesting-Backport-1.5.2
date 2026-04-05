@@ -4,6 +4,7 @@ import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.cache.QuestCache;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.questing.party.PartyManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -50,7 +51,7 @@ public class ParticipantInfo
             EntityPlayer pMem = null;
             for(Object o : server.getConfigurationManager().playerEntityList)
             {
-                if(((EntityPlayer)o).getGameProfile().getId().equals(mem))
+                if(ProfileMapper.getUuid((EntityPlayer)o).equals(mem))
                 {
                     pMem = (EntityPlayer)o;
                 }

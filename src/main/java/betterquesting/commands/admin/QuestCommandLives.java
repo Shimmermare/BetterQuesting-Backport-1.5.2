@@ -2,6 +2,7 @@ package betterquesting.commands.admin;
 
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.properties.NativeProps;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.network.handlers.NetLifeSync;
 import betterquesting.storage.LifeDatabase;
@@ -92,7 +93,7 @@ public class QuestCommandLives extends QuestCommandBase
                 EntityPlayerMP target = null;
                 for(EntityPlayerMP p : (List<EntityPlayerMP>)server.getConfigurationManager().playerEntityList)
                 {
-                    if(p.getGameProfile().getId().equals(playerID))
+                    if(ProfileMapper.getUuid(p).equals(playerID))
                     {
                         target = p;
                         break;
@@ -120,7 +121,7 @@ public class QuestCommandLives extends QuestCommandBase
                 EntityPlayerMP target = null;
                 for(EntityPlayerMP p : (List<EntityPlayerMP>)server.getConfigurationManager().playerEntityList)
                 {
-                    if(p.getGameProfile().getId().equals(playerID))
+                    if(ProfileMapper.getUuid(p).equals(playerID))
                     {
                         target = p;
                         break;

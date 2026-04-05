@@ -1,6 +1,7 @@
 package betterquesting.storage;
 
 import betterquesting.api.storage.INameCache;
+import betterquesting.backport.ProfileMapper;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -21,10 +22,10 @@ public final class NameCache implements INameCache
     public synchronized boolean updateName(@Nonnull EntityPlayerMP player)
     {
         MinecraftServer server = player.mcServer;
-        NBTTagCompound tag = cache.computeIfAbsent(player.getGameProfile().getId(), (key) -> new NBTTagCompound());
+        NBTTagCompound tag = cache.computeIfAbsent(ProfileMapper.getUuid(player), (key) -> new NBTTagCompound());
         
-        String name = player.getGameProfile().getName();
-        boolean isOP = server.getConfigurationManager().func_152596_g(player.getGameProfile());
+        String name = player.username;
+        boolean isOP = server.getConfigurationManager().getOps().contains(player.username.toLowerCase());
         
         if(!tag.getString("name").equals(name) || tag.getBoolean("isOP") != isOP)
         {

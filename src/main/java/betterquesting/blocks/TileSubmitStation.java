@@ -7,6 +7,7 @@ import betterquesting.api.questing.tasks.IItemTask;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.cache.QuestCache;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.storage.QuestSettings;
@@ -315,7 +316,7 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
         
         for(EntityPlayerMP player : (List<EntityPlayerMP>)server.getConfigurationManager().playerEntityList)
         {
-            if(player.getGameProfile().getId().equals(uuid)) return player;
+            if(ProfileMapper.getUuid(player).equals(uuid)) return player;
         }
         
         return null;

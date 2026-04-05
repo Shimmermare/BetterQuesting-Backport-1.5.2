@@ -28,7 +28,7 @@ public class QuestCommandRefresh extends QuestCommandBase
 	    if(!(sender instanceof EntityPlayerMP)) return;
         EntityPlayerMP player = (EntityPlayerMP)sender;
 	    
-		if(server.isDedicatedServer() || !server.getServerOwner().equals(player.getGameProfile().getName()))
+		if(server.isDedicatedServer() || !server.getServerOwner().equals(player.username))
 		{
             NetBulkSync.sendReset(player, true, true);
 			sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.refresh"));

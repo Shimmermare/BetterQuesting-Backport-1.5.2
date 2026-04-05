@@ -51,6 +51,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.UserListBansEntry;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
@@ -280,7 +281,7 @@ public class EventHandler
 		
 		EntityPlayerMP mpPlayer = (EntityPlayerMP)event.player;
   
-		if(BetterQuesting.proxy.isClient() && !MinecraftServer.getServer().isDedicatedServer() && MinecraftServer.getServer().getServerOwner().equals(event.player.getGameProfile().getName()))
+		if(BetterQuesting.proxy.isClient() && !MinecraftServer.getServer().isDedicatedServer() && MinecraftServer.getServer().getServerOwner().equals(event.player.username))
 		{
 		    NameCache.INSTANCE.updateName(mpPlayer);
 			return;
@@ -314,8 +315,10 @@ public class EventHandler
                 }
                 else
                 {
-                    UserListBansEntry userlistbansentry = new UserListBansEntry(mpPlayer.getGameProfile(), null, "(You just lost the game)", null, "Death in Hardcore");
-                    server.getConfigurationManager().func_152608_h().func_152687_a(userlistbansentry);
+                    BanEntry banEntry = new BanEntry(mpPlayer.username);
+                    banEntry.setBannedBy("Death in Hardcore");
+                    banEntry.setBanReason("(You just lost the game)");
+                    server.getConfigurationManager().getBannedPlayers().put(banEntry);
                     mpPlayer.playerNetServerHandler.kickPlayerFromServer("You have died. Game over, man, it\'s game over!");
                 }
 			} else

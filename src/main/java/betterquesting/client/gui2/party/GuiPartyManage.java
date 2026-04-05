@@ -118,7 +118,7 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
         CanvasEmpty cvLeftHalf = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(16, 64, 8, 64), 0));
         cvBackground.addPanel(cvLeftHalf);
         
-        PanelButtonStorage<String> btnLeave = new PanelButtonStorage<String>(new GuiTransform(GuiAlign.MID_CENTER, -75, 32, 70, 16, 0), 3, QuestTranslation.translate("betterquesting.btn.party_leave"), mc.thePlayer.getGameProfile().getName());
+        PanelButtonStorage<String> btnLeave = new PanelButtonStorage<String>(new GuiTransform(GuiAlign.MID_CENTER, -75, 32, 70, 16, 0), 3, QuestTranslation.translate("betterquesting.btn.party_leave"), mc.thePlayer.username);
         cvLeftHalf.addPanel(btnLeave);
         
         PanelButton btnInvite = new PanelButton(new GuiTransform(GuiAlign.MID_CENTER, 5, 32, 70, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.party_invite"));

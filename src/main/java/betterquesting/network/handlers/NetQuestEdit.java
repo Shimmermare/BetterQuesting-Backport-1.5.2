@@ -9,6 +9,7 @@ import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.PacketSender;
@@ -57,7 +58,7 @@ public class NetQuestEdit
         MinecraftServer server = sender.mcServer;
         if(server == null) return; // Here mostly just to keep intellisense happy
         
-        boolean isOP = server.getConfigurationManager().func_152596_g(sender.getGameProfile());
+        boolean isOP = server.getConfigurationManager().getOps().contains(sender.username.toLowerCase());
 		
 		if(!isOP) // OP pre-check
 		{
@@ -180,7 +181,7 @@ public class NetQuestEdit
         EntityPlayerMP player = null;
         for(Object o : server.getConfigurationManager().playerEntityList)
         {
-            if(((EntityPlayerMP)o).getGameProfile().getId().equals(targetID))
+            if(ProfileMapper.getUuid((EntityPlayerMP)o).equals(targetID))
             {
                 player = (EntityPlayerMP)o;
             }

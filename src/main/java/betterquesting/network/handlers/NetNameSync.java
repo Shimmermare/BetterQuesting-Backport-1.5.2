@@ -5,6 +5,7 @@ import betterquesting.api.events.DatabaseEvent.DBType;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.utils.Tuple2;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -91,7 +92,7 @@ public class NetNameSync
                 EntityPlayerMP p = null;
                 for(Object o : server.getConfigurationManager().playerEntityList)
                 {
-                    if(((EntityPlayerMP)o).getGameProfile().getId().equals(playerID))
+                    if(ProfileMapper.getUuid((EntityPlayerMP)o).equals(playerID))
                     {
                         p = (EntityPlayerMP)o;
                         break;

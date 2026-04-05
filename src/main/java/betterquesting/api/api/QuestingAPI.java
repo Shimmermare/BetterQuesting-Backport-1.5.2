@@ -1,5 +1,6 @@
 package betterquesting.api.api;
 
+import betterquesting.backport.ProfileMapper;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class QuestingAPI
 		
 		if(player.worldObj.isRemote)
 		{
-			UUID uuid = getAPI(ApiReference.NAME_CACHE).getUUID(player.getGameProfile().getName());
+			UUID uuid = getAPI(ApiReference.NAME_CACHE).getUUID(player.username);
 			
 			if(uuid != null)
 			{
@@ -58,7 +59,7 @@ public class QuestingAPI
 			}
 		}
 		
-		return player.getGameProfile().getId();
+		return ProfileMapper.getUuid(player);
 	}
 	
 	private static Logger logger = null;

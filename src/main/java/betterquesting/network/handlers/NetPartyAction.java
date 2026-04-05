@@ -9,6 +9,7 @@ import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
+import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -223,12 +224,12 @@ public class NetPartyAction
             EntityPlayerMP player = null;
             for(Object o : server.getConfigurationManager().playerEntityList)
             {
-                if(((EntityPlayerMP)o).getGameProfile().getId().equals(playerID))
+                if(ProfileMapper.getUuid((EntityPlayerMP)o).equals(playerID))
                 {
                     player = (EntityPlayerMP)o;
                 }
             }
-            if(player != null && server.getConfigurationManager().func_152596_g(player.getGameProfile())) return 4; // Can kick owners or force invites without needing to be a member of the party
+            if(player != null && server.getConfigurationManager().getOps().contains(player.username.toLowerCase())) return 4; // Can kick owners or force invites without needing to be a member of the party
         }
         
         EnumPartyStatus status = party.getStatus(playerID);

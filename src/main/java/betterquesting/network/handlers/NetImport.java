@@ -49,7 +49,7 @@ public class NetImport
 	    EntityPlayerMP sender = message.getSecond();
 		if(sender.mcServer == null) return;
 		
-		boolean isOP = sender.mcServer.getConfigurationManager().func_152596_g(sender.getGameProfile());
+		boolean isOP = sender.mcServer.getConfigurationManager().getOps().contains(sender.username.toLowerCase());
 		
 		if(!isOP)
 		{
@@ -64,7 +64,7 @@ public class NetImport
 		impQuestDB.readFromNBT(message.getFirst().getTagList("quests", 10), false);
 		impQuestLineDB.readFromNBT(message.getFirst().getTagList("chapters", 10), false);
 		
-		BetterQuesting.logger.info("Importing " + impQuestDB.size() + " quest(s) and " + impQuestLineDB.size() + " quest line(s) from " + sender.getGameProfile().getName());
+		BetterQuesting.logger.info("Importing " + impQuestDB.size() + " quest(s) and " + impQuestLineDB.size() + " quest line(s) from " + sender.username);
 		
 		HashMap<Integer,Integer> remapped = getRemappedIDs(impQuestDB.getEntries());
 		
