@@ -145,7 +145,7 @@ public class QuestResourcesFile implements IResourcePack, Closeable
 		}
 		
 		File[] files = rootFolder.listFiles();
-		zipList = new ArrayList<>();
+		zipList = new ArrayList<ZipFile>();
     	
 		for(File f : files)
 		{

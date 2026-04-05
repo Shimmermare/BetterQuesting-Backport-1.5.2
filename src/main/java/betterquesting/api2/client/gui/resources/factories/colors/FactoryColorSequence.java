@@ -25,7 +25,7 @@ public class FactoryColorSequence implements IFactoryData<IGuiColor, JsonObject>
     @Override
     public GuiColorSequence loadFromData(JsonObject data)
     {
-        List<IGuiColor> layers = new ArrayList<>();
+        List<IGuiColor> layers = new ArrayList<IGuiColor>();
         
         float interval = JsonHelper.GetNumber(data, "interval", 1F).floatValue();
         

@@ -28,7 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 // This will probably be rewritten at a later date once I reimplement Minecraft's inventory controls natively into their own isolated canvas elements
 public class GuiContainerCanvas extends GuiContainer implements IScene
 {
-	private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
+	private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<IGuiPanel>();
 	private final GuiRectangle rootTransform = new GuiRectangle(0, 0, 0, 0, 0);
 	private final GuiTransform transform = new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(16, 16, 16, 16), 0);
 	private boolean enabled = true;

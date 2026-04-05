@@ -53,7 +53,7 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
 		if(qCached == null)
         {
             IQuest tmp = QuestDatabase.INSTANCE.getValue(questID);
-            if(tmp != null) qCached = new DBEntry<>(questID, tmp);
+            if(tmp != null) qCached = new DBEntry<IQuest>(questID, tmp);
         }
 		
         return qCached;
@@ -330,7 +330,7 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
 		}
 		
 		this.questID = QuestDatabase.INSTANCE.getID(quest);
-		this.qCached = new DBEntry<>(questID, quest);
+		this.qCached = new DBEntry<IQuest>(questID, quest);
 		this.taskID = quest.getTasks().getID(task);
 		
 		if(this.questID < 0 || this.taskID < 0)

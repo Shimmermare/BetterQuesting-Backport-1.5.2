@@ -18,9 +18,9 @@ public class ResourceRegistry implements IResourceReg
 {
     public static final ResourceRegistry INSTANCE = new ResourceRegistry();
     
-    private final IRegistry<IFactoryData<IGuiTexture, JsonObject>, IGuiTexture> TEX_REG = new SimpleRegistry<>();
-    private final IRegistry<IFactoryData<IGuiColor, JsonObject>, IGuiColor> COL_REG = new SimpleRegistry<>();
-    private final IRegistry<IFactoryData<IGuiLine, JsonObject>, IGuiLine> LIN_REG = new SimpleRegistry<>();
+    private final IRegistry<IFactoryData<IGuiTexture, JsonObject>, IGuiTexture> TEX_REG = new SimpleRegistry<IFactoryData<IGuiTexture, JsonObject>, IGuiTexture>();
+    private final IRegistry<IFactoryData<IGuiColor, JsonObject>, IGuiColor> COL_REG = new SimpleRegistry<IFactoryData<IGuiColor, JsonObject>, IGuiColor>();
+    private final IRegistry<IFactoryData<IGuiLine, JsonObject>, IGuiLine> LIN_REG = new SimpleRegistry<IFactoryData<IGuiLine, JsonObject>, IGuiLine>();
     
     public ResourceRegistry()
     {

@@ -38,7 +38,7 @@ public class OreIngredient
     {
         if (array == null || this.lastSizeA != ores.size())
         {
-            List<ItemStack> lst = new ArrayList<>();
+            List<ItemStack> lst = new ArrayList<ItemStack>();
             for (ItemStack itemstack : this.ores)
             {
                 if (itemstack.getItemDamage() == OreDictionary.WILDCARD_VALUE)

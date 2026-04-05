@@ -17,7 +17,7 @@ public final class LifeDatabase implements ILifeDatabase
 {
 	public static final LifeDatabase INSTANCE = new LifeDatabase();
 	
-	private final HashMap<UUID,Integer> playerLives = new HashMap<>();
+	private final HashMap<UUID,Integer> playerLives = new HashMap<UUID,Integer>();
 	
 	@Override
 	public synchronized int getLives(@Nonnull UUID uuid)

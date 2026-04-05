@@ -27,7 +27,7 @@ public class ToolboxToolScale implements IToolboxTool
 {
 	private CanvasQuestLine gui;
 	
-	private final List<GrabEntry> grabList = new ArrayList<>();
+	private final List<GrabEntry> grabList = new ArrayList<GrabEntry>();
 	private final GuiRectangle scaleBounds = new GuiRectangle(0, 0, 0, 0);
 	private IGuiLine selLine = new BoxLine();
 	private IGuiColor selCol = new GuiColorPulse(0xFFFFFFFF, 0xFF000000, 2F, 0F);
@@ -64,7 +64,7 @@ public class ToolboxToolScale implements IToolboxTool
 	@Override
     public void refresh(CanvasQuestLine gui)
     {
-        List<GrabEntry> tmp = new ArrayList<>();
+        List<GrabEntry> tmp = new ArrayList<GrabEntry>();
         
         for(GrabEntry grab : grabList)
         {

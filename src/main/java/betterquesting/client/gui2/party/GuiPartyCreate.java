@@ -115,7 +115,7 @@ public class GuiPartyCreate extends GuiScreenCanvas implements IPEventListener, 
         txName.setColor(PresetColor.TEXT_HEADER.getColor());
         cvLeftHalf.addPanel(txName);
         
-        flName = new PanelTextField<>(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(16, -32, 16, 16), 0), "New Party", FieldFilterString.INSTANCE);
+        flName = new PanelTextField<String>(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(16, -32, 16, 16), 0), "New Party", FieldFilterString.INSTANCE);
         cvLeftHalf.addPanel(flName);
         
         PanelButton btnCreate = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(16, -16, 16, 0), 0), 1, QuestTranslation.translate("betterquesting.btn.party_new"));
@@ -193,7 +193,7 @@ public class GuiPartyCreate extends GuiScreenCanvas implements IPEventListener, 
             long exp = invites.get(i).getValue();
             IParty party = PartyManager.INSTANCE.getValue(pid);
             
-            PanelButtonStorage<Integer> btnJoin = new PanelButtonStorage<>(new GuiRectangle(cvWidth - 50, i * 24, 50, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.party_join"), pid);
+            PanelButtonStorage<Integer> btnJoin = new PanelButtonStorage<Integer>(new GuiRectangle(cvWidth - 50, i * 24, 50, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.party_join"), pid);
             invitePanel.addPanel(btnJoin);
             
             String pName = party == null ? "Unknown (" + pid + ")" : party.getProperties().getProperty(NativeProps.NAME);
@@ -207,7 +207,7 @@ public class GuiPartyCreate extends GuiScreenCanvas implements IPEventListener, 
             invitePanel.addPanel(txPartyName);
     
             PanelHBarFill flExpiry = new PanelHBarFill(new GuiRectangle(0, i * 24 + 16, cvWidth, 8));
-            ValueFuncIO<Float> expFunc = new ValueFuncIO<>(() -> (float)((exp - System.currentTimeMillis()) / 300000D));
+            ValueFuncIO<Float> expFunc = new ValueFuncIO<Float>(() -> (float)((exp - System.currentTimeMillis()) / 300000D));
             flExpiry.setFillDriver(expFunc);
             flExpiry.setFillColor(new GuiColorTransition(new GuiColorStatic(0xFF00FF00), new GuiColorPulse(0xFFFF0000, 0xFFC00000, 1F, 0F)).setupBlending(false, 0.2F).setBlendDriver(expFunc));
             invitePanel.addPanel(flExpiry);

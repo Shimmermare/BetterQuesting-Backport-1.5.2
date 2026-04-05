@@ -58,7 +58,7 @@ public class GuiQuestLines extends GuiScreenCanvas implements IPEventListener, I
     private IQuestLine selectedLine = null;
     private static int selectedLineId = -1;
     
-    private final List<Tuple2<DBEntry<IQuestLine>, Integer>> visChapters = new ArrayList<>();
+    private final List<Tuple2<DBEntry<IQuestLine>, Integer>> visChapters = new ArrayList<Tuple2<DBEntry<IQuestLine>, Integer>>();
     
     private CanvasQuestLine cvQuest;
     
@@ -80,7 +80,7 @@ public class GuiQuestLines extends GuiScreenCanvas implements IPEventListener, I
     
     private static boolean trayLock = false;
     
-    private final List<PanelButtonStorage<DBEntry<IQuestLine>>> btnListRef = new ArrayList<>();
+    private final List<PanelButtonStorage<DBEntry<IQuestLine>>> btnListRef = new ArrayList<PanelButtonStorage<DBEntry<IQuestLine>>>();
     
     public GuiQuestLines(GuiScreen parent)
     {
@@ -235,7 +235,7 @@ public class GuiQuestLines extends GuiScreenCanvas implements IPEventListener, I
         claimAll.setIcon(PresetIcon.ICON_CHEST_ALL.getTexture());
         claimAll.setClickAction((b) -> {
             if(cvQuest.getQuestButtons().size() <= 0) return;
-            List<Integer> claimIdList = new ArrayList<>();
+            List<Integer> claimIdList = new ArrayList<Integer>();
             for(PanelButtonQuest pbQuest : cvQuest.getQuestButtons())
             {
                 IQuest q = pbQuest.getStoredValue().getValue();
@@ -371,7 +371,7 @@ public class GuiQuestLines extends GuiScreenCanvas implements IPEventListener, I
             if(allComplete) val |= 2;
             if(!show) val |= 4;
             
-            visChapters.add(new Tuple2<>(dbEntry, val));
+            visChapters.add(new Tuple2<DBEntry<IQuestLine>, Integer>(dbEntry, val));
         }
         
         if(cvChapterTray.isTrayOpen()) buildChapterList();
@@ -398,7 +398,7 @@ public class GuiQuestLines extends GuiScreenCanvas implements IPEventListener, I
             {
                 cvLines.addPanel(new PanelGeneric(new GuiRectangle(8, n * 16 + 8, 8, 8, -1), new GuiTextureColored(PresetIcon.ICON_TICK.getTexture(), new GuiColorStatic(0xFF00FF00))));
             }
-            PanelButtonStorage<DBEntry<IQuestLine>> btnLine = new PanelButtonStorage<>(new GuiRectangle(16, n * 16, listW - 16, 16, 0), 1, QuestTranslation.translate(entry.getValue().getUnlocalisedName()), entry);
+            PanelButtonStorage<DBEntry<IQuestLine>> btnLine = new PanelButtonStorage<DBEntry<IQuestLine>>(new GuiRectangle(16, n * 16, listW - 16, 16, 0), 1, QuestTranslation.translate(entry.getValue().getUnlocalisedName()), entry);
             btnLine.setTextAlignment(0);
             btnLine.setActive((vis & 4) == 0 && entry.getID() != selectedLineId);
             btnLine.setCallback((q) -> {

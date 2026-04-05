@@ -41,7 +41,7 @@ public class PanelFluidSlot extends PanelButtonStorage<FluidStack>
         if(value != null)
         {
             this.setIcon(new FluidTexture(value, showCount, true), 1);
-            List<String> tooltip = new ArrayList<>();
+            List<String> tooltip = new ArrayList<String>();
             tooltip.add(value.getLocalizedName());
             tooltip.add(EnumChatFormatting.GRAY.toString() + value.amount + "mB");
             this.setTooltip(tooltip);

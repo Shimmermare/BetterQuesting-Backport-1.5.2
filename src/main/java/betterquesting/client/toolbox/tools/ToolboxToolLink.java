@@ -19,7 +19,7 @@ import java.util.List;
 public class ToolboxToolLink implements IToolboxTool
 {
 	private CanvasQuestLine gui;
-	private final List<PanelButtonQuest> linking = new ArrayList<>();
+	private final List<PanelButtonQuest> linking = new ArrayList<PanelButtonQuest>();
 	private final GuiRectangle mouseRect = new GuiRectangle(0, 0, 0, 0);
 	
 	@Override
@@ -40,7 +40,7 @@ public class ToolboxToolLink implements IToolboxTool
     {
         if(linking.size() <= 0) return;
         
-        List<PanelButtonQuest> tmp = new ArrayList<>();
+        List<PanelButtonQuest> tmp = new ArrayList<PanelButtonQuest>();
         
         for(PanelButtonQuest b1 : linking)
         {

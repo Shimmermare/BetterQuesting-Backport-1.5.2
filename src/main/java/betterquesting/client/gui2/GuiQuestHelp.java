@@ -75,7 +75,7 @@ public class GuiQuestHelp extends GuiScreenCanvas
         for(int i = 0; i < topics.length; i++)
         {
             HelpTopic ht = topics[i];
-            cvTopics.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, width, 16, 0), -1, ht.getTitle(), ht).setCallback(value -> {
+            cvTopics.addPanel(new PanelButtonStorage<HelpTopic>(new GuiRectangle(0, i * 16, width, 16, 0), -1, ht.getTitle(), ht).setCallback(value -> {
                 txtTitle.setText(value.getTitle());
                 txtDesc.setText(value.getDescription());
                 cvDesc.refreshScrollBounds();

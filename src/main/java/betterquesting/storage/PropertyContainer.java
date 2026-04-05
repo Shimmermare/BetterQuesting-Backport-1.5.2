@@ -85,7 +85,7 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
     {
         synchronized(nbtInfo)
         {
-            List<String> keys = new ArrayList<>((Set<String>)nbtInfo.func_150296_c());
+            List<String> keys = new ArrayList<String>((Set<String>)nbtInfo.func_150296_c());
             for(String key : keys) nbtInfo.removeTag(key);
         }
     }

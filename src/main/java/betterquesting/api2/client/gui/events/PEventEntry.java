@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 public class PEventEntry<T extends PanelEvent>
 {
-	private final List<Consumer<PanelEvent>> listeners = new ArrayList<>();
+	private final List<Consumer<PanelEvent>> listeners = new ArrayList<Consumer<PanelEvent>>();
 	private final Class<T> cType;
 	
 	public PEventEntry(Class<T> type)

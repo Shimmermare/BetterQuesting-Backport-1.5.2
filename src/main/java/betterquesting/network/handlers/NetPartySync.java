@@ -47,7 +47,7 @@ public class NetPartySync
         
         if(server == null || party == null) return;
         
-        List<EntityPlayerMP> players = new ArrayList<>();
+        List<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>();
         for(UUID uuid : party.getMembers())
         {
             EntityPlayerMP p = null;

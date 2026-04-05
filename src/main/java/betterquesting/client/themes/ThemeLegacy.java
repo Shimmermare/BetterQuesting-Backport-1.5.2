@@ -26,9 +26,9 @@ public class ThemeLegacy implements IGuiTheme
     private final String DISP_NAME;
     private final ResourceLocation ID_NAME;
     
-	private final HashMap<ResourceLocation, IGuiTexture> TEX_MAP = new HashMap<>();
-	private final HashMap<ResourceLocation, IGuiColor> COLOR_MAP = new HashMap<>();
-	//private final HashMap<ResourceLocation, IGuiLine> LINE_MAP = new HashMap<>();
+	private final HashMap<ResourceLocation, IGuiTexture> TEX_MAP = new HashMap<ResourceLocation, IGuiTexture>();
+	private final HashMap<ResourceLocation, IGuiColor> COLOR_MAP = new HashMap<ResourceLocation, IGuiColor>();
+	//private final HashMap<ResourceLocation, IGuiLine> LINE_MAP = new HashMap<ResourceLocation, IGuiLine>();
 	
 	public ThemeLegacy(String name, ResourceLocation texture, ResourceLocation regName)
 	{

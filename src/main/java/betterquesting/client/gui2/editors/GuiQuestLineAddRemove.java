@@ -112,7 +112,7 @@ public class GuiQuestLineAddRemove extends GuiScreenCanvas implements IPEventLis
         PanelTextBox txtDb = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("betterquesting.gui.database")).setAlignment(1).setColor(PresetColor.TEXT_MAIN.getColor());
         cvRight.addPanel(txtDb);
         
-        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 8, -32), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> searchBox = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 8, -32), 0), "", FieldFilterString.INSTANCE);
         searchBox.setWatermark("Search...");
         cvRight.addPanel(searchBox);
         
@@ -122,15 +122,15 @@ public class GuiQuestLineAddRemove extends GuiScreenCanvas implements IPEventLis
             protected boolean addResult(DBEntry<IQuest> entry, int index, int width)
             {
                 
-                PanelButtonStorage<DBEntry<IQuest>> btnAdd = new PanelButtonStorage<>(new GuiRectangle(0, index * 16, 16, 16, 0), 2, "", entry);
+                PanelButtonStorage<DBEntry<IQuest>> btnAdd = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(0, index * 16, 16, 16, 0), 2, "", entry);
                 btnAdd.setIcon(PresetIcon.ICON_POSITIVE.getTexture());
                 btnAdd.setActive(questLine != null && questLine.getValue(entry.getID()) == null);
                 this.addPanel(btnAdd);
                 
-                PanelButtonStorage<DBEntry<IQuest>> btnEdit = new PanelButtonStorage<>(new GuiRectangle(16, index * 16, width - 32, 16, 0), 1, QuestTranslation.translate(entry.getValue().getProperty(NativeProps.NAME)), entry);
+                PanelButtonStorage<DBEntry<IQuest>> btnEdit = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(16, index * 16, width - 32, 16, 0), 1, QuestTranslation.translate(entry.getValue().getProperty(NativeProps.NAME)), entry);
                 this.addPanel(btnEdit);
                 
-                PanelButtonStorage<DBEntry<IQuest>> btnDel = new PanelButtonStorage<>(new GuiRectangle(width - 16, index * 16, 16, 16, 0), 4, "", entry);
+                PanelButtonStorage<DBEntry<IQuest>> btnDel = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(width - 16, index * 16, 16, 16, 0), 4, "", entry);
                 btnDel.setIcon(PresetIcon.ICON_TRASH.getTexture());
                 this.addPanel(btnDel);
                 
@@ -262,16 +262,16 @@ public class GuiQuestLineAddRemove extends GuiScreenCanvas implements IPEventLis
             
             if(quest == null)
             {
-                PanelButtonStorage<Integer> btnErr = new PanelButtonStorage<>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), 6, "[ERROR]", entry.getID());
+                PanelButtonStorage<Integer> btnErr = new PanelButtonStorage<Integer>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), 6, "[ERROR]", entry.getID());
                 btnErr.setActive(true);
                 canvasQL.addPanel(btnErr);
                 continue;
             }
             
-            PanelButtonStorage<DBEntry<IQuest>> btnEdit = new PanelButtonStorage<>(new GuiRectangle(0, i * 16, width - 16, 16, 0), 1, QuestTranslation.translate(quest.getProperty(NativeProps.NAME)), new DBEntry<>(entry.getID(), quest));
+            PanelButtonStorage<DBEntry<IQuest>> btnEdit = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(0, i * 16, width - 16, 16, 0), 1, QuestTranslation.translate(quest.getProperty(NativeProps.NAME)), new DBEntry<IQuest>(entry.getID(), quest));
             canvasQL.addPanel(btnEdit);
             
-            PanelButtonStorage<DBEntry<IQuest>> btnRem = new PanelButtonStorage<>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), 3, "", new DBEntry<>(entry.getID(), quest));
+            PanelButtonStorage<DBEntry<IQuest>> btnRem = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), 3, "", new DBEntry<IQuest>(entry.getID(), quest));
             btnRem.setIcon(PresetIcon.ICON_NEGATIVE.getTexture());
             canvasQL.addPanel(btnRem);
         }

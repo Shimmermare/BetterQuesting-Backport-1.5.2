@@ -20,7 +20,7 @@ public class TaskRegistry implements IRegistry<IFactoryData<ITask, NBTTagCompoun
 {
 	public static final TaskRegistry INSTANCE = new TaskRegistry();
 	
-	private final HashMap<ResourceLocation, IFactoryData<ITask, NBTTagCompound>> taskRegistry = new HashMap<>();
+	private final HashMap<ResourceLocation, IFactoryData<ITask, NBTTagCompound>> taskRegistry = new HashMap<ResourceLocation, IFactoryData<ITask, NBTTagCompound>>();
 	
 	@Override
 	public void register(IFactoryData<ITask, NBTTagCompound> factory)
@@ -50,7 +50,7 @@ public class TaskRegistry implements IRegistry<IFactoryData<ITask, NBTTagCompoun
 	@Override
 	public List<IFactoryData<ITask, NBTTagCompound>> getAll()
 	{
-		return new ArrayList<>(taskRegistry.values());
+		return new ArrayList<IFactoryData<ITask, NBTTagCompound>>(taskRegistry.values());
 	}
 	
 	@Override

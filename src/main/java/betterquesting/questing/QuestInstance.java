@@ -41,7 +41,7 @@ public class QuestInstance implements IQuest
 	private final TaskStorage tasks = new TaskStorage();
 	private final RewardStorage rewards = new RewardStorage();
 	
-	private final HashMap<UUID, NBTTagCompound> completeUsers = new HashMap<>();
+	private final HashMap<UUID, NBTTagCompound> completeUsers = new HashMap<UUID, NBTTagCompound>();
     private int[] preRequisites = new int[0];
 	
 	private final PropertyContainer qInfo = new PropertyContainer();
@@ -135,7 +135,7 @@ public class QuestInstance implements IQuest
 			boolean update = false;
             
             ParticipantInfo partInfo = new ParticipantInfo(player);
-            DBEntry<IQuest> dbe = new DBEntry<>(questID, this);
+            DBEntry<IQuest> dbe = new DBEntry<IQuest>(questID, this);
 			
 			for(DBEntry<ITask> entry : tasks.getEntries())
 			{
@@ -206,7 +206,7 @@ public class QuestInstance implements IQuest
 			return false;
 		} else
 		{
-		    DBEntry<IQuest> dbe = new DBEntry<>(QuestDatabase.INSTANCE.getID(this), this);
+		    DBEntry<IQuest> dbe = new DBEntry<IQuest>(QuestDatabase.INSTANCE.getID(this), this);
 			for(DBEntry<IReward> rew : rewards.getEntries())
 			{
 				if(!rew.getValue().canClaim(player, dbe))
@@ -223,7 +223,7 @@ public class QuestInstance implements IQuest
 	public void claimReward(EntityPlayer player)
 	{
         int questID = QuestDatabase.INSTANCE.getID(this);
-        DBEntry<IQuest> dbe = new DBEntry<>(questID, this);
+        DBEntry<IQuest> dbe = new DBEntry<IQuest>(questID, this);
 		for(DBEntry<IReward> rew : rewards.getEntries())
 		{
 			rew.getValue().claimReward(player, dbe);

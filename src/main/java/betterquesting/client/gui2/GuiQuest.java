@@ -296,7 +296,7 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
         
         IReward rew = quest.getRewards().getEntries().get(rewardIndex).getValue();
         
-        pnReward = rew.getRewardGui(rectReward, new DBEntry<>(questID, quest));
+        pnReward = rew.getRewardGui(rectReward, new DBEntry<IQuest>(questID, quest));
         
         if(pnReward != null)
         {
@@ -330,7 +330,7 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
         
         ITask tsk = quest.getTasks().getEntries().get(taskIndex).getValue();
         
-        pnTask = tsk.getTaskGui(rectTask, new DBEntry<>(questID, quest));
+        pnTask = tsk.getTaskGui(rectTask, new DBEntry<IQuest>(questID, quest));
         
         if(pnTask != null)
         {

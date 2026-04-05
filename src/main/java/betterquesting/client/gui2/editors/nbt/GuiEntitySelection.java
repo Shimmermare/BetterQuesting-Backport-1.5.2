@@ -81,7 +81,7 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
         CanvasEntityDatabase cvDatabase = new CanvasEntityDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
         cvRight.addPanel(cvDatabase);
         
-        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> searchBox = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
         searchBox.setCallback(cvDatabase::setSearchFilter).setWatermark("Search...");
         cvRight.addPanel(searchBox);
         
@@ -94,7 +94,10 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
         pnPreview = new PanelEntityPreview(new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(16, 32, 8, 32), 0), selEntity);
         cvBackground.addPanel(pnPreview);
         
-        pnPreview.setRotationDriven(new ValueFuncIO<>(() -> 15F), new ValueFuncIO<>(() -> (float)(Minecraft.getSystemTime()%30000L / 30000D * 360D)));
+        pnPreview.setRotationDriven(
+                new ValueFuncIO<Float>(() -> 15F),
+                new ValueFuncIO<Float>(() -> (float)(Minecraft.getSystemTime()%30000L / 30000D * 360D))
+        );
         
         // === DIVIDERS ===
         

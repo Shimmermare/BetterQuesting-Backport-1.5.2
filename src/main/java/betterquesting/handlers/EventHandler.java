@@ -147,7 +147,7 @@ public class EventHandler
         
         if(!editMode && player.ticksExisted%60 == 0) // Passive quest state check every 3 seconds
         {
-            List<Integer> com = new ArrayList<>();
+            List<Integer> com = new ArrayList<Integer>();
             
             for(DBEntry<IQuest> quest : activeQuests)
             {
@@ -170,7 +170,7 @@ public class EventHandler
         
         if(!editMode && MinecraftServer.getServer() != null) // Repeatable quest resets
         {
-            List<Integer> res = new ArrayList<>();
+            List<Integer> res = new ArrayList<Integer>();
             long totalTime = System.currentTimeMillis();
             
             for(QResetTime rTime : pendingResets)
@@ -380,10 +380,10 @@ public class EventHandler
 		}
 	}
 	
-	private final ArrayDeque<EntityPlayerMP> opQueue = new ArrayDeque<>();
+	private final ArrayDeque<EntityPlayerMP> opQueue = new ArrayDeque<EntityPlayerMP>();
 	private boolean openToLAN = false;
 	
-	private static final ArrayDeque<FutureTask> serverTasks = new ArrayDeque<>();
+	private static final ArrayDeque<FutureTask> serverTasks = new ArrayDeque<FutureTask>();
 	private static Thread serverThread = null;
 	
 	@SuppressWarnings("UnstableApiUsage")

@@ -129,14 +129,14 @@ public class GuiQuestLinesEditor extends GuiScreenCanvas implements IPEventListe
         txtName.setColor(PresetColor.TEXT_MAIN.getColor());
         cvRight.addPanel(txtName);
     
-        tfName = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), "", FieldFilterString.INSTANCE);
+        tfName = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), "", FieldFilterString.INSTANCE);
         cvRight.addPanel(tfName);
         
         PanelTextBox txtDesc = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 36, 0, -48), 0), QuestTranslation.translate("betterquesting.gui.description"));
         txtDesc.setColor(PresetColor.TEXT_MAIN.getColor());
         cvRight.addPanel(txtDesc);
     
-        tfDesc = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 48, 16, -64), 0), "", FieldFilterString.INSTANCE);
+        tfDesc = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 48, 16, -64), 0), "", FieldFilterString.INSTANCE);
         tfDesc.setMaxLength(Integer.MAX_VALUE);
         cvRight.addPanel(tfDesc);
         
@@ -148,7 +148,7 @@ public class GuiQuestLinesEditor extends GuiScreenCanvas implements IPEventListe
                 if(selected == null) return;
                 mc.displayGuiScreen(new GuiItemSelection(GuiQuestLinesEditor.this, selected.getProperty(NativeProps.ICON), value -> {
                     selected.setProperty(NativeProps.ICON, value);
-                    SendChanges(new DBEntry<>(selID, selected));
+                    SendChanges(new DBEntry<IQuestLine>(selID, selected));
                 }));
             }
         };
@@ -236,7 +236,7 @@ public class GuiQuestLinesEditor extends GuiScreenCanvas implements IPEventListe
             
             if(changed)
             {
-                SendChanges(new DBEntry<>(selID, selected));
+                SendChanges(new DBEntry<IQuestLine>(selID, selected));
             }
         }
         
@@ -312,7 +312,7 @@ public class GuiQuestLinesEditor extends GuiScreenCanvas implements IPEventListe
                 {
                     tfDesc.setText(value);
                     selected.setProperty(NativeProps.DESC, value);
-                    SendChanges(new DBEntry<>(selID, selected));
+                    SendChanges(new DBEntry<IQuestLine>(selID, selected));
                 }
             }));
         }
@@ -328,11 +328,11 @@ public class GuiQuestLinesEditor extends GuiScreenCanvas implements IPEventListe
         for(DBEntry<IQuestLine> entry : QuestLineDatabase.INSTANCE.getSortedEntries())
         {
             IQuestLine ql = entry.getValue();
-            PanelButtonStorage<DBEntry<IQuestLine>> tmp = new PanelButtonStorage<>(new GuiRectangle(0, i * 16, w - 32, 16, 0), 5, QuestTranslation.translate(ql.getUnlocalisedName()), entry);
+            PanelButtonStorage<DBEntry<IQuestLine>> tmp = new PanelButtonStorage<DBEntry<IQuestLine>>(new GuiRectangle(0, i * 16, w - 32, 16, 0), 5, QuestTranslation.translate(ql.getUnlocalisedName()), entry);
             tmp.setActive(entry.getID() != selID);
             lineList.addPanel(tmp);
-            lineList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 32, i * 16, 16, 16, 0), 6, "", entry).setIcon(PresetIcon.ICON_TRASH.getTexture()));
-            lineList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 7, "", entry).setIcon(PresetIcon.ICON_UP.getTexture()));
+            lineList.addPanel(new PanelButtonStorage<DBEntry<IQuestLine>>(new GuiRectangle(w - 32, i * 16, 16, 16, 0), 6, "", entry).setIcon(PresetIcon.ICON_TRASH.getTexture()));
+            lineList.addPanel(new PanelButtonStorage<DBEntry<IQuestLine>>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 7, "", entry).setIcon(PresetIcon.ICON_UP.getTexture()));
             i++;
         }
     }

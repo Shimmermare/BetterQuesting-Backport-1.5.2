@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SimpleRegistry<T extends IFactory<E>, E> implements IRegistry<T, E>
 {
-    private final HashMap<ResourceLocation, T> factories = new HashMap<>();
+    private final HashMap<ResourceLocation, T> factories = new HashMap<ResourceLocation, T>();
     
     @Override
     public void register(T factory)
@@ -44,6 +44,6 @@ public class SimpleRegistry<T extends IFactory<E>, E> implements IRegistry<T, E>
     @Override
     public List<T> getAll()
     {
-        return new ArrayList<>(factories.values());
+        return new ArrayList<T>(factories.values());
     }
 }

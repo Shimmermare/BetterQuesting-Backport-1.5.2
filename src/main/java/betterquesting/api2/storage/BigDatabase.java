@@ -21,14 +21,14 @@ public abstract class BigDatabase<T> extends SimpleDatabase<T>
     {
         if(ids == null || ids.length <= 0) return Collections.emptyList();
         
-        List<DBEntry<T>> values = new ArrayList<>();
+        List<DBEntry<T>> values = new ArrayList<DBEntry<T>>();
         
         synchronized(this)
         {
             for(int i : ids)
             {
                 T v = getValue(i);
-                if(v != null) values.add(new DBEntry<>(i, v));
+                if(v != null) values.add(new DBEntry<T>(i, v));
             }
         }
         

@@ -36,7 +36,7 @@ public class QuestEvent extends Event
 	{
 	    this.type = type;
 		this.playerID = playerID;
-	    this.questIDs = Collections.unmodifiableSet(new TreeSet<>(questIDs));
+	    this.questIDs = Collections.unmodifiableSet(new TreeSet<Integer>(questIDs));
 	}
 	
 	public enum Type

@@ -130,7 +130,7 @@ public class BigItemStack
 	@SuppressWarnings("unused")
     public List<ItemStack> getCombinedStacks()
 	{
-		List<ItemStack> list = new ArrayList<>();
+		List<ItemStack> list = new ArrayList<ItemStack>();
 		int tmp1 = Math.max(1, stackSize); // Guarantees this method will return at least 1 item
 		
 		while(tmp1 > 0)

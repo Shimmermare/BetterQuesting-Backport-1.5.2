@@ -86,7 +86,7 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         CanvasItemDatabase cvDatabase = new CanvasItemDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
         cvRight.addPanel(cvDatabase);
         
-        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> searchBox = new PanelTextField<Integer>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
         searchBox.setCallback(cvDatabase::setSearchFilter).setWatermark("Search...");
         cvRight.addPanel(searchBox);
         
@@ -110,7 +110,7 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         txMulti.setColor(PresetColor.TEXT_MAIN.getColor());
         cvTopLeft.addPanel(txMulti);
         
-        fieldSize = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 16, 0, -32), 0), itemStack == null ? "1" : ("" + itemStack.stackSize), FieldFilterNumber.INT);
+        fieldSize = new PanelTextField<Integer>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 16, 0, -32), 0), itemStack == null ? "1" : ("" + itemStack.stackSize), FieldFilterNumber.INT);
         cvTopLeft.addPanel(fieldSize);
         fieldSize.setCallback(value -> { if(itemStack != null) itemStack.stackSize = value; });
         
@@ -130,7 +130,7 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
             }
         }
         
-        btnOre = new PanelButtonStorage<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 36, 24, -52), 0), 2, "Ore: " + oreName, oreIdx);
+        btnOre = new PanelButtonStorage<Integer>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 36, 24, -52), 0), 2, "Ore: " + oreName, oreIdx);
         cvTopLeft.addPanel(btnOre);
         
         PanelButton btnWild = new PanelButton(new GuiTransform(GuiAlign.TOP_RIGHT, -16, 36, 16, 16, 0), 3, "*");

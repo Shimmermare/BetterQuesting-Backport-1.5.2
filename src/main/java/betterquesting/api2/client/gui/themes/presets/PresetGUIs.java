@@ -12,13 +12,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class PresetGUIs
 {
-    public static final GuiKey<GArgsNone> HOME = new GuiKey<>(new ResourceLocation("betterquesting", "home"));
+    public static final GuiKey<GArgsNone> HOME = new GuiKey<GArgsNone>(new ResourceLocation("betterquesting", "home"));
     
-    public static final GuiKey<GArgsNBT> EDIT_NBT = new GuiKey<>(new ResourceLocation("betterquesting", "edit_nbt"));
-    public static final GuiKey<GArgsCallback<BigItemStack>> EDIT_ITEM = new GuiKey<>(new ResourceLocation("betterquesting", "edit_item"));
-    public static final GuiKey<GArgsCallback<FluidStack>> EDIT_FLUID = new GuiKey<>(new ResourceLocation("betterquesting", "edit_fluid"));
-    public static final GuiKey<GArgsCallback<Entity>> EDIT_ENTITY = new GuiKey<>(new ResourceLocation("betterquesting", "edit_entity"));
+    public static final GuiKey<GArgsNBT> EDIT_NBT = new GuiKey<GArgsNBT>(new ResourceLocation("betterquesting", "edit_nbt"));
+    public static final GuiKey<GArgsCallback<BigItemStack>> EDIT_ITEM = new GuiKey<GArgsCallback<BigItemStack>>(new ResourceLocation("betterquesting", "edit_item"));
+    public static final GuiKey<GArgsCallback<FluidStack>> EDIT_FLUID = new GuiKey<FluidStack>(new ResourceLocation("betterquesting", "edit_fluid"));
+    public static final GuiKey<GArgsCallback<Entity>> EDIT_ENTITY = new GuiKey<Entity>(new ResourceLocation("betterquesting", "edit_entity"));
     
-    public static final GuiKey<GArgsCallback<String>> EDIT_TEXT = new GuiKey<>(new ResourceLocation("betterquesting", "edit_text"));
-    public static final GuiKey<GArgsFileBrowser> FILE_EXPLORE = new GuiKey<>(new ResourceLocation("betterquesting", "file_explore"));
+    public static final GuiKey<GArgsCallback<String>> EDIT_TEXT = new GuiKey<String>(new ResourceLocation("betterquesting", "edit_text"));
+    public static final GuiKey<GArgsFileBrowser> FILE_EXPLORE = new GuiKey<GArgsFileBrowser>(new ResourceLocation("betterquesting", "file_explore"));
 }

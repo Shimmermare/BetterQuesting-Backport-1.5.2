@@ -50,10 +50,10 @@ public class PanelPlayerPortrait implements IGuiPanel
 			AbstractClientPlayer.getDownloadImageSkin(resource, player.getGameProfile().getName());
 		}
 		
-		this.basePitch = new ValueFuncIO<>(() -> 15F);
+		this.basePitch = new ValueFuncIO<Float>(() -> 15F);
 		this.pitchDriver = basePitch;
 		
-		this.baseYaw = new ValueFuncIO<>(() -> -30F);
+		this.baseYaw = new ValueFuncIO<Float>(() -> -30F);
 		this.yawDriver = baseYaw;
 	}
 	

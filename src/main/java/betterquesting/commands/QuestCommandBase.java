@@ -32,7 +32,7 @@ public abstract class QuestCommandBase
 	
 	public List<String> autoComplete(MinecraftServer server, ICommandSender sender, String[] args)
 	{
-		return new ArrayList<>();
+		return new ArrayList<String>();
 	}
 	
 	public abstract void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args);

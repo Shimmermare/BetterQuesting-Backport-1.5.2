@@ -31,10 +31,10 @@ public class PanelEntityPreview implements IGuiPanel
 		this.transform = rect;
 		this.entity = entity;
 		
-		this.basePitch = new ValueFuncIO<>(() -> 15F);
+		this.basePitch = new ValueFuncIO<Float>(() -> 15F);
 		this.pitchDriver = basePitch;
 		
-		this.baseYaw = new ValueFuncIO<>(() -> -30F);
+		this.baseYaw = new ValueFuncIO<Float>(() -> -30F);
 		this.yawDriver = baseYaw;
     }
 	

@@ -22,7 +22,7 @@ public class CanvasEntityDatabase extends CanvasSearch<String, String>
     @SuppressWarnings("unchecked")
     protected Iterator<String> getIterator()
     {
-        List<String> list = new ArrayList<>((Set<String>)EntityList.stringToClassMapping.keySet());
+        List<String> list = new ArrayList<String>((Set<String>)EntityList.stringToClassMapping.keySet());
         Collections.sort(list);
         return list.iterator();
     }
@@ -43,7 +43,7 @@ public class CanvasEntityDatabase extends CanvasSearch<String, String>
             return false;
         }
         
-        this.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), btnId, ee, ee));
+        this.addPanel(new PanelButtonStorage<String>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), btnId, ee, ee));
         
         return true;
     }

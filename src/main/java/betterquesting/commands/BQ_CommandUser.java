@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BQ_CommandUser extends CommandBase
 {
-	private final List<QuestCommandBase> coms = new ArrayList<>();
+	private final List<QuestCommandBase> coms = new ArrayList<QuestCommandBase>();
 	
 	public BQ_CommandUser()
 	{
@@ -66,7 +66,7 @@ public class BQ_CommandUser extends CommandBase
     {
 		if(strings.length == 1)
 		{
-			List<String> base = new ArrayList<>();
+			List<String> base = new ArrayList<String>();
 			for(QuestCommandBase c : coms)
 			{
 				base.add(c.getCommand());

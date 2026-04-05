@@ -36,7 +36,7 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
 	public void readFromNBT(NBTTagList json, boolean merge)
 	{
 		if(!merge) reset();
-		List<ITask> unassigned = new ArrayList<>();
+		List<ITask> unassigned = new ArrayList<ITask>();
 		
 		for(int i = 0; i < json.tagCount(); i++)
 		{

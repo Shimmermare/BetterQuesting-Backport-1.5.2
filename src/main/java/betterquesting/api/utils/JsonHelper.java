@@ -154,7 +154,7 @@ public class JsonHelper
 			return;
 		}
 		
-		ArrayList<String> list = new ArrayList<>((Set<String>)tag.func_150296_c());
+		ArrayList<String> list = new ArrayList<String>((Set<String>)tag.func_150296_c());
 		for(String key : list)
 		{
 			tag.removeTag(key);

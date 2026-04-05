@@ -30,7 +30,7 @@ public class PanelTabMain extends CanvasEmpty
     private final CanvasQuestLine cvQuestLine;
     private final PanelToolController toolController;
     
-    private static final List<ToolEntry> toolEntries = new ArrayList<>();
+    private static final List<ToolEntry> toolEntries = new ArrayList<ToolEntry>();
     
     public PanelTabMain(IGuiRect rect, CanvasQuestLine cvQuestLine, PanelToolController toolController)
     {
@@ -77,14 +77,14 @@ public class PanelTabMain extends CanvasEmpty
             }
         }.setIcon(PresetIcon.ICON_PROPS.getTexture()).setTooltip(makeToolTip(QuestTranslation.translate("betterquesting.toolbox.tool.raw.name"), QuestTranslation.translate("betterquesting.toolbox.tool.raw.desc"))));
         
-        final List<PanelButtonStorage<IToolboxTool>> toolBtns = new ArrayList<>();
+        final List<PanelButtonStorage<IToolboxTool>> toolBtns = new ArrayList<PanelButtonStorage<IToolboxTool>>();
         
         for(int i = 0; i < toolEntries.size(); i++)
         {
             ToolEntry entry = toolEntries.get(i);
             int x = (i % 2) * (w / 2);
             int y = (i / 2) * 16 + 24;
-            PanelButtonStorage<IToolboxTool> btn = new PanelButtonStorage<>(new GuiRectangle(x, y, w / 2, 16, 0), -1, "", entry.tool);
+            PanelButtonStorage<IToolboxTool> btn = new PanelButtonStorage<IToolboxTool>(new GuiRectangle(x, y, w / 2, 16, 0), -1, "", entry.tool);
             btn.setActive(toolController.getActiveTool() != entry.tool);
             btn.setIcon(entry.tex).setTooltip(entry.tt);
             btn.setCallback(value -> {
@@ -106,7 +106,7 @@ public class PanelTabMain extends CanvasEmpty
     @SuppressWarnings("unchecked")
 	private static List<String> makeToolTip(String title, String desc)
 	{
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		list.add(title);
 		list.addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(EnumChatFormatting.GRAY + desc, 128));
 		return list;

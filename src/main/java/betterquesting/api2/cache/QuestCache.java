@@ -28,19 +28,19 @@ public class QuestCache implements IExtendedEntityProperties
     public static final ResourceLocation LOC_QUEST_CACHE = new ResourceLocation("betterquesting", "quest_cache");
     
     // Quests that are visible to the player
-    private final TreeSet<Integer> visibleQuests = new TreeSet<>();
+    private final TreeSet<Integer> visibleQuests = new TreeSet<Integer>();
     
     // Quests that are currently being undertaken. NOTE: Quests can be locked but still processing data if configured to do so
-    private final TreeSet<Integer> activeQuests = new TreeSet<>();
+    private final TreeSet<Integer> activeQuests = new TreeSet<Integer>();
     
     // Quests and their scheduled time of being reset
-    private final TreeSet<QResetTime> resetSchedule = new TreeSet<>((o1, o2) -> o1.questID == o2.questID ? 0 : Long.compare(o1.time, o2.time));
+    private final TreeSet<QResetTime> resetSchedule = new TreeSet<QResetTime>((o1, o2) -> o1.questID == o2.questID ? 0 : Long.compare(o1.time, o2.time));
     
     // Quests with pending auto claims (usually should be empty unless a condition needs to be met)
-    private final TreeSet<Integer> autoClaims = new TreeSet<>();
+    private final TreeSet<Integer> autoClaims = new TreeSet<Integer>();
     
     // Quests that need to be sent to the client to update progression (NOT for edits. Handle that elsewhere)
-    private final TreeSet<Integer> markedDirty = new TreeSet<>();
+    private final TreeSet<Integer> markedDirty = new TreeSet<Integer>();
     
     @Override
     public void init(Entity entity, World world)
@@ -112,10 +112,10 @@ public class QuestCache implements IExtendedEntityProperties
         UUID uuid = QuestingAPI.getQuestingUUID(player);
         List<DBEntry<IQuest>> questDB = QuestingAPI.getAPI(ApiReference.QUEST_DB).getEntries();
         
-        List<Integer> tmpVisible = new ArrayList<>();
-        List<Integer> tmpActive = new ArrayList<>();
-        List<QResetTime> tmpReset = new ArrayList<>();
-        List<Integer> tmpAutoClaim = new ArrayList<>();
+        List<Integer> tmpVisible = new ArrayList<Integer>();
+        List<Integer> tmpActive = new ArrayList<Integer>();
+        List<QResetTime> tmpReset = new ArrayList<QResetTime>();
+        List<Integer> tmpAutoClaim = new ArrayList<Integer>();
         
         for(DBEntry<IQuest> entry : questDB)
         {

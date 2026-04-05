@@ -141,7 +141,7 @@ public final class LegacyLoader_v0 implements ILegacyLoader
 		quest.setRequirements(req);
 		
 		IDatabaseNBT<ITask, NBTTagList, NBTTagList> taskDB = quest.getTasks();
-		List<ITask> uaTasks = new ArrayList<>();
+		List<ITask> uaTasks = new ArrayList<ITask>();
 		
 		for(JsonElement entry : JsonHelper.GetArray(json, "tasks"))
 		{
@@ -202,7 +202,7 @@ public final class LegacyLoader_v0 implements ILegacyLoader
 		}
 		
 		IDatabaseNBT<IReward, NBTTagList, NBTTagList> rewardDB = quest.getRewards();
-		List<IReward> unassigned = new ArrayList<>();
+		List<IReward> unassigned = new ArrayList<IReward>();
 		
 		for(JsonElement entry : JsonHelper.GetArray(json, "rewards"))
 		{

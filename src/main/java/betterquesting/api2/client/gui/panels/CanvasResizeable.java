@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CanvasResizeable implements IGuiCanvas
 {
-	private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
+	private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<IGuiPanel>();
     
 	private IGuiTexture bgTexture;
 	private final GuiRectLerp rectLerp;

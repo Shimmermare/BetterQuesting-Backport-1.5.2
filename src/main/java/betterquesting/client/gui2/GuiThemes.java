@@ -79,7 +79,7 @@ public class GuiThemes extends GuiScreenCanvas
 		{
 		    IGuiTheme theme = themes.get(i);
 			GuiRectangle trans = new GuiRectangle(0, i * 24, width, 24, 0);
-			PanelButtonStorage<ResourceLocation> pbs = new PanelButtonStorage<>(trans, -1, theme.getName(), theme.getID());
+			PanelButtonStorage<ResourceLocation> pbs = new PanelButtonStorage<ResourceLocation>(trans, -1, theme.getName(), theme.getID());
 			pbs.setCallback((res) -> {
 			    float scroll = scrollPanel.readValueRaw();
                 ThemeRegistry.INSTANCE.setTheme(res);

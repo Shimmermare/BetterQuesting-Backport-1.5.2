@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ImportedQuestLines extends SimpleDatabase<IQuestLine> implements IQuestLineDatabase
 {
-	private final List<Integer> lineOrder = new ArrayList<>();
+	private final List<Integer> lineOrder = new ArrayList<Integer>();
 	private final QuestLineSorter SORTER = new QuestLineSorter(this);
 	
 	@Override
@@ -49,7 +49,7 @@ public class ImportedQuestLines extends SimpleDatabase<IQuestLine> implements IQ
 	@Override
 	public List<DBEntry<IQuestLine>> getSortedEntries()
 	{
-		List<DBEntry<IQuestLine>> ary = new ArrayList<>(getEntries());
+		List<DBEntry<IQuestLine>> ary = new ArrayList<DBEntry<IQuestLine>>(getEntries());
 		ary.sort(SORTER);
 		return ary;
 	}
@@ -74,8 +74,8 @@ public class ImportedQuestLines extends SimpleDatabase<IQuestLine> implements IQ
 	{
 		if(!merge) reset();
 		
-		List<IQuestLine> unassigned = new ArrayList<>();
-		HashMap<Integer,Integer> orderMap = new HashMap<>();
+		List<IQuestLine> unassigned = new ArrayList<IQuestLine>();
+		HashMap<Integer,Integer> orderMap = new HashMap<Integer,Integer>();
 		
 		for(int i = 0; i < json.tagCount(); i++)
 		{
@@ -103,7 +103,7 @@ public class ImportedQuestLines extends SimpleDatabase<IQuestLine> implements IQ
 		// Legacy support ONLY
 		for(IQuestLine q : unassigned) add(nextID(), q);
 		
-		List<Integer> orderKeys = new ArrayList<>(orderMap.keySet());
+		List<Integer> orderKeys = new ArrayList<Integer>(orderMap.keySet());
 		Collections.sort(orderKeys);
 		
 		synchronized(lineOrder)

@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class QuestingAPI
 {
-	private static final HashMap<ApiKey<?>, Object> apis = new HashMap<>();
+	private static final HashMap<ApiKey<?>, Object> apis = new HashMap<ApiKey<?>, Object>();
 	
 	public static <T> void registerAPI(ApiKey<T> key, T api)
 	{

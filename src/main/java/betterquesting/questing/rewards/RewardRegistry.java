@@ -17,7 +17,7 @@ public class RewardRegistry implements IRegistry<IFactoryData<IReward, NBTTagCom
 {
 	public static final RewardRegistry INSTANCE = new RewardRegistry();
 	
-	private final HashMap<ResourceLocation, IFactoryData<IReward, NBTTagCompound>> rewardRegistry = new HashMap<>();
+	private final HashMap<ResourceLocation, IFactoryData<IReward, NBTTagCompound>> rewardRegistry = new HashMap<ResourceLocation, IFactoryData<IReward, NBTTagCompound>>();
 	
 	@Override
 	public void register(IFactoryData<IReward, NBTTagCompound> factory)
@@ -47,7 +47,7 @@ public class RewardRegistry implements IRegistry<IFactoryData<IReward, NBTTagCom
 	@Override
 	public List<IFactoryData<IReward, NBTTagCompound>> getAll()
 	{
-		return new ArrayList<>(rewardRegistry.values());
+		return new ArrayList<IFactoryData<IReward, NBTTagCompound>>(rewardRegistry.values());
 	}
 	
 	@Override

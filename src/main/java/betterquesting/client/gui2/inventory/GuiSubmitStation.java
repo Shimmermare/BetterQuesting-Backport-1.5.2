@@ -42,8 +42,8 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
     private final ContainerSubmitStation ssContainer;
     private final TileSubmitStation tile;
     
-    private final List<DBEntry<IQuest>> quests = new ArrayList<>();
-    private final List<DBEntry<ITask>> tasks = new ArrayList<>();
+    private final List<DBEntry<IQuest>> quests = new ArrayList<DBEntry<IQuest>>();
+    private final List<DBEntry<ITask>> tasks = new ArrayList<DBEntry<ITask>>();
     
     private IGuiCanvas cvBackground;
     

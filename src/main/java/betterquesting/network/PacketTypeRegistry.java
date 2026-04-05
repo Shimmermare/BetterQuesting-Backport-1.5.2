@@ -18,8 +18,8 @@ public class PacketTypeRegistry implements IPacketRegistry
 {
 	public static final PacketTypeRegistry INSTANCE = new PacketTypeRegistry();
 	
-	private final HashMap<ResourceLocation, Consumer<Tuple2<NBTTagCompound, EntityPlayerMP>>> serverHandlers = new HashMap<>();
-	private final HashMap<ResourceLocation, Consumer<NBTTagCompound>> clientHandlers = new HashMap<>();
+	private final HashMap<ResourceLocation, Consumer<Tuple2<NBTTagCompound, EntityPlayerMP>>> serverHandlers = new HashMap<ResourceLocation, Consumer<Tuple2<NBTTagCompound, EntityPlayerMP>>>();
+	private final HashMap<ResourceLocation, Consumer<NBTTagCompound>> clientHandlers = new HashMap<ResourceLocation, Consumer<NBTTagCompound>>();
  
 	public void init()
 	{

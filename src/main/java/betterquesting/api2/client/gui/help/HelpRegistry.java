@@ -8,7 +8,7 @@ public class HelpRegistry
 {
     public static final HelpRegistry INSTANCE = new HelpRegistry();
     
-    private final List<HelpTopic> topicList = new ArrayList<>();
+    private final List<HelpTopic> topicList = new ArrayList<HelpTopic>();
     
     public HelpRegistry()
     {

@@ -27,7 +27,7 @@ public class FactoryLayeredTexture implements IFactoryData<IGuiTexture, JsonObje
     @Override
     public LayeredTexture loadFromData(JsonObject data)
     {
-        List<IGuiTexture> layers = new ArrayList<>();
+        List<IGuiTexture> layers = new ArrayList<IGuiTexture>();
         
         JsonArray jAry = JsonHelper.GetArray(data, "layers");
         for(JsonElement je : jAry)

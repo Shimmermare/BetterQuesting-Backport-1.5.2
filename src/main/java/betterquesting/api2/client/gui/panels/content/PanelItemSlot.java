@@ -23,7 +23,7 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack>
     private final boolean showCount;
     private final boolean oreDict;
     
-    private final List<BigItemStack> oreVariants = new ArrayList<>();
+    private final List<BigItemStack> oreVariants = new ArrayList<BigItemStack>();
     
     public PanelItemSlot(IGuiRect rect, int id, BigItemStack value)
     {
@@ -102,7 +102,7 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack>
         {
             if(stack.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE)
             {
-                List<ItemStack> subItems = new ArrayList<>();
+                List<ItemStack> subItems = new ArrayList<ItemStack>();
                 stack.getBaseStack().getItem().getSubItems(stack.getBaseStack().getItem(), CreativeTabs.tabAllSearch, subItems);
                 
                 for(ItemStack sStack : subItems)
@@ -122,7 +122,7 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack>
         {
             if(iStack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
             {
-                List<ItemStack> subItems = new ArrayList<>();
+                List<ItemStack> subItems = new ArrayList<ItemStack>();
                 iStack.getItem().getSubItems(iStack.getItem(), CreativeTabs.tabAllSearch, subItems);
                 
                 for(ItemStack sStack : subItems)

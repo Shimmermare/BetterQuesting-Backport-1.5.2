@@ -100,7 +100,7 @@ public class GuiQuestEditor extends GuiScreenCanvas implements IPEventListener, 
         pnName.setColor(PresetColor.TEXT_MAIN.getColor());
         cvBackground.addPanel(pnName);
         
-        flName = new PanelTextField<>(new GuiTransform(GuiAlign.MID_CENTER, -100, -48, 200, 16, 0), quest.getProperty(NativeProps.NAME), FieldFilterString.INSTANCE);
+        flName = new PanelTextField<String>(new GuiTransform(GuiAlign.MID_CENTER, -100, -48, 200, 16, 0), quest.getProperty(NativeProps.NAME), FieldFilterString.INSTANCE);
         flName.setMaxLength(Integer.MAX_VALUE);
         cvBackground.addPanel(flName);
         
@@ -108,7 +108,7 @@ public class GuiQuestEditor extends GuiScreenCanvas implements IPEventListener, 
         pnDesc.setColor(PresetColor.TEXT_MAIN.getColor());
         cvBackground.addPanel(pnDesc);
         
-        flDesc = new PanelTextField<>(new GuiTransform(GuiAlign.MID_CENTER, -100, -16, 184, 16, 0), quest.getProperty(NativeProps.DESC), FieldFilterString.INSTANCE);
+        flDesc = new PanelTextField<String>(new GuiTransform(GuiAlign.MID_CENTER, -100, -16, 184, 16, 0), quest.getProperty(NativeProps.DESC), FieldFilterString.INSTANCE);
         flDesc.setMaxLength(Integer.MAX_VALUE);
         cvBackground.addPanel(flDesc);
         

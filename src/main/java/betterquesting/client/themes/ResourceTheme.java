@@ -22,9 +22,9 @@ public class ResourceTheme implements IGuiTheme
     private ResourceLocation parentID;
     private boolean cached = false;
     
-	private final HashMap<ResourceLocation, IGuiTexture> TEX_MAP = new HashMap<>();
-	private final HashMap<ResourceLocation, IGuiColor> COLOR_MAP = new HashMap<>();
-	private final HashMap<ResourceLocation, IGuiLine> LINE_MAP = new HashMap<>();
+	private final HashMap<ResourceLocation, IGuiTexture> TEX_MAP = new HashMap<ResourceLocation, IGuiTexture>();
+	private final HashMap<ResourceLocation, IGuiColor> COLOR_MAP = new HashMap<ResourceLocation, IGuiColor>();
+	private final HashMap<ResourceLocation, IGuiLine> LINE_MAP = new HashMap<ResourceLocation, IGuiLine>();
     
     public ResourceTheme(ResourceLocation parentID, ResourceLocation id, String dispName)
     {

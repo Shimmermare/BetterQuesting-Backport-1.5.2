@@ -11,7 +11,7 @@ public class ToolboxRegistry implements IToolRegistry
 {
 	public static final ToolboxRegistry INSTANCE = new ToolboxRegistry();
 	
-	private final HashMap<ResourceLocation, IToolTab> toolTabs = new HashMap<>();
+	private final HashMap<ResourceLocation, IToolTab> toolTabs = new HashMap<ResourceLocation, IToolTab>();
 	
 	@Override
 	public void registerToolTab(ResourceLocation tabID, IToolTab tab)

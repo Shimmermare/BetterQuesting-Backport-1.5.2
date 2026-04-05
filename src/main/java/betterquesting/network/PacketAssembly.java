@@ -21,7 +21,7 @@ public final class PacketAssembly
     // TODO: Implement PROPER thread safety that doesn't cause dirty read/writes
     // TODO: Add a scheduler to bulk up multiple data packets to send on the next tick (also may be unnecessary)
 	// Player assigned packet buffers
-	private final HashMap<UUID,byte[]> buffer = new HashMap<>();
+	private final HashMap<UUID,byte[]> buffer = new HashMap<UUID,byte[]>();
 	
 	// Internal server packet buffer (server to server or client side)
 	private byte[] serverBuf = null;
@@ -39,7 +39,7 @@ public final class PacketAssembly
 			byte[] data = baos.toByteArray();
 			baos.close();
 			int req = MathHelper.ceiling_float_int(data.length/(float)bufSize);
-		    List<NBTTagCompound> pkts = new ArrayList<>(req);
+		    List<NBTTagCompound> pkts = new ArrayList<NBTTagCompound>(req);
       
 			for(int p = 0; p < req; p++)
 			{

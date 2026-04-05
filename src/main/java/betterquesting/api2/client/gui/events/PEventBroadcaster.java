@@ -16,7 +16,8 @@ public class PEventBroadcaster
 {
 	public static PEventBroadcaster INSTANCE = new PEventBroadcaster();
 	
-	private final HashMap<Class<? extends PanelEvent>, PEventEntry<? extends PanelEvent>> entryList = new HashMap<>();
+	private final HashMap<Class<? extends PanelEvent>, PEventEntry<? extends PanelEvent>> entryList
+            = new HashMap<Class<? extends PanelEvent>, PEventEntry<? extends PanelEvent>>();
 	
 	@Deprecated
 	public void register(@Nonnull IPEventListener l, @Nonnull Class<? extends PanelEvent> type)

@@ -95,7 +95,7 @@ public class GuiPrerequisiteEditor extends GuiScreenCanvas implements IPEventLis
         PanelTextBox txtDb = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("betterquesting.gui.database")).setAlignment(1).setColor(PresetColor.TEXT_MAIN.getColor());
         cvRight.addPanel(txtDb);
         
-        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 8, -32), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> searchBox = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 8, -32), 0), "", FieldFilterString.INSTANCE);
         searchBox.setWatermark("Search...");
         cvRight.addPanel(searchBox);
         
@@ -104,15 +104,15 @@ public class GuiPrerequisiteEditor extends GuiScreenCanvas implements IPEventLis
             @Override
             protected boolean addResult(DBEntry<IQuest> entry, int index, int width)
             {
-                PanelButtonStorage<DBEntry<IQuest>> btnAdd = new PanelButtonStorage<>(new GuiRectangle(0, index * 16, 16, 16, 0), 2, "", entry);
+                PanelButtonStorage<DBEntry<IQuest>> btnAdd = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(0, index * 16, 16, 16, 0), 2, "", entry);
                 btnAdd.setIcon(PresetIcon.ICON_POSITIVE.getTexture());
                 btnAdd.setActive(!containsReq(quest, entry.getID()));
                 this.addPanel(btnAdd);
                 
-                PanelButtonStorage<DBEntry<IQuest>> btnEdit = new PanelButtonStorage<>(new GuiRectangle(16, index * 16, width - 32, 16, 0), 1, QuestTranslation.translate(entry.getValue().getProperty(NativeProps.NAME)), entry);
+                PanelButtonStorage<DBEntry<IQuest>> btnEdit = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(16, index * 16, width - 32, 16, 0), 1, QuestTranslation.translate(entry.getValue().getProperty(NativeProps.NAME)), entry);
                 this.addPanel(btnEdit);
                 
-                PanelButtonStorage<DBEntry<IQuest>> btnDel = new PanelButtonStorage<>(new GuiRectangle(width - 16, index * 16, 16, 16, 0), 4, "", entry);
+                PanelButtonStorage<DBEntry<IQuest>> btnDel = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(width - 16, index * 16, 16, 16, 0), 4, "", entry);
                 btnDel.setIcon(PresetIcon.ICON_TRASH.getTexture());
                 this.addPanel(btnDel);
                 
@@ -165,10 +165,10 @@ public class GuiPrerequisiteEditor extends GuiScreenCanvas implements IPEventLis
         List<DBEntry<IQuest>> arrReq = QuestDatabase.INSTANCE.bulkLookup(quest.getRequirements());
         for(int i = 0; i < arrReq.size(); i++)
         {
-            PanelButtonStorage<DBEntry<IQuest>> btnEdit = new PanelButtonStorage<>(new GuiRectangle(0, i * 16, width - 16, 16, 0), 1, QuestTranslation.translate(arrReq.get(i).getValue().getProperty(NativeProps.NAME)), arrReq.get(i));
+            PanelButtonStorage<DBEntry<IQuest>> btnEdit = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(0, i * 16, width - 16, 16, 0), 1, QuestTranslation.translate(arrReq.get(i).getValue().getProperty(NativeProps.NAME)), arrReq.get(i));
             canvasPreReq.addPanel(btnEdit);
             
-            PanelButtonStorage<DBEntry<IQuest>> btnRem = new PanelButtonStorage<>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), 3, "", arrReq.get(i));
+            PanelButtonStorage<DBEntry<IQuest>> btnRem = new PanelButtonStorage<DBEntry<IQuest>>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), 3, "", arrReq.get(i));
             btnRem.setIcon(PresetIcon.ICON_NEGATIVE.getTexture());
             canvasPreReq.addPanel(btnRem);
         }

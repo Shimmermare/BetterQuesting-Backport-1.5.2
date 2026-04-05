@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CanvasScrolling implements IGuiCanvas
 {
-	private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
+	private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<IGuiPanel>();
 	private final IGuiRect transform;
 	private boolean enabled = true;
 	

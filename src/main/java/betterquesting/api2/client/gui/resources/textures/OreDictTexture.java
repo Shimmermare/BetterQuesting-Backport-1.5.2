@@ -23,20 +23,20 @@ public class OreDictTexture extends SlideShowTexture
     
     private static List<ItemTexture> buildTextures(Collection<BigItemStack> subItems, boolean showCount, boolean keepAspect)
     {
-        List<ItemTexture> list = new ArrayList<>();
+        List<ItemTexture> list = new ArrayList<ItemTexture>();
         subItems.forEach((is) -> list.add(new ItemTexture(is, showCount, keepAspect)));
         return list;
     }
     
     private static List<ItemTexture> splitOreTextures(BigItemStack stack, boolean showCount, boolean keepAspect)
     {
-        List<ItemTexture> list = new ArrayList<>();
+        List<ItemTexture> list = new ArrayList<ItemTexture>();
         
         if(!stack.hasOreDict())
         {
             if(stack.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE)
             {
-                List<ItemStack> subItems = new ArrayList<>();
+                List<ItemStack> subItems = new ArrayList<ItemStack>();
                 stack.getBaseStack().getItem().getSubItems(stack.getBaseStack().getItem(), CreativeTabs.tabAllSearch, subItems);
                 subItems.forEach((is) -> {
                     BigItemStack bis = new BigItemStack(is);
@@ -54,7 +54,7 @@ public class OreDictTexture extends SlideShowTexture
         {
             if(iStack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
             {
-                List<ItemStack> subItems = new ArrayList<>();
+                List<ItemStack> subItems = new ArrayList<ItemStack>();
                 iStack.getItem().getSubItems(iStack.getItem(), CreativeTabs.tabAllSearch, subItems);
                 
                 for(ItemStack sStack : subItems)

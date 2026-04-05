@@ -20,7 +20,7 @@ public class ToolboxToolGrab implements IToolboxTool
 {
 	private CanvasQuestLine gui;
 	
-	private final List<GrabEntry> grabList = new ArrayList<>();
+	private final List<GrabEntry> grabList = new ArrayList<GrabEntry>();
 	
 	@Override
 	public void initTool(CanvasQuestLine gui)
@@ -51,7 +51,7 @@ public class ToolboxToolGrab implements IToolboxTool
     {
         if(grabList.size() <= 0) return;
         
-        List<GrabEntry> tmp = new ArrayList<>();
+        List<GrabEntry> tmp = new ArrayList<GrabEntry>();
         
         for(GrabEntry grab : grabList)
         {
@@ -104,7 +104,7 @@ public class ToolboxToolGrab implements IToolboxTool
         {
             if(grab.offX == 0 && grab.offY == 0)
             {
-                List<String> list = new ArrayList<>();
+                List<String> list = new ArrayList<String>();
                 list.add("X: " + grab.btn.rect.x);
                 list.add("Y: " + grab.btn.rect.y);
                 return list;

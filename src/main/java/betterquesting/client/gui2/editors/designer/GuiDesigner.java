@@ -42,7 +42,7 @@ public class GuiDesigner extends GuiScreenCanvas implements IVolatileScreen, INe
     private PanelToolController toolController;
     private IGuiCanvas cvTray;
     
-    private final List<IToolTab> tabList = new ArrayList<>();
+    private final List<IToolTab> tabList = new ArrayList<IToolTab>();
     private PanelTextBox tabTitle;
     private IGuiPanel lastTabPanel;
     private int tabIdx = 0;

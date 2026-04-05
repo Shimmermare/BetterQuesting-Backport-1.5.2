@@ -35,7 +35,7 @@ public class QuestCommandComplete extends QuestCommandBase
 	@SuppressWarnings("unchecked")
 	public List<String> autoComplete(MinecraftServer server, ICommandSender sender, String[] args)
 	{
-		ArrayList<String> list = new ArrayList<>();
+		ArrayList<String> list = new ArrayList<String>();
 		
 		if(args.length == 2)
 		{

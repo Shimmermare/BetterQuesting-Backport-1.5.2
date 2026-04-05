@@ -130,7 +130,7 @@ public class PopContextMenu extends CanvasEmpty
     {
         private final String name;
         private final ContextCategory parent;
-        private final List<ContextEntry> entries = new ArrayList<>();
+        private final List<ContextEntry> entries = new ArrayList<ContextEntry>();
         
         private ContextCategory(@Nullable ContextCategory parent, @Nonnull String name)
         {

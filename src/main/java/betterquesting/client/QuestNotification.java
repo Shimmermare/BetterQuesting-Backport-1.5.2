@@ -28,7 +28,7 @@ public class QuestNotification
 	    if(BQ_Settings.questNotices) notices.add(new QuestNotice(mainTxt, subTxt, icon, sound));
 	}
 	
-	private static final List<QuestNotice> notices = new ArrayList<>();
+	private static final List<QuestNotice> notices = new ArrayList<QuestNotice>();
 	
 	public static void resetNotices()
 	{

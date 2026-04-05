@@ -23,7 +23,7 @@ public class GuiBQConfig extends GuiConfig
 	
 	public static List<IConfigElement> getCategories(Configuration config)
 	{
-		List<IConfigElement> cats = new ArrayList<>();
+		List<IConfigElement> cats = new ArrayList<IConfigElement>();
 		
 		for(String s : config.getCategoryNames())
 		{

@@ -29,7 +29,7 @@ public class QuestCommandPurge extends QuestCommandBase
     @Override
     public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args)
     {
-        TreeSet<Integer> knownKeys = new TreeSet<>();
+        TreeSet<Integer> knownKeys = new TreeSet<Integer>();
         
         for(DBEntry<IQuestLine> entry : QuestLineDatabase.INSTANCE.getEntries())
         {
@@ -40,7 +40,7 @@ public class QuestCommandPurge extends QuestCommandBase
         }
         
         Iterator<Integer> keyIterator = knownKeys.iterator();
-        List<Integer> removeQueue = new ArrayList<>();
+        List<Integer> removeQueue = new ArrayList<Integer>();
         int n = -1;
         
         for(DBEntry<IQuest> entry : QuestDatabase.INSTANCE.getEntries())

@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class LegacyLoaderRegistry
 {
-	private static HashMap<String,ILegacyLoader> legReg = new HashMap<>();
+	private static HashMap<String,ILegacyLoader> legReg = new HashMap<String,ILegacyLoader>();
 	
 	public static ILegacyLoader getLoader(String version)
 	{

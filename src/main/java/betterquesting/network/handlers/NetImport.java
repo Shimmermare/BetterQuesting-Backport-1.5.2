@@ -87,7 +87,7 @@ public class NetImport
 		
 		for(DBEntry<IQuestLine> questLine : impQuestLineDB.getEntries())
 		{
-		    List<DBEntry<IQuestLineEntry>> pendingQLE = new ArrayList<>();
+		    List<DBEntry<IQuestLineEntry>> pendingQLE = new ArrayList<DBEntry<IQuestLineEntry>>();
 		    
 			for(DBEntry<IQuestLineEntry> qle : questLine.getValue().getEntries())
 			{
@@ -120,7 +120,7 @@ public class NetImport
 	private static HashMap<Integer,Integer> getRemappedIDs(List<DBEntry<IQuest>> idList)
 	{
 	    int[] nextIDs = getNextIDs(idList.size());
-		HashMap<Integer,Integer> remapped = new HashMap<>();
+		HashMap<Integer,Integer> remapped = new HashMap<Integer,Integer>();
 	    
 	    for(int i = 0; i < nextIDs.length; i++)
         {

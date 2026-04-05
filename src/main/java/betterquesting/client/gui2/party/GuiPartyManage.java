@@ -118,14 +118,14 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
         CanvasEmpty cvLeftHalf = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(16, 64, 8, 64), 0));
         cvBackground.addPanel(cvLeftHalf);
         
-        PanelButtonStorage<String> btnLeave = new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, -75, 32, 70, 16, 0), 3, QuestTranslation.translate("betterquesting.btn.party_leave"), mc.thePlayer.getGameProfile().getName());
+        PanelButtonStorage<String> btnLeave = new PanelButtonStorage<String>(new GuiTransform(GuiAlign.MID_CENTER, -75, 32, 70, 16, 0), 3, QuestTranslation.translate("betterquesting.btn.party_leave"), mc.thePlayer.getGameProfile().getName());
         cvLeftHalf.addPanel(btnLeave);
         
         PanelButton btnInvite = new PanelButton(new GuiTransform(GuiAlign.MID_CENTER, 5, 32, 70, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.party_invite"));
         cvLeftHalf.addPanel(btnInvite);
         btnInvite.setActive(status.ordinal() >= EnumPartyStatus.ADMIN.ordinal());
         
-        if(flName == null) flName = new PanelTextField<>(new GuiTransform(GuiAlign.MID_CENTER, -75, -32, 134, 16, 0), party.getProperties().getProperty(NativeProps.NAME), FieldFilterString.INSTANCE);
+        if(flName == null) flName = new PanelTextField<String>(new GuiTransform(GuiAlign.MID_CENTER, -75, -32, 134, 16, 0), party.getProperties().getProperty(NativeProps.NAME), FieldFilterString.INSTANCE);
         cvLeftHalf.addPanel(flName);
         flName.setActive(status.ordinal() >= EnumPartyStatus.OWNER.ordinal());
         
@@ -179,7 +179,7 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
             txMemName.setColor(PresetColor.TEXT_MAIN.getColor());
             cvUserList.addPanel(txMemName);
     
-            PanelButtonStorage<String> btnKick = new PanelButtonStorage<>(new GuiRectangle(cvWidth - 32, i * 32, 32, 32, 0), 3, QuestTranslation.translate("betterquesting.btn.party_kick"), mName);
+            PanelButtonStorage<String> btnKick = new PanelButtonStorage<String>(new GuiRectangle(cvWidth - 32, i * 32, 32, 32, 0), 3, QuestTranslation.translate("betterquesting.btn.party_kick"), mName);
             cvUserList.addPanel(btnKick);
     
             PanelGeneric pnItem = new PanelGeneric(new GuiRectangle(32, i * 32 + 16, 16, 16, 0), txHeart);

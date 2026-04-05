@@ -10,7 +10,7 @@ public final class ImporterRegistry implements IImportRegistry
 {
 	public static final ImporterRegistry INSTANCE = new ImporterRegistry();
 	
-	private final List<IImporter> importers = new ArrayList<>();
+	private final List<IImporter> importers = new ArrayList<IImporter>();
 	
 	@Override
 	public void registerImporter(IImporter imp)

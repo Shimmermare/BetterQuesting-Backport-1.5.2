@@ -75,7 +75,7 @@ public class PacketQuesting implements IMessage
 				return null;
 			} else if(sender != null)
 			{
-				EventHandler.scheduleServerTask(Executors.callable(() -> method.accept(new Tuple2<>(message, sender))));
+				EventHandler.scheduleServerTask(Executors.callable(() -> method.accept(new Tuple2<NBTTagCompound, EntityPlayerMP>(message, sender))));
 			}
 			
 			return null;

@@ -36,7 +36,7 @@ public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseN
 	public void readFromNBT(NBTTagList json, boolean merge)
 	{
 		if(!merge) reset();
-		List<IReward> unassigned = new ArrayList<>();
+		List<IReward> unassigned = new ArrayList<IReward>();
 		
 		for(int i = 0; i < json.tagCount(); i++)
 		{

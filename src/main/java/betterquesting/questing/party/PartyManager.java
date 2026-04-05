@@ -20,7 +20,7 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
 {
 	public static final PartyManager INSTANCE = new PartyManager();
 	
-	private final HashMap<UUID,Integer> partyCache = new HashMap<>();
+	private final HashMap<UUID,Integer> partyCache = new HashMap<UUID,Integer>();
 	
 	@Override
     public synchronized IParty createNew(int id)
@@ -45,7 +45,7 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
         } else if(cachedParty != null) // Active party. Check validity...
         {
             EnumPartyStatus status = cachedParty.getStatus(uuid);
-            if(status != null) return new DBEntry<>(cachedID, cachedParty);
+            if(status != null) return new DBEntry<IParty>(cachedID, cachedParty);
             partyCache.remove(uuid); // User isn't a party member anymore
         }
 	    

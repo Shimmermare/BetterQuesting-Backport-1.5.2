@@ -12,11 +12,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CanvasCullingManager
 {
-    private final List<IGuiPanel> dynamicPanels = new ArrayList<>(); // Panels not regioned (likely moving or important)
+    private final List<IGuiPanel> dynamicPanels = new ArrayList<IGuiPanel>(); // Panels not regioned (likely moving or important)
     
-    private final Map<String, RegionInfo> panelRegions = new HashMap<>(); // Panels separated into regional blocks
+    private final Map<String, RegionInfo> panelRegions = new HashMap<String, RegionInfo>(); // Panels separated into regional blocks
     
-    private final List<IGuiPanel> cachedPanels = new CopyOnWriteArrayList<>(); // The last updated list of visible panels
+    private final List<IGuiPanel> cachedPanels = new CopyOnWriteArrayList<IGuiPanel>(); // The last updated list of visible panels
     
     private final int gridSize;
     
@@ -165,7 +165,7 @@ public class CanvasCullingManager
     
     private static class RegionInfo
     {
-        private final List<IGuiPanel> panels = new ArrayList<>();
+        private final List<IGuiPanel> panels = new ArrayList<IGuiPanel>();
         
         private boolean enabled = false; // Starts disabled so that the cache can be populated on initial checks
         private final GuiRectangle rect; // Needs to be updated with the min-max bounds (doesn't actually conform to any grid)

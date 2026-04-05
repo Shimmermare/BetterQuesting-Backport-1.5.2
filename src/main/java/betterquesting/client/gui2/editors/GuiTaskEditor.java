@@ -113,7 +113,7 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
             @Override
             protected boolean addResult(IFactoryData<ITask, NBTTagCompound> entry, int index, int cachedWidth)
             {
-                this.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), 1, entry.getRegistryName().toString(), entry));
+                this.addPanel(new PanelButtonStorage<IFactoryData<ITask, NBTTagCompound>>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), 1, entry.getRegistryName().toString(), entry));
                 return true;
             }
         };
@@ -123,7 +123,7 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
         cvBackground.addPanel(scReg);
         cvRegSearch.setScrollDriverY(scReg);
         
-        PanelTextField<String> tfSearch = new PanelTextField<>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> tfSearch = new PanelTextField<String>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "", FieldFilterString.INSTANCE);
         tfSearch.setCallback(cvRegSearch::setSearchFilter);
         tfSearch.setWatermark("Search...");
         cvBackground.addPanel(tfSearch);
@@ -181,7 +181,7 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
         } else if(btn.getButtonID() == 3 && btn instanceof PanelButtonStorage) // Edit
         {
             ITask task = ((PanelButtonStorage<ITask>)btn).getStoredValue();
-            GuiScreen editor = task.getTaskEditor(this, new DBEntry<>(qID, quest));
+            GuiScreen editor = task.getTaskEditor(this, new DBEntry<IQuest>(qID, quest));
             
             if(editor != null)
             {
@@ -206,8 +206,8 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
         for(int i = 0; i < dbTsk.size(); i++)
         {
             ITask task = dbTsk.get(i).getValue();
-            qtList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3, QuestTranslation.translate(task.getUnlocalisedName()), task));
-            qtList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + ChatFormatting.RED + ChatFormatting.BOLD + "x", task));
+            qtList.addPanel(new PanelButtonStorage<ITask>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3, QuestTranslation.translate(task.getUnlocalisedName()), task));
+            qtList.addPanel(new PanelButtonStorage<ITask>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + ChatFormatting.RED + ChatFormatting.BOLD + "x", task));
         }
     }
 	

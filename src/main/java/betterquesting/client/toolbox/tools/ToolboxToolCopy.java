@@ -23,7 +23,7 @@ public class ToolboxToolCopy implements IToolboxTool
 {
 	private CanvasQuestLine gui = null;
 	
-	private final List<GrabEntry> grabList = new ArrayList<>();
+	private final List<GrabEntry> grabList = new ArrayList<GrabEntry>();
 	
 	@Override
 	public void initTool(CanvasQuestLine gui)
@@ -43,7 +43,7 @@ public class ToolboxToolCopy implements IToolboxTool
     {
         if(grabList.size() <= 0) return;
         
-        List<GrabEntry> tmp = new ArrayList<>();
+        List<GrabEntry> tmp = new ArrayList<GrabEntry>();
         
         for(GrabEntry grab : grabList)
         {
@@ -137,7 +137,7 @@ public class ToolboxToolCopy implements IToolboxTool
         int lID = QuestLineDatabase.INSTANCE.getID(qLine);
         
         int[] nextIDs = getNextIDs(grabList.size());
-        HashMap<Integer, Integer> remappedIDs = new HashMap<>();
+        HashMap<Integer, Integer> remappedIDs = new HashMap<Integer, Integer>();
         
         for(int i = 0; i < grabList.size(); i++) remappedIDs.put(grabList.get(i).btn.getStoredValue().getID(), nextIDs[i]);
         

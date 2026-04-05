@@ -117,7 +117,7 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
         if(nbt.getId() == 10) // NBTTagCompound
         {
             NBTTagCompound tag = (NBTTagCompound)nbt;
-            List<String> sortedKeys = new ArrayList<>((Set<String>)tag.func_150296_c());
+            List<String> sortedKeys = new ArrayList<String>((Set<String>)tag.func_150296_c());
             Collections.sort(sortedKeys);
             Iterator<String> keys = sortedKeys.iterator();
             int i = 0;
@@ -133,33 +133,33 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                 
                 if(entry.getId() == 10) // Object
                 {
-                    PanelButtonStorage<String> btn = new PanelButtonStorage<>(new GuiRectangle(lw, i * 16, rw - 48, 16, 0), btnEdit, getButtonTitle((NBTTagCompound)entry), k);
+                    PanelButtonStorage<String> btn = new PanelButtonStorage<String>(new GuiRectangle(lw, i * 16, rw - 48, 16, 0), btnEdit, getButtonTitle((NBTTagCompound)entry), k);
                     this.addPanel(btn);
                     
-                    btn = new PanelButtonStorage<>(new GuiRectangle(width - 48, i * 16, 16, 16, 0), btnAdv, "...", k);
+                    btn = new PanelButtonStorage<String>(new GuiRectangle(width - 48, i * 16, 16, 16, 0), btnAdv, "...", k);
                     this.addPanel(btn);
                 } else if(entry.getId() == 9) // List
                 {
-                    PanelButtonStorage<String> btn = new PanelButtonStorage<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), btnEdit, "List...", k);
+                    PanelButtonStorage<String> btn = new PanelButtonStorage<String>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), btnEdit, "List...", k);
                     this.addPanel(btn);
                 } else if(entry.getId() == 8) // Text
                 {
-                    PanelTextField<String> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 48, 16, 0), "" + ((NBTTagString)entry).func_150285_a_(), FieldFilterString.INSTANCE);
+                    PanelTextField<String> text = new PanelTextField<String>(new GuiRectangle(lw, i * 16, rw - 48, 16, 0), "" + ((NBTTagString)entry).func_150285_a_(), FieldFilterString.INSTANCE);
                     text.setCallback(new CallbackNBTTagString(tag, k)).setMaxLength(Integer.MAX_VALUE);
                     this.addPanel(text);
                     
-                    PanelButtonStorage<String> btn = new PanelButtonStorage<>(new GuiRectangle(width - 48, i * 16, 16, 16, 0), btnEdit, "Aa", k);
+                    PanelButtonStorage<String> btn = new PanelButtonStorage<String>(new GuiRectangle(width - 48, i * 16, 16, 16, 0), btnEdit, "Aa", k);
                     this.addPanel(btn);
                 } else if(entry.getId() == 1) // Byte/Boolean
                 {
-                    PanelTextField<Byte> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw / 2, 16, 0), "" + ((NBTPrimitive)entry).func_150290_f(), FieldFilterNumber.BYTE);
+                    PanelTextField<Byte> text = new PanelTextField<String>(new GuiRectangle(lw, i * 16, rw / 2, 16, 0), "" + ((NBTPrimitive)entry).func_150290_f(), FieldFilterNumber.BYTE);
                     text.setMaxLength(Integer.MAX_VALUE); // Put callback here
                     this.addPanel(text);
                     
-                    PanelButtonStorage<String> btn = new PanelButtonStorage<>(new GuiRectangle(lw + rw / 2, i * 16, (int)Math.ceil(rw / 2F) - 32, 16, 0), btnEdit, ((NBTPrimitive)entry).func_150290_f() > 0 ? "true" : "false", k);
+                    PanelButtonStorage<String> btn = new PanelButtonStorage<String>(new GuiRectangle(lw + rw / 2, i * 16, (int)Math.ceil(rw / 2F) - 32, 16, 0), btnEdit, ((NBTPrimitive)entry).func_150290_f() > 0 ? "true" : "false", k);
                     this.addPanel(btn);
                     
-                    text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<>(new CallbackNBTPrimitive<>(tag, k, Byte.class), value -> btn.setText(value > 0 ? "true" : "false")));
+                    text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<Byte>(new CallbackNBTPrimitive<Byte>(tag, k, Byte.class), value -> btn.setText(value > 0 ? "true" : "false")));
                     btn.setCallback(value -> {
                         boolean flag = tag.getByte(value) > 0;
                         tag.setByte(value, flag ? (byte)0 : (byte)1);
@@ -172,36 +172,36 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                     {
                         case 2: // Short
                         {
-                            PanelTextField<Short> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150289_e(), FieldFilterNumber.SHORT);
-                            text.setCallback(new CallbackNBTPrimitive<>(tag, k, Short.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Short> text = new PanelTextField<Short>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150289_e(), FieldFilterNumber.SHORT);
+                            text.setCallback(new CallbackNBTPrimitive<Short>(tag, k, Short.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
                         case 3: // Integer
                         {
-                            PanelTextField<Integer> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150287_d(), FieldFilterNumber.INT);
-                            text.setCallback(new CallbackNBTPrimitive<>(tag, k, Integer.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Integer> text = new PanelTextField<Integer>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150287_d(), FieldFilterNumber.INT);
+                            text.setCallback(new CallbackNBTPrimitive<Integer>(tag, k, Integer.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
                         case 4: // Long
                         {
-                            PanelTextField<Long> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150291_c(), FieldFilterNumber.LONG);
-                            text.setCallback(new CallbackNBTPrimitive<>(tag, k, Long.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Long> text = new PanelTextField<Long>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150291_c(), FieldFilterNumber.LONG);
+                            text.setCallback(new CallbackNBTPrimitive<Long>(tag, k, Long.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
                         case 5: // Float
                         {
-                            PanelTextField<Float> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150288_h(), FieldFilterNumber.FLOAT);
-                            text.setCallback(new CallbackNBTPrimitive<>(tag, k, Float.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Float> text = new PanelTextField<Float>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150288_h(), FieldFilterNumber.FLOAT);
+                            text.setCallback(new CallbackNBTPrimitive<Float>(tag, k, Float.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
                         case 6: // Double
                         {
-                            PanelTextField<Double> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150286_g(), FieldFilterNumber.DOUBLE);
-                            text.setCallback(new CallbackNBTPrimitive<>(tag, k, Double.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Double> text = new PanelTextField<Double>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150286_g(), FieldFilterNumber.DOUBLE);
+                            text.setCallback(new CallbackNBTPrimitive<Double>(tag, k, Double.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
@@ -213,11 +213,11 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                     this.addPanel(err);
                 }
                 
-                PanelButtonStorage<String> btnI = new PanelButtonStorage<>(new GuiRectangle(width - 32, i * 16, 16, 16, 0), btnInsert, "+", k);
+                PanelButtonStorage<String> btnI = new PanelButtonStorage<String>(new GuiRectangle(width - 32, i * 16, 16, 16, 0), btnInsert, "+", k);
                 btnI.setTextHighlight(new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(0, 255, 0, 255), new GuiColorStatic(0, 255, 0, 255));
                 this.addPanel(btnI);
                 
-                PanelButtonStorage<String> btnD = new PanelButtonStorage<>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), btnDelete, "x", k);
+                PanelButtonStorage<String> btnD = new PanelButtonStorage<String>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), btnDelete, "x", k);
                 btnD.setTextHighlight(new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(255, 0, 0, 255), new GuiColorStatic(255, 0, 0, 255));
                 this.addPanel(btnD);
                 
@@ -226,7 +226,7 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
             
             this.addPanel(new PanelGeneric(new GuiRectangle(0, i * 16, width - 32, 16, 0), null)); // Keeps the list from auto resizing
             
-            PanelButtonStorage<String> btnI = new PanelButtonStorage<>(new GuiRectangle(width - 32, i * 16, 16, 16, 0), btnInsert, "+", "");
+            PanelButtonStorage<String> btnI = new PanelButtonStorage<String>(new GuiRectangle(width - 32, i * 16, 16, 16, 0), btnInsert, "+", "");
             btnI.setTextHighlight(new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(0, 255, 0, 255), new GuiColorStatic(0, 255, 0, 255));
             this.addPanel(btnI);
         } else if(nbt.getId() == 9) // NBTTagList
@@ -246,32 +246,32 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                 
                 if(entry.getId() == 10) // Object
                 {
-                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<>(new GuiRectangle(lw, i * 16, rw - 48, 16, 0), btnEdit, getButtonTitle((NBTTagCompound)entry), i);
+                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<Integer>(new GuiRectangle(lw, i * 16, rw - 48, 16, 0), btnEdit, getButtonTitle((NBTTagCompound)entry), i);
                     this.addPanel(btn);
                     
-                    btn = new PanelButtonStorage<>(new GuiRectangle(width - 48, i * 16, 16, 16, 0), btnAdv, "...", i);
+                    btn = new PanelButtonStorage<Integer>(new GuiRectangle(width - 48, i * 16, 16, 16, 0), btnAdv, "...", i);
                     this.addPanel(btn);
                 } else if(entry.getId() == 9) // List
                 {
-                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), btnEdit, "List...", i);
+                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<Integer>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), btnEdit, "List...", i);
                     this.addPanel(btn);
                 } else if(entry.getId() == 8) // Text
                 {
-                    PanelTextField<String> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 48, 16, 0), "" + ((NBTTagString)entry).func_150285_a_(), FieldFilterString.INSTANCE);
+                    PanelTextField<String> text = new PanelTextField<String>(new GuiRectangle(lw, i * 16, rw - 48, 16, 0), "" + ((NBTTagString)entry).func_150285_a_(), FieldFilterString.INSTANCE);
                     text.setCallback(new CallbackNBTTagString(list, i)).setMaxLength(Integer.MAX_VALUE);
                     this.addPanel(text);
                     
-                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<>(new GuiRectangle(width - 48, i * 16, 16, 16, 0), btnEdit, "Aa", i);
+                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<Integer>(new GuiRectangle(width - 48, i * 16, 16, 16, 0), btnEdit, "Aa", i);
                     this.addPanel(btn);
                 } else if(entry.getId() == 1) // Byte/Boolean
                 {
-                    PanelTextField<Byte> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw / 2, 16, 0), "" + ((NBTPrimitive)entry).func_150290_f(), FieldFilterNumber.BYTE);
+                    PanelTextField<Byte> text = new PanelTextField<Byte>(new GuiRectangle(lw, i * 16, rw / 2, 16, 0), "" + ((NBTPrimitive)entry).func_150290_f(), FieldFilterNumber.BYTE);
                     this.addPanel(text);
                     
-                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<>(new GuiRectangle(lw + rw / 2, i * 16, (int)Math.ceil(rw / 2F) - 32, 16, 0), btnEdit, ((NBTPrimitive)entry).func_150290_f() > 0 ? "true" : "false", i);
+                    PanelButtonStorage<Integer> btn = new PanelButtonStorage<Integer>(new GuiRectangle(lw + rw / 2, i * 16, (int)Math.ceil(rw / 2F) - 32, 16, 0), btnEdit, ((NBTPrimitive)entry).func_150290_f() > 0 ? "true" : "false", i);
                     this.addPanel(btn);
                     
-                    text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<>(new CallbackNBTPrimitive<>(list, i, Byte.class), value -> btn.setText(value > 0 ? "true" : "false")));
+                    text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<Byte>(new CallbackNBTPrimitive<Byte>(list, i, Byte.class), value -> btn.setText(value > 0 ? "true" : "false")));
                     btn.setCallback(value -> {
                         boolean flag = ((NBTTagByte)tagList.get(value)).func_150290_f() > 0;
                         list.func_150304_a(value, new NBTTagByte(flag ? (byte)0 : (byte)1));
@@ -284,36 +284,36 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                     {
                         case 2: // Short
                         {
-                            PanelTextField<Short> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150289_e(), FieldFilterNumber.SHORT);
-                            text.setCallback(new CallbackNBTPrimitive<>(list, i, Short.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Short> text = new PanelTextField<Short>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150289_e(), FieldFilterNumber.SHORT);
+                            text.setCallback(new CallbackNBTPrimitive<Short>(list, i, Short.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
                         case 3: // Integer
                         {
-                            PanelTextField<Integer> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150287_d(), FieldFilterNumber.INT);
-                            text.setCallback(new CallbackNBTPrimitive<>(list, i, Integer.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Integer> text = new PanelTextField<Integer>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150287_d(), FieldFilterNumber.INT);
+                            text.setCallback(new CallbackNBTPrimitive<Integer>(list, i, Integer.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
                         case 4: // Long
                         {
-                            PanelTextField<Long> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150291_c(), FieldFilterNumber.LONG);
-                            text.setCallback(new CallbackNBTPrimitive<>(list, i, Long.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Long> text = new PanelTextField<Long>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150291_c(), FieldFilterNumber.LONG);
+                            text.setCallback(new CallbackNBTPrimitive<Long>(list, i, Long.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
                         case 5: // Float
                         {
-                            PanelTextField<Float> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150288_h(), FieldFilterNumber.FLOAT);
-                            text.setCallback(new CallbackNBTPrimitive<>(list, i, Float.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Float> text = new PanelTextField<Float>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150288_h(), FieldFilterNumber.FLOAT);
+                            text.setCallback(new CallbackNBTPrimitive<Float>(list, i, Float.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
                         case 6: // Double
                         {
-                            PanelTextField<Double> text = new PanelTextField<>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150286_g(), FieldFilterNumber.DOUBLE);
-                            text.setCallback(new CallbackNBTPrimitive<>(list, i, Double.class)).setMaxLength(Integer.MAX_VALUE);
+                            PanelTextField<Double> text = new PanelTextField<Double>(new GuiRectangle(lw, i * 16, rw - 32, 16, 0), "" + ((NBTPrimitive)entry).func_150286_g(), FieldFilterNumber.DOUBLE);
+                            text.setCallback(new CallbackNBTPrimitive<Double>(list, i, Double.class)).setMaxLength(Integer.MAX_VALUE);
                             this.addPanel(text);
                             break;
                         }
@@ -325,18 +325,18 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                     this.addPanel(err);
                 }
                 
-                PanelButtonStorage<Integer> btnI = new PanelButtonStorage<>(new GuiRectangle(width - 32, i * 16, 16, 16, 0), btnInsert, "+", i);
+                PanelButtonStorage<Integer> btnI = new PanelButtonStorage<Integer>(new GuiRectangle(width - 32, i * 16, 16, 16, 0), btnInsert, "+", i);
                 btnI.setTextHighlight(new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(0, 255, 0, 255), new GuiColorStatic(0, 255, 0, 255));
                 this.addPanel(btnI);
                 
-                PanelButtonStorage<Integer> btnD = new PanelButtonStorage<>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), btnDelete, "x", i);
+                PanelButtonStorage<Integer> btnD = new PanelButtonStorage<Integer>(new GuiRectangle(width - 16, i * 16, 16, 16, 0), btnDelete, "x", i);
                 btnD.setTextHighlight(new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(255, 0, 0, 255), new GuiColorStatic(255, 0, 0, 255));
                 this.addPanel(btnD);
             }
             
             this.addPanel(new PanelGeneric(new GuiRectangle(0, i * 16, width - 32, 16, 0), null)); // Keeps the list from auto resizing
             
-            PanelButtonStorage<Integer> btnI = new PanelButtonStorage<>(new GuiRectangle(width - 32, i * 16, 16, 16, 0), btnInsert, "+", i);
+            PanelButtonStorage<Integer> btnI = new PanelButtonStorage<Integer>(new GuiRectangle(width - 32, i * 16, 16, 16, 0), btnInsert, "+", i);
             btnI.setTextHighlight(new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(0, 255, 0, 255), new GuiColorStatic(0, 255, 0, 255));
             this.addPanel(btnI);
         }

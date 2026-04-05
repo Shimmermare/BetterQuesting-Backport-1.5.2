@@ -73,7 +73,7 @@ public class GuiImporters extends GuiScreenCanvas implements IPEventListener, IC
         for(int i = 0; i < impList.size(); i++)
         {
             IImporter imp = impList.get(i);
-            cvImports.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, width, 16, 0), 1, QuestTranslation.translate(imp.getUnlocalisedName()), imp));
+            cvImports.addPanel(new PanelButtonStorage<IImporter>(new GuiRectangle(0, i * 16, width, 16, 0), 1, QuestTranslation.translate(imp.getUnlocalisedName()), imp));
         }
         
         PanelVScrollBar scReq = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(0, 0, -8, 0), 0));
@@ -101,7 +101,7 @@ public class GuiImporters extends GuiScreenCanvas implements IPEventListener, IC
         impDescTX = new PanelTextBox(new GuiRectangle(0, 0, width, 16, 0), "", true).setColor(PresetColor.TEXT_MAIN.getColor());
         impDescCV.addPanel(impDescTX);
         
-        impBtn = new PanelButtonStorage<>(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(0, -16, 0, 0), 0), 2, QuestTranslation.translate("betterquesting.btn.import"), null);
+        impBtn = new PanelButtonStorage<IImporter>(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(0, -16, 0, 0), 0), 2, QuestTranslation.translate("betterquesting.btn.import"), null);
         impBtn.setActive(false);
         cvRight.addPanel(impBtn);
         

@@ -32,7 +32,7 @@ import java.util.Map.Entry;
  */
 public class CanvasQuestLine extends CanvasScrolling
 {
-    private final List<PanelButtonQuest> btnList = new ArrayList<>();
+    private final List<PanelButtonQuest> btnList = new ArrayList<PanelButtonQuest>();
     
     private final int buttonId;
     private IQuestLine lastQL;
@@ -100,7 +100,7 @@ public class CanvasQuestLine extends CanvasScrolling
             this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, bgSize, bgSize, 1), new SimpleTexture(new ResourceLocation(bgString), new GuiRectangle(0, 0, 256, 256))));
         }
         
-        HashMap<Integer, PanelButtonQuest> questBtns = new HashMap<>();
+        HashMap<Integer, PanelButtonQuest> questBtns = new HashMap<Integer, PanelButtonQuest>();
         
         for(DBEntry<IQuestLineEntry> qle : line.getEntries())
         {
@@ -109,7 +109,7 @@ public class CanvasQuestLine extends CanvasScrolling
             if(!QuestCache.isQuestShown(quest, pid, player)) continue;
             
             GuiRectangle rect = new GuiRectangle(qle.getValue().getPosX(), qle.getValue().getPosY(), qle.getValue().getSizeX(), qle.getValue().getSizeY());
-            PanelButtonQuest paBtn = new PanelButtonQuest(rect, buttonId, "", new DBEntry<>(qle.getID(), quest));
+            PanelButtonQuest paBtn = new PanelButtonQuest(rect, buttonId, "", new DBEntry<IQuest>(qle.getID(), quest));
             
             this.addPanel(paBtn);
             this.btnList.add(paBtn);

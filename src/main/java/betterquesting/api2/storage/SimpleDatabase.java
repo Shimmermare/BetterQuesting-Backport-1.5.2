@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 public abstract class SimpleDatabase<T> implements IDatabase<T>
 {
-    private final TreeMap<Integer, T> mapDB = new TreeMap<>();
+    private final TreeMap<Integer, T> mapDB = new TreeMap<Integer, T>();
     
     private final BitSet idMap = new BitSet();
     private List<DBEntry<T>> refCache = null;
@@ -31,7 +31,7 @@ public abstract class SimpleDatabase<T> implements IDatabase<T>
             {
                 idMap.set(id);
                 refCache = null;
-                return new DBEntry<>(id, value);
+                return new DBEntry<T>(id, value);
             } else
             {
                 throw new IllegalArgumentException("ID or value is already contained within database");
@@ -99,10 +99,10 @@ public abstract class SimpleDatabase<T> implements IDatabase<T>
     {
         if(refCache == null)
         {
-            List<DBEntry<T>> temp = new ArrayList<>();
+            List<DBEntry<T>> temp = new ArrayList<DBEntry<T>>();
             for(Entry<Integer,T> entry : mapDB.entrySet())
             {
-                temp.add(new DBEntry<>(entry.getKey(), entry.getValue()));
+                temp.add(new DBEntry<T>(entry.getKey(), entry.getValue()));
             }
             refCache = Collections.unmodifiableList(temp);
         }
@@ -119,7 +119,7 @@ public abstract class SimpleDatabase<T> implements IDatabase<T>
         System.arraycopy(keys, 0, sortedKeys, 0, keys.length);
         Arrays.sort(sortedKeys);
         
-        List<DBEntry<T>> subList = new ArrayList<>();
+        List<DBEntry<T>> subList = new ArrayList<DBEntry<T>>();
         int n = 0;
         
         for(DBEntry<T> entry : getEntries())

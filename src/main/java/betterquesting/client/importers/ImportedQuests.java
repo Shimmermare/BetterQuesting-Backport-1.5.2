@@ -26,12 +26,12 @@ public class ImportedQuests extends SimpleDatabase<IQuest> implements IQuestData
     {
         if(ids == null || ids.length <= 0) return Collections.emptyList();
         
-        List<DBEntry<IQuest>> values = new ArrayList<>();
+        List<DBEntry<IQuest>> values = new ArrayList<DBEntry<IQuest>>();
         
         for(int i : ids)
         {
             IQuest v = getValue(i);
-            if(v != null) values.add(new DBEntry<>(i, v));
+            if(v != null) values.add(new DBEntry<IQuest>(i, v));
         }
         
         return values;

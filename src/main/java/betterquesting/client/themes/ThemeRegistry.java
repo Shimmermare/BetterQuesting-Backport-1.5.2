@@ -52,13 +52,13 @@ public class ThemeRegistry implements IThemeRegistry
 	private static final IGuiLine NULL_LINE = new SimpleLine();
 	private static final IGuiColor NULL_COLOR = new GuiColorStatic(0xFF000000);
 	
-	private final HashMap<ResourceLocation, IGuiTexture> defTextures = new HashMap<>();
-	private final HashMap<ResourceLocation, IGuiLine> defLines = new HashMap<>();
-	private final HashMap<ResourceLocation, IGuiColor> defColors = new HashMap<>();
-	private final HashMap<GuiKey<?>, Function<?, GuiScreen>> defGuis = new HashMap<>();
+	private final HashMap<ResourceLocation, IGuiTexture> defTextures = new HashMap<ResourceLocation, IGuiTexture>();
+	private final HashMap<ResourceLocation, IGuiLine> defLines = new HashMap<ResourceLocation, IGuiLine>();
+	private final HashMap<ResourceLocation, IGuiColor> defColors = new HashMap<ResourceLocation, IGuiColor>();
+	private final HashMap<GuiKey<?>, Function<?, GuiScreen>> defGuis = new HashMap<GuiKey<?>, Function<?, GuiScreen>>();
 	
-	private final HashMap<ResourceLocation, IGuiTheme> themes = new HashMap<>();
-	private final List<ResourceLocation> loadedThemes = new ArrayList<>();
+	private final HashMap<ResourceLocation, IGuiTheme> themes = new HashMap<ResourceLocation, IGuiTheme>();
+	private final List<ResourceLocation> loadedThemes = new ArrayList<ResourceLocation>();
 	
 	private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private IGuiTheme activeTheme = null;
@@ -434,7 +434,7 @@ public class ThemeRegistry implements IThemeRegistry
 	@Override
 	public List<IGuiTheme> getAllThemes()
 	{
-		return new ArrayList<>(themes.values());
+		return new ArrayList<IGuiTheme>(themes.values());
 	}
     
     @Override

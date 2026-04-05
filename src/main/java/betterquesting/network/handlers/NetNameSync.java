@@ -85,7 +85,7 @@ public class NetNameSync
         } else
         {
             MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-            List<EntityPlayerMP> playerList = new ArrayList<>();
+            List<EntityPlayerMP> playerList = new ArrayList<EntityPlayerMP>();
             for(UUID playerID : party.getMembers())
             {
                 EntityPlayerMP p = null;
@@ -106,7 +106,7 @@ public class NetNameSync
     
     public static void sendNames(@Nullable EntityPlayerMP[] players, @Nullable UUID[] uuids, @Nullable String[] names)
     {
-        List<UUID> idList = (uuids == null && names == null) ? null : new ArrayList<>();
+        List<UUID> idList = (uuids == null && names == null) ? null : new ArrayList<UUID>();
         if(uuids != null) idList.addAll(Arrays.asList(uuids));
         if(names != null)
         {

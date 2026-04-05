@@ -37,8 +37,8 @@ public class PanelToolController implements IGuiPanel
     
     private IToolboxTool activeTool;
     
-    public static final List<PanelButtonQuest> selected = new ArrayList<>();
-	public static final List<IGuiPanel> highlights = new ArrayList<>();
+    public static final List<PanelButtonQuest> selected = new ArrayList<PanelButtonQuest>();
+	public static final List<IGuiPanel> highlights = new ArrayList<IGuiPanel>();
 	private GuiRectangle selBounds;
 	
 	private IGuiLine selLine = new BoxLine();
@@ -104,7 +104,7 @@ public class PanelToolController implements IGuiPanel
     
     public void refreshCanvas()
     {
-        List<PanelButtonQuest> tmp = new ArrayList<>();
+        List<PanelButtonQuest> tmp = new ArrayList<PanelButtonQuest>();
         for(PanelButtonQuest b1 : selected)
         {
             for(PanelButtonQuest b2 : questLine.getQuestButtons()) if(b1.getStoredValue().getID() == b2.getStoredValue().getID()) tmp.add(b2);

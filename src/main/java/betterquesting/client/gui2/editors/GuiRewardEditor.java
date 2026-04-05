@@ -113,7 +113,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
             @Override
             protected boolean addResult(IFactoryData<IReward, NBTTagCompound> entry, int index, int cachedWidth)
             {
-                this.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), 1, entry.getRegistryName().toString(), entry));
+                this.addPanel(new PanelButtonStorage<IFactoryData<IReward, NBTTagCompound>>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), 1, entry.getRegistryName().toString(), entry));
                 return true;
             }
         };
@@ -123,7 +123,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         cvBackground.addPanel(scReg);
         cvRegSearch.setScrollDriverY(scReg);
         
-        PanelTextField<String> tfSearch = new PanelTextField<>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> tfSearch = new PanelTextField<String>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "", FieldFilterString.INSTANCE);
         tfSearch.setCallback(cvRegSearch::setSearchFilter);
         tfSearch.setWatermark("Search...");
         cvBackground.addPanel(tfSearch);
@@ -181,7 +181,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         } else if(btn.getButtonID() == 3 && btn instanceof PanelButtonStorage) // Edit
         {
             IReward reward = ((PanelButtonStorage<IReward>)btn).getStoredValue();
-            GuiScreen editor = reward.getRewardEditor(this, new DBEntry<>(qID, quest));
+            GuiScreen editor = reward.getRewardEditor(this, new DBEntry<IQuest>(qID, quest));
             
             if(editor != null)
             {
@@ -206,8 +206,8 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         for(int i = 0; i < dbRew.size(); i++)
         {
             IReward reward = dbRew.get(i).getValue();
-            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3, QuestTranslation.translate(reward.getUnlocalisedName()), reward));
-            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + ChatFormatting.RED + ChatFormatting.BOLD + "x", reward));
+            qrList.addPanel(new PanelButtonStorage<IReward>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3, QuestTranslation.translate(reward.getUnlocalisedName()), reward));
+            qrList.addPanel(new PanelButtonStorage<IReward>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + ChatFormatting.RED + ChatFormatting.BOLD + "x", reward));
         }
     }
 	

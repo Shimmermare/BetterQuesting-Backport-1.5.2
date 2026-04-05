@@ -38,7 +38,7 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
 {
     private final ICallback<File[]> callback;
     private final FileFilter filter;
-    private final List<File> selList = new ArrayList<>();
+    private final List<File> selList = new ArrayList<File>();
     private PanelTextBox txtTitle;
     private File curDirectory;
     
@@ -101,7 +101,7 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
         PanelTextBox txtDb = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("betterquesting.gui.folder")).setAlignment(1);
         cvRight.addPanel(txtDb);
         
-        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(16, 16, 8, -32), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> searchBox = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(16, 16, 8, -32), 0), "", FieldFilterString.INSTANCE);
         searchBox.setWatermark("Search...");
         cvRight.addPanel(searchBox);
         
@@ -112,7 +112,7 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
             {
                 if(!entry.isDirectory())
                 {
-                    PanelButtonStorage<File> btnAdd = new PanelButtonStorage<>(new GuiRectangle(0, index * 16, 16, 16, 0), -1, "", entry);
+                    PanelButtonStorage<File> btnAdd = new PanelButtonStorage<File>(new GuiRectangle(0, index * 16, 16, 16, 0), -1, "", entry);
                     btnAdd.setIcon(PresetIcon.ICON_POSITIVE.getTexture());
                     btnAdd.setActive(!selList.contains(entry));
                     btnAdd.setCallback( value -> {
@@ -129,7 +129,7 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
                     this.addPanel(pnDummy);
                 }
                 
-                PanelButtonStorage<File> btnEdit = new PanelButtonStorage<>(new GuiRectangle(16, index * 16, width - 32, 16, 0), -1, curDirectory == null ? entry.getAbsolutePath() : entry.getName(), entry);
+                PanelButtonStorage<File> btnEdit = new PanelButtonStorage<File>(new GuiRectangle(16, index * 16, width - 32, 16, 0), -1, curDirectory == null ? entry.getAbsolutePath() : entry.getName(), entry);
                 btnEdit.setActive(entry.isDirectory());
                 btnEdit.setCallback(value -> {
                     curDirectory = value;
@@ -209,7 +209,7 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener
             btnSel.setActive(false);
             cvSelected.addPanel(btnSel);
             
-            PanelButtonStorage<File> btnFile = new PanelButtonStorage<>(new GuiRectangle(width - 16, i* 16, 16, 16, 0), -1, "", f);
+            PanelButtonStorage<File> btnFile = new PanelButtonStorage<File>(new GuiRectangle(width - 16, i* 16, 16, 16, 0), -1, "", f);
             btnFile.setIcon(PresetIcon.ICON_NEGATIVE.getTexture());
             btnFile.setCallback(value -> {
                 selList.remove(value);

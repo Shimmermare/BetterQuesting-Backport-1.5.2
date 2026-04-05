@@ -14,7 +14,7 @@ public abstract class CanvasSearch<T, E> extends CanvasScrolling
     private final Stopwatch searchTime = Stopwatch.createStarted();
     private int resultWidth = 256; // Used for organising ongoing search results even if the size changes midway
     private int searchIdx = 0; // Where are we in the ongoing search?
-    private final ArrayDeque<T> pendingResults = new ArrayDeque<>();
+    private final ArrayDeque<T> pendingResults = new ArrayDeque<T>();
     
     public CanvasSearch(IGuiRect rect)
     {

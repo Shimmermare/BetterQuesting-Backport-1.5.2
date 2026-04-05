@@ -99,7 +99,7 @@ public class PanelButtonQuest extends PanelButtonStorage<DBEntry<IQuest>>
     
     private List<String> getStandardTooltip(IQuest quest, EntityPlayer player, int qID)
     {
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		
 		list.add(QuestTranslation.translate(quest.getProperty(NativeProps.NAME)) + (!Minecraft.getMinecraft().gameSettings.advancedItemTooltips ? "" : (" #" + qID)));
 		
@@ -162,7 +162,7 @@ public class PanelButtonQuest extends PanelButtonStorage<DBEntry<IQuest>>
     
     private List<String> getAdvancedTooltip(IQuest quest, EntityPlayer player, int qID)
     {
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		
 		list.add(ChatFormatting.GRAY + QuestTranslation.translate("betterquesting.tooltip.global_quest", quest.getProperty(NativeProps.GLOBAL)));
 		if(quest.getProperty(NativeProps.GLOBAL))

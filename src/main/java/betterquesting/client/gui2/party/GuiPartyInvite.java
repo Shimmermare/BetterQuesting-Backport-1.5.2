@@ -80,7 +80,7 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener
         txTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txTitle);
         
-        flName = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(32, 32, 72, -48), 0), "", FieldFilterString.INSTANCE);
+        flName = new PanelTextField<String>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(32, 32, 72, -48), 0), "", FieldFilterString.INSTANCE);
         flName.setMaxLength(16);
         flName.setWatermark("Username");
         cvBackground.addPanel(flName);
@@ -100,7 +100,7 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener
         int nameSize = RenderUtils.getStringWidth("________________", fontRendererObj);
         int columnNum = listWidth/nameSize;
         
-        List<String> nameList = new ArrayList<>();
+        List<String> nameList = new ArrayList<String>();
         ((List<GuiPlayerInfo>)mc.thePlayer.sendQueue.playerInfoList).forEach((info) -> nameList.add(info.name));
         
         nameList.removeIf((entry) -> {
@@ -113,7 +113,7 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener
             int x1 = i % columnNum;
             int y1 = i / columnNum;
             String name = nameList.get(i);
-            PanelButtonStorage<String> btnName = new PanelButtonStorage<>(new GuiRectangle(x1 * nameSize, y1 * 16, nameSize, 16), 2, name, name);
+            PanelButtonStorage<String> btnName = new PanelButtonStorage<String>(new GuiRectangle(x1 * nameSize, y1 * 16, nameSize, 16), 2, name, name);
             cvNameList.addPanel(btnName);
         }
         

@@ -36,7 +36,7 @@ public class GuiScreenTest extends GuiScreenCanvas
         pvf.setFillColor(new GuiColorTransition(new GuiColorStatic(0xFFFF0000), new GuiColorStatic(0xFF00FF00)).setupBlending(true, 0.25F));
         cvt1.addPanel(pvf);
         
-        IValueIO<Float> fillDriver = new ValueFuncIO<>(() -> (int)Math.abs(System.currentTimeMillis()%5000L - 2500L)/2500F);
+        IValueIO<Float> fillDriver = new ValueFuncIO<Float>(() -> (int)Math.abs(System.currentTimeMillis()%5000L - 2500L)/2500F);
         
         GuiColorTransition transColor = new GuiColorTransition(new GuiColorStatic(0xFF00FF00), new GuiColorStatic(0xFFFF0000)).setupBlending(true, 0.25F);
         transColor.setBlendDriver(fillDriver);

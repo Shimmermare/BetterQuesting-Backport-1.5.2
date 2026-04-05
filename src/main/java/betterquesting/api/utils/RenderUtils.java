@@ -373,7 +373,7 @@ public class RenderUtils
         GL11.glDisable(GL11.GL_BLEND);
     }
 	
-	private static final Stack<IGuiRect> scissorStack = new Stack<>();
+	private static final Stack<IGuiRect> scissorStack = new Stack<IGuiRect>();
 	
 	/**
 	 * Performs a OpenGL scissor based on Minecraft's resolution instead of display resolution and adds it to the stack of ongoing scissors.
@@ -446,7 +446,7 @@ public class RenderUtils
 	 */
 	public static List<String> splitStringWithoutFormat(String str, int wrapWidth, FontRenderer font)
 	{
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		
 		String lastFormat = ""; // Formatting like bold can affect the wrapping width
 		String temp = str;
@@ -482,7 +482,7 @@ public class RenderUtils
 	
 	public static List<String> splitString(String str, int wrapWidth, FontRenderer font)
 	{
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		
 		String temp = str;
 		
@@ -763,7 +763,7 @@ public class RenderUtils
 		if (needsWrap)
 		{
 			int wrappedTooltipWidth = 0;
-			List<String> wrappedTextLines = new ArrayList<>();
+			List<String> wrappedTextLines = new ArrayList<String>();
 			
 			for (int i = 0; i < textLines.size(); i++)
 			{

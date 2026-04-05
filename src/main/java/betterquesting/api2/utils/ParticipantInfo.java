@@ -39,9 +39,9 @@ public class ParticipantInfo
             return;
         }
         
-        List<EntityPlayer> actPl = new ArrayList<>();
-        List<UUID> actID = new ArrayList<>();
-        List<UUID> allID = new ArrayList<>();
+        List<EntityPlayer> actPl = new ArrayList<EntityPlayer>();
+        List<UUID> actID = new ArrayList<UUID>();
+        List<UUID> allID = new ArrayList<UUID>();
         
         for(UUID mem : PARTY_INSTANCE.getValue().getMembers())
         {
@@ -87,7 +87,7 @@ public class ParticipantInfo
     @Nonnull
     public int[] getSharedQuests() // Returns an array of all quests which one or more participants have unlocked
     {
-        TreeSet<Integer> active = new TreeSet<>();
+        TreeSet<Integer> active = new TreeSet<Integer>();
         ACTIVE_PLAYERS.forEach((p) -> {
             QuestCache qc = (QuestCache)p.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
             if(qc != null) for(int value : qc.getActiveQuests()) active.add(value);

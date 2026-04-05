@@ -30,9 +30,9 @@ public class NativeProps
 	public static final IPropertyType<Boolean> LOCKED_PROGRESS =			new PropertyTypeBoolean(new ResourceLocation("betterquesting:lockedProgress"), false);
 	public static final IPropertyType<Boolean> SIMULTANEOUS =				new PropertyTypeBoolean(new ResourceLocation("betterquesting:simultaneous"), false);
 	
-	public static final IPropertyType<EnumQuestVisibility> VISIBILITY =		new PropertyTypeEnum<>(new ResourceLocation("betterquesting:visibility"), EnumQuestVisibility.NORMAL);
-	public static final IPropertyType<EnumLogic> LOGIC_TASK =				new PropertyTypeEnum<>(new ResourceLocation("betterquesting:taskLogic"), EnumLogic.AND);
-	public static final IPropertyType<EnumLogic> LOGIC_QUEST =				new PropertyTypeEnum<>(new ResourceLocation("betterquesting:questLogic"), EnumLogic.AND);
+	public static final IPropertyType<EnumQuestVisibility> VISIBILITY =		new PropertyTypeEnum<EnumQuestVisibility>(new ResourceLocation("betterquesting:visibility"), EnumQuestVisibility.NORMAL);
+	public static final IPropertyType<EnumLogic> LOGIC_TASK =				new PropertyTypeEnum<EnumLogic>(new ResourceLocation("betterquesting:taskLogic"), EnumLogic.AND);
+	public static final IPropertyType<EnumLogic> LOGIC_QUEST =				new PropertyTypeEnum<EnumLogic>(new ResourceLocation("betterquesting:questLogic"), EnumLogic.AND);
 	
 	public static final IPropertyType<Integer> REPEAT_TIME =				new PropertyTypeInteger(new ResourceLocation("betterquesting:repeatTime"), -1);
 	public static final IPropertyType<Boolean> REPEAT_REL =				    new PropertyTypeBoolean(new ResourceLocation("betterquesting:repeat_relative"), true);

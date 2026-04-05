@@ -19,7 +19,7 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
 {
 	public static final QuestLineDatabase INSTANCE = new QuestLineDatabase();
 	
-	private final List<Integer> lineOrder = new ArrayList<>();
+	private final List<Integer> lineOrder = new ArrayList<Integer>();
 	private final QuestLineSorter SORTER = new QuestLineSorter(this);
 	
 	@Override
@@ -43,7 +43,7 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
 	@Override
 	public synchronized List<DBEntry<IQuestLine>> getSortedEntries()
 	{
-	    List<DBEntry<IQuestLine>> list = new ArrayList<>(this.getEntries());
+	    List<DBEntry<IQuestLine>> list = new ArrayList<DBEntry<IQuestLine>>(this.getEntries());
 	    list.sort(SORTER);
 	    return list;
 	}
@@ -85,8 +85,8 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
 	{
 		if(!merge) reset();
         
-        List<IQuestLine> unassigned = new ArrayList<>();
-		HashMap<Integer,Integer> orderMap = new HashMap<>();
+        List<IQuestLine> unassigned = new ArrayList<IQuestLine>();
+		HashMap<Integer,Integer> orderMap = new HashMap<Integer,Integer>();
 		
 		for(int i = 0; i < json.tagCount(); i++)
 		{
@@ -113,7 +113,7 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
 		// Legacy support ONLY
 		for(IQuestLine q : unassigned) add(nextID(), q);
 		
-		List<Integer> orderKeys = new ArrayList<>(orderMap.keySet());
+		List<Integer> orderKeys = new ArrayList<Integer>(orderMap.keySet());
 		Collections.sort(orderKeys);
 		
         lineOrder.clear();

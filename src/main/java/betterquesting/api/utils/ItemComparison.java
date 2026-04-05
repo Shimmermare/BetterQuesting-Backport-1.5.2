@@ -89,7 +89,7 @@ public class ItemComparison
     			return false; // Sample is missing requested tags or is not exact
     		}
     		
-    		List<Integer> usedIdxs = new ArrayList<>(); // Duplicate control
+    		List<Integer> usedIdxs = new ArrayList<Integer>(); // Duplicate control
     		
     		topLoop:
     		for(int i = 0; i < list1.func_150302_c().length; i++)
@@ -117,7 +117,7 @@ public class ItemComparison
     			return false; // Sample is missing requested tags or is not exact for non-partial match
     		}
     		
-    		List<Integer> usedIdxs = new ArrayList<>(); // Duplicate control
+    		List<Integer> usedIdxs = new ArrayList<Integer>(); // Duplicate control
     		
     		topLoop:
     		for(int i = 0; i < list1.func_150292_c().length; i++)

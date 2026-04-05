@@ -16,7 +16,7 @@ import java.util.Map.Entry;
 
 public class PartyInstance implements IParty
 {
-	private final HashMap<UUID, EnumPartyStatus> members = new HashMap<>();
+	private final HashMap<UUID, EnumPartyStatus> members = new HashMap<UUID, EnumPartyStatus>();
 	private List<UUID> memCache = null;
 	
 	private final PropertyContainer pInfo = new PropertyContainer();
@@ -43,7 +43,7 @@ public class PartyInstance implements IParty
 	
 	private void refreshCache()
     {
-        memCache = Collections.unmodifiableList(new ArrayList<>(members.keySet()));
+        memCache = Collections.unmodifiableList(new ArrayList<UUID>(members.keySet()));
     }
 	
 	@Override

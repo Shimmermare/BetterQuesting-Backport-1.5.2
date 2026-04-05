@@ -27,7 +27,7 @@ public class FactorySlideShowTexture implements IFactoryData<IGuiTexture, JsonOb
     @Override
     public SlideShowTexture loadFromData(JsonObject data)
     {
-        List<IGuiTexture> layers = new ArrayList<>();
+        List<IGuiTexture> layers = new ArrayList<IGuiTexture>();
         
         float interval = JsonHelper.GetNumber(data, "interval", 1F).floatValue();
         

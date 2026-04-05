@@ -15,7 +15,7 @@ public final class NameCache implements INameCache
 {
 	public static final NameCache INSTANCE = new NameCache();
 	
-	private final HashMap<UUID,NBTTagCompound> cache = new HashMap<>();
+	private final HashMap<UUID,NBTTagCompound> cache = new HashMap<UUID,NBTTagCompound>();
 	
 	@Override
     public synchronized boolean updateName(@Nonnull EntityPlayerMP player)
@@ -122,7 +122,7 @@ public final class NameCache implements INameCache
 	{
 	    if(nameCache != null) return nameCache;
 	    
-		nameCache = new ArrayList<>();
+		nameCache = new ArrayList<String>();
 		
         for(NBTTagCompound tag : cache.values())
         {
