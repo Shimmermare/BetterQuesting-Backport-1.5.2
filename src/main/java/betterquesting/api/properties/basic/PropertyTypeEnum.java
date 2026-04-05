@@ -37,9 +37,9 @@ public class PropertyTypeEnum<E extends Enum<E>> extends PropertyTypeBase<E>
 	{
 		if(value == null)
 		{
-			return new NBTTagString(this.getDefault().toString());
+			return new NBTTagString(null, this.getDefault().toString());
 		}
 		
-		return new NBTTagString(value.toString());
+		return new NBTTagString(null, value.toString());
 	}
 }

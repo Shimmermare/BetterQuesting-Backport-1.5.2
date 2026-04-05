@@ -34,7 +34,7 @@ public class CallbackNBTTagString implements ICallback<String>
             ((NBTTagCompound)tag).setString(sKey, value);
         } else
         {
-            ((NBTTagList)tag).func_150304_a(iKey, new NBTTagString(value));
+            ((NBTTagList)tag).func_150304_a(iKey, new NBTTagString(null, value));
         }
     }
 }

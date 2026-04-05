@@ -274,7 +274,7 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                     text.setMaxLength(Integer.MAX_VALUE).setCallback(new CallbackMulti<Byte>(new CallbackNBTPrimitive<Byte>(list, i, Byte.class), value -> btn.setText(value > 0 ? "true" : "false")));
                     btn.setCallback(value -> {
                         boolean flag = ((NBTTagByte)tagList.get(value)).func_150290_f() > 0;
-                        list.func_150304_a(value, new NBTTagByte(flag ? (byte)0 : (byte)1));
+                        list.func_150304_a(value, new NBTTagByte(null, flag ? (byte)0 : (byte)1));
                         text.setText(flag ? "0" : "1");
                         btn.setText(flag ? "false" : "true");
                     });

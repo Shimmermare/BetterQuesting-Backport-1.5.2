@@ -27,9 +27,9 @@ public class PropertyTypeString extends PropertyTypeBase<String>
 	{
 		if(value == null)
 		{
-			return new NBTTagString(this.getDefault());
+			return new NBTTagString(null, this.getDefault());
 		}
 		
-		return new NBTTagString(value);
+		return new NBTTagString(null, value);
 	}
 }

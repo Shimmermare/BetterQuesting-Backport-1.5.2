@@ -53,7 +53,7 @@ public class NetNameSync
             for(UUID id : uuids)
             {
                 if(id == null) continue;
-                uList.appendTag(new NBTTagString(id.toString()));
+                uList.appendTag(new NBTTagString(null, id.toString()));
             }
             payload.setTag("uuids", uList);
         }
@@ -63,7 +63,7 @@ public class NetNameSync
             for(String s : names)
             {
                 if(StringUtils.isNullOrEmpty(s)) continue;
-                nList.appendTag(new NBTTagString(s));
+                nList.appendTag(new NBTTagString(null, s));
             }
             payload.setTag("names", nList);
         }

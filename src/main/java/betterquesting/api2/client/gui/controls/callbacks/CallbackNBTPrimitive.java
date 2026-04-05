@@ -68,22 +68,22 @@ public class CallbackNBTPrimitive<T extends Number> implements ICallback<T>
         switch(tagID)
         {
             case 1:
-                list.func_150304_a(iKey, new NBTTagByte(value.byteValue()));
+                list.func_150304_a(iKey, new NBTTagByte(null, value.byteValue()));
                 break;
             case 2:
-                list.func_150304_a(iKey, new NBTTagShort(value.shortValue()));
+                list.func_150304_a(iKey, new NBTTagShort(null, value.shortValue()));
                 break;
             case 3:
-                list.func_150304_a(iKey, new NBTTagInt(value.intValue()));
+                list.func_150304_a(iKey, new NBTTagInt(null, value.intValue()));
                 break;
             case 4:
-                list.func_150304_a(iKey, new NBTTagLong(value.longValue()));
+                list.func_150304_a(iKey, new NBTTagLong(null, value.longValue()));
                 break;
             case 5:
-                list.func_150304_a(iKey, new NBTTagFloat(value.floatValue()));
+                list.func_150304_a(iKey, new NBTTagFloat(null, value.floatValue()));
                 break;
             case 6:
-                list.func_150304_a(iKey, new NBTTagDouble(value.doubleValue()));
+                list.func_150304_a(iKey, new NBTTagDouble(null, value.doubleValue()));
                 break;
         }
     }

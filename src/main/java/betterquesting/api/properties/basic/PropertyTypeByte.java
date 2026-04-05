@@ -28,9 +28,9 @@ public class PropertyTypeByte extends PropertyTypeBase<Byte>
 	{
 		if(value == null)
 		{
-			return new NBTTagByte(this.getDefault());
+			return new NBTTagByte(null, this.getDefault());
 		}
 		
-		return new NBTTagByte(value);
+		return new NBTTagByte(null, value);
 	}
 }

@@ -28,9 +28,9 @@ public class PropertyTypeDouble extends PropertyTypeBase<Double>
 	{
 		if(value == null)
 		{
-			return new NBTTagDouble(this.getDefault());
+			return new NBTTagDouble(null, this.getDefault());
 		}
 		
-		return new NBTTagDouble(value);
+		return new NBTTagDouble(null, value);
 	}
 }

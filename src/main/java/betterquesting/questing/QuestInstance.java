@@ -453,7 +453,7 @@ public class QuestInstance implements IQuest
 		jObj.setTag("properties", qInfo.writeToNBT(new NBTTagCompound()));
 		jObj.setTag("tasks", tasks.writeToNBT(new NBTTagList(), null));
 		jObj.setTag("rewards", rewards.writeToNBT(new NBTTagList(), null));
-		jObj.setTag("preRequisites", new NBTTagIntArray(getRequirements()));
+		jObj.setTag("preRequisites", new NBTTagIntArray(null, getRequirements()));
 		
 		return jObj;
 	}

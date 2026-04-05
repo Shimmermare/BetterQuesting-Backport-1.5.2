@@ -54,7 +54,7 @@ public final class PacketAssembly
 				container.setInteger("size", data.length); // If the buffer isn't yet created, how big is it
 				container.setInteger("index", idx); // Where should this piece start writing too
 				container.setBoolean("end", p == req - 1);
-				container.setTag("data", new NBTTagByteArray(part)); // The raw byte data to write
+				container.setTag("data", new NBTTagByteArray(null, part)); // The raw byte data to write
 				
 				pkts.add(container);
 			}

@@ -28,9 +28,9 @@ public class PropertyTypeFloat extends PropertyTypeBase<Float>
 	{
 		if(value == null)
 		{
-			return new NBTTagFloat(this.getDefault());
+			return new NBTTagFloat(null, this.getDefault());
 		}
 		
-		return new NBTTagFloat(value);
+		return new NBTTagFloat(null, value);
 	}
 }
