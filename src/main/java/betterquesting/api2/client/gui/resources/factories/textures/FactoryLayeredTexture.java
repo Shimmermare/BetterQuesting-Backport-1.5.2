@@ -12,7 +12,7 @@ import betterquesting.api2.registry.IFactoryData;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;

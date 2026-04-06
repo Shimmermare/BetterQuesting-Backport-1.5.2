@@ -21,8 +21,7 @@ import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.storage.DBEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
+import betterquesting.backport.ResourceLocation;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -94,7 +93,7 @@ public class CanvasQuestLine extends CanvasScrolling
         
         String bgString = line.getProperty(NativeProps.BG_IMAGE);
         
-        if(!StringUtils.isNullOrEmpty(bgString))
+        if(bgString != null && !bgString.isEmpty())
         {
             int bgSize = line.getProperty(NativeProps.BG_SIZE);
             this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, bgSize, bgSize, 1), new SimpleTexture(new ResourceLocation(bgString), new GuiRectangle(0, 0, 256, 256))));

@@ -5,7 +5,7 @@ import betterquesting.api2.client.gui.resources.lines.IGuiLine;
 import betterquesting.api2.client.gui.resources.lines.SimpleLine;
 import betterquesting.api2.registry.IFactoryData;
 import com.google.gson.JsonObject;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 public class FactorySimpleLine implements IFactoryData<IGuiLine, JsonObject>
 {

@@ -2,7 +2,7 @@ package betterquesting.api.placeholders.tasks;
 
 import betterquesting.api2.registry.IFactoryData;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 public class FactoryTaskPlaceholder implements IFactoryData<TaskPlaceholder, NBTTagCompound>
 {

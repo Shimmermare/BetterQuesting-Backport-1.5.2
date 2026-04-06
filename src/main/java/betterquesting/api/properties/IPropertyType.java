@@ -1,7 +1,7 @@
 package betterquesting.api.properties;
 
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 public interface IPropertyType<T>
 {

@@ -11,7 +11,7 @@ import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.registry.IFactoryData;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 public class FactoryColorTexture implements IFactoryData<IGuiTexture, JsonObject>
 {

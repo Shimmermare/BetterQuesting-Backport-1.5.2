@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.Icon;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.liquids.LiquidStack;
 import org.lwjgl.opengl.GL11;
 

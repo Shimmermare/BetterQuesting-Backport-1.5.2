@@ -1,6 +1,6 @@
 package betterquesting.api2.registry;
 
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 public interface IFactory<T>
 {

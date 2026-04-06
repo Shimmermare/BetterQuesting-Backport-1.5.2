@@ -5,7 +5,7 @@ import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.registry.IFactoryData;
 import com.google.gson.JsonObject;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 public class FactoryColorStatic implements IFactoryData<IGuiColor, JsonObject>
 {

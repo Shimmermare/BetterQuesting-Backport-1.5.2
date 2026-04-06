@@ -3,7 +3,7 @@ package betterquesting.api.properties.basic;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 public class PropertyTypeFloat extends PropertyTypeBase<Float>
 {

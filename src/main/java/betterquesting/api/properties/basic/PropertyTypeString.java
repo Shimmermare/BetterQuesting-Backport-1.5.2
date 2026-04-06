@@ -2,7 +2,7 @@ package betterquesting.api.properties.basic;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 public class PropertyTypeString extends PropertyTypeBase<String>
 {

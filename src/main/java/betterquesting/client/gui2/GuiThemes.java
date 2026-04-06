@@ -32,7 +32,7 @@ import betterquesting.backport.Consumer;
 import betterquesting.client.themes.ThemeRegistry;
 import betterquesting.core.BetterQuesting;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.util.List;

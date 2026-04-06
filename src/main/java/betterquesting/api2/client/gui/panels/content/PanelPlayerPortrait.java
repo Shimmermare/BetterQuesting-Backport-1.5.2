@@ -10,7 +10,7 @@ import betterquesting.api2.utils.EntityPlayerPreview;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;

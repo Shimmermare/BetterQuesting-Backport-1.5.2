@@ -17,7 +17,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package betterquesting.api2.client.gui.themes.presets;
 
 import betterquesting.api2.client.gui.themes.IThemeRegistry;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.resources.textures.SimpleTexture;

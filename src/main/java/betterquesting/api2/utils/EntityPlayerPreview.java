@@ -3,7 +3,7 @@ package betterquesting.api2.utils;
 import betterquesting.core.BetterQuesting;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityPlayerPreview extends EntityOtherPlayerMP

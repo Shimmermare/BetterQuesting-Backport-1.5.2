@@ -3,7 +3,7 @@ package betterquesting.client.themes;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.themes.IGuiTheme;
 import com.google.gson.JsonObject;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 import java.awt.*;
 

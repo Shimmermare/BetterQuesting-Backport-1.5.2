@@ -1,6 +1,6 @@
 package betterquesting.api.properties;
 
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.enums.EnumQuestVisibility;
 import betterquesting.api.properties.basic.PropertyTypeBoolean;

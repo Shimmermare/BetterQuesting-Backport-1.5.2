@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.util.ResourceLocation;
 
 public class EntityPlaceholderRenderer extends Render
 {
@@ -15,11 +14,4 @@ public class EntityPlaceholderRenderer extends Render
 		EntityItem item = ((EntityPlaceholder)entity).GetItemEntity();
 		RenderManager.instance.renderEntityWithPosYaw(item, x, y + 1D, z, yaw, partialTick);
 	}
-
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
-	{
-		return null;
-	}
-	
 }

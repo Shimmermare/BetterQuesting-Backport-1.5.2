@@ -5,7 +5,7 @@ import betterquesting.api.properties.IPropertyType;
 import betterquesting.api2.storage.INBTSaveLoad;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;

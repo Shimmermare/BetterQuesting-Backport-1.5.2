@@ -1,6 +1,6 @@
 package betterquesting.api.properties.basic;
 
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import betterquesting.api.properties.IPropertyType;
 
 public abstract class PropertyTypeBase<T> implements IPropertyType<T>

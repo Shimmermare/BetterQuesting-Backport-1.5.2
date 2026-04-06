@@ -6,7 +6,7 @@ import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import cpw.mods.fml.client.config.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class SimpleTexture implements IGuiTexture

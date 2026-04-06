@@ -7,7 +7,7 @@ import betterquesting.api2.client.gui.themes.gui_args.GArgsFileBrowser;
 import betterquesting.api2.client.gui.themes.gui_args.GArgsNBT;
 import betterquesting.api2.client.gui.themes.gui_args.GArgsNone;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.liquids.LiquidStack;
 
 public class PresetGUIs
