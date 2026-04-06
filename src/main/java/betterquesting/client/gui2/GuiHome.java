@@ -28,6 +28,7 @@ import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.NbtUtils;
 import betterquesting.client.gui2.editors.nbt.GuiNbtEditor;
 import betterquesting.client.gui2.party.GuiPartyCreate;
 import betterquesting.client.gui2.party.GuiPartyManage;
@@ -46,7 +47,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.io.File;
@@ -182,8 +183,8 @@ public class GuiHome extends GuiScreenCanvas implements IPEventListener
                         NBTTagList jsonP = QuestDatabase.INSTANCE.writeProgressToNBT(new NBTTagList(), null);
                         NBTTagCompound j1 = NBTConverter.JSONtoNBT_Object(JsonHelper.ReadFromFile(qFile), new NBTTagCompound(), true);
                         QuestSettings.INSTANCE.readFromNBT(j1.getCompoundTag("questSettings"));
-                        QuestDatabase.INSTANCE.readFromNBT(j1.getTagList("questDatabase", 10), false);
-                        QuestLineDatabase.INSTANCE.readFromNBT(j1.getTagList("questLines", 10), false);
+                        QuestDatabase.INSTANCE.readFromNBT(NbtUtils.getTagList(j1, "questDatabase", 10), false);
+                        QuestLineDatabase.INSTANCE.readFromNBT(NbtUtils.getTagList(j1, "questLines", 10), false);
                         QuestDatabase.INSTANCE.readProgressFromNBT(jsonP, false);
 
                         QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, editMode);

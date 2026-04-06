@@ -7,6 +7,7 @@ import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.PacketSender;
@@ -69,13 +70,13 @@ public class NetChapterEdit
 		}
 		
 		NBTTagCompound tag = message.getFirst();
-		int action = !message.getFirst().hasKey("action", 99) ? -1 : message.getFirst().getInteger("action");
+		int action = !NbtUtils.hasKey(message.getFirst(), "action", 99) ? -1 : message.getFirst().getInteger("action");
 		
 		switch(action)
         {
             case 0:
             {
-                editChapters(tag.getTagList("data", 10));
+                editChapters(NbtUtils.getTagList(tag,"data", 10));
                 break;
             }
             case 1:
@@ -90,7 +91,7 @@ public class NetChapterEdit
             }
             case 3:
             {
-                createChapters(tag.getTagList("data", 10));
+                createChapters(NbtUtils.getTagList(tag,"data", 10));
                 break;
             }
             default:
@@ -105,7 +106,7 @@ public class NetChapterEdit
         int[] ids = new int[data.tagCount()];
         for(int i = 0; i < data.tagCount(); i++)
         {
-            NBTTagCompound entry = data.getCompoundTagAt(i);
+            NBTTagCompound entry = NbtUtils.getCompoundTagAt(data, i);
             int chapterID = entry.getInteger("chapterID");
             ids[i] = chapterID;
             
@@ -152,14 +153,14 @@ public class NetChapterEdit
         int[] ids = new int[data.tagCount()];
         for(int i = 0; i < data.tagCount(); i++)
         {
-            NBTTagCompound entry = data.getCompoundTagAt(i);
-            int chapterID = entry.hasKey("chapterID", 99) ? entry.getInteger("chapterID") : -1;
+            NBTTagCompound entry = NbtUtils.getCompoundTagAt(data, i);
+            int chapterID = NbtUtils.hasKey(entry,"chapterID", 99) ? entry.getInteger("chapterID") : -1;
             if(chapterID < 0) chapterID = QuestLineDatabase.INSTANCE.nextID();
             ids[i] = chapterID;
             
             IQuestLine chapter = QuestLineDatabase.INSTANCE.getValue(chapterID);
             if(chapter == null) chapter = QuestLineDatabase.INSTANCE.createNew(chapterID);
-            if(entry.hasKey("config", 10)) chapter.readFromNBT(entry.getCompoundTag("config"), false);
+            if(NbtUtils.hasKey(entry,"config", 10)) chapter.readFromNBT(entry.getCompoundTag("config"), false);
         }
         
         SaveLoadHandler.INSTANCE.markDirty();
@@ -169,7 +170,7 @@ public class NetChapterEdit
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message)
     {
-		int action = !message.hasKey("action", 99) ? -1 : message.getInteger("action");
+		int action = !NbtUtils.hasKey(message,"action", 99) ? -1 : message.getInteger("action");
 		
 		switch(action) // Change to a switch statement when more actions are required
         {
