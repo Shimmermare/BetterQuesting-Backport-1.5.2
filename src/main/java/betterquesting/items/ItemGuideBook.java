@@ -3,6 +3,7 @@ package betterquesting.items;
 import betterquesting.core.BetterQuesting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,9 +11,9 @@ import net.minecraft.world.World;
 
 public class ItemGuideBook extends Item
 {
-	public ItemGuideBook()
+	public ItemGuideBook(int id)
 	{
-		this.setTextureName("book_written");
+        super(id);
 		this.setUnlocalizedName("betterquesting.guide");
 		this.setCreativeTab(BetterQuesting.tabQuesting);
 	}
@@ -45,5 +46,10 @@ public class ItemGuideBook extends Item
     public boolean hasEffect(ItemStack stack)
     {
 		return true;
+    }
+
+    @Override
+    public void registerIcons(IconRegister par1IconRegister) {
+        this.itemIcon = Item.writtenBook.getIconFromDamage(0);
     }
 }

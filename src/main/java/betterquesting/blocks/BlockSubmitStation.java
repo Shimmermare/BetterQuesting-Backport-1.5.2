@@ -3,33 +3,31 @@ package betterquesting.blocks;
 import betterquesting.core.BetterQuesting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 public class BlockSubmitStation extends BlockContainer
 {
-	private IIcon topIcon;
+	private Icon topIcon;
 	
-	public BlockSubmitStation()
+	public BlockSubmitStation(int id)
 	{
-		super(Material.wood);
-		this.setHardness(1);
-		this.setBlockName("betterquesting.submit_station");
-		this.setBlockTextureName("betterquesting:submit_station");
+		super(id, Material.wood);
+        this.setHardness(1);
+        this.setUnlocalizedName("betterquesting.submit_station");
 		this.setCreativeTab(BetterQuesting.tabQuesting);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
+	public TileEntity createNewTileEntity(World world)
 	{
 		return new TileSubmitStation();
 	}
@@ -48,10 +46,10 @@ public class BlockSubmitStation extends BlockContainer
     }
     
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+    public void breakBlock(World world, int x, int y, int z, int blockId, int meta)
     {
-        TileSubmitStation tileStation = (TileSubmitStation)world.getTileEntity(x, y, z);
-        
+        TileSubmitStation tileStation = (TileSubmitStation)world.getBlockTileEntity(x, y, z);
+
         if(tileStation != null)
         {
             for (int i1 = 0; i1 < tileStation.getSizeInventory(); ++i1)
@@ -88,25 +86,25 @@ public class BlockSubmitStation extends BlockContainer
                 }
             }
 
-            world.func_147453_f(x, y, z, block);
+            world.func_96440_m(x, y, z, blockId);
         }
 
-        super.breakBlock(world, x, y, z, block, meta);
+        super.breakBlock(world, x, y, z, blockId, meta);
     }
 
     /**
      * Gets the block's texture. Args: side, meta
      */
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
+    public Icon getIcon(int side, int meta)
     {
         return (side == 0 || side == 1)? topIcon : blockIcon;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IconRegister register)
     {
-        this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
-        this.topIcon = p_149651_1_.registerIcon(this.getTextureName() + "_top");
+        this.blockIcon = register.registerIcon("betterquesting:submit_station_side");
+        this.topIcon = register.registerIcon("betterquesting:submit_station_top");
     }
 }

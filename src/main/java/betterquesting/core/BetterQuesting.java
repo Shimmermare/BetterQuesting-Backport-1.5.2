@@ -56,11 +56,12 @@ public class BetterQuesting
 	public static Logger logger;
 	
 	public static CreativeTabs tabQuesting = new CreativeTabQuesting();
-	
-	public static Item extraLife = new ItemExtraLife();
-	public static Item guideBook = new ItemGuideBook();
-	
-	public static Block submitStation = new BlockSubmitStation();
+
+    // FIXME Make block and item IDs configurable
+	public static Item extraLife = new ItemExtraLife(8250);
+	public static Item guideBook = new ItemGuideBook(8251);
+
+	public static Block submitStation = new BlockSubmitStation(2325);
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)

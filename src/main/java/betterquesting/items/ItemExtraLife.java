@@ -7,15 +7,14 @@ import betterquesting.storage.LifeDatabase;
 import betterquesting.storage.QuestSettings;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.Icon;
+import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -24,12 +23,12 @@ import java.util.UUID;
 
 public class ItemExtraLife extends Item
 {
-	private IIcon iconQuarter;
-	private IIcon iconHalf;
+	private Icon iconQuarter;
+	private Icon iconHalf;
 	
-	public ItemExtraLife()
+	public ItemExtraLife(int id)
 	{
-		this.setTextureName("betterquesting:heart");
+        super(id);
 		this.setUnlocalizedName("betterquesting.extra_life");
 		this.setCreativeTab(BetterQuesting.tabQuesting);
 		this.setHasSubtypes(true);
@@ -67,7 +66,8 @@ public class ItemExtraLife extends Item
     		{
     			if(!world.isRemote)
     			{
-    	    		player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED.toString()).appendSibling(new ChatComponentTranslation("betterquesting.gui.full_lives")));
+                    player.sendChatToPlayer(EnumChatFormatting.RED +
+                            StringTranslate.getInstance().translateKey("betterquesting.gui.full_lives"));
     			}
 	    		
 	    		return stack;
@@ -78,12 +78,12 @@ public class ItemExtraLife extends Item
     		if(!world.isRemote)
     		{
     			LifeDatabase.INSTANCE.setLives(uuid, lives + 1);
-    			
-    			player.addChatComponentMessage(new ChatComponentTranslation("betterquesting.gui.remaining_lives", EnumChatFormatting.YELLOW.toString() + (lives + 1)));
+                player.sendChatToPlayer(StringTranslate.getInstance().translateKey("betterquesting.gui.remaining_lives")
+                                + EnumChatFormatting.YELLOW + (lives + 1));
     		}
     	} else if(!world.isRemote)
     	{
-    		player.addChatComponentMessage(new ChatComponentTranslation("betterquesting.msg.heart_disabled"));
+            player.sendChatToPlayer(StringTranslate.getInstance().translateKey("betterquesting.msg.heart_disabled"));
     	}
     	
 		return stack;
@@ -121,18 +121,18 @@ public class ItemExtraLife extends Item
     @Override
 	@SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
-    public void getSubItems(Item item, CreativeTabs tab, List list)
+    public void getSubItems(int id, CreativeTabs tab, List list)
     {
-    	list.add(new ItemStack(item, 1, 0));
-    	list.add(new ItemStack(item, 1, 1));
-    	list.add(new ItemStack(item, 1, 2));
+    	list.add(new ItemStack(id, 1, 0));
+    	list.add(new ItemStack(id, 1, 1));
+    	list.add(new ItemStack(id, 1, 2));
     }
 
     /**
      * Gets an icon index based on an item's damage value
      */
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int dmg)
+    public Icon getIconFromDamage(int dmg)
     {
     	switch(dmg%3)
     	{
@@ -146,10 +146,11 @@ public class ItemExtraLife extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
+    public void registerIcons(IconRegister register)
     {
-    	iconQuarter = register.registerIcon(this.getIconString() + "_quarter");
-    	iconHalf = register.registerIcon(this.getIconString() + "_half");
-    	itemIcon = register.registerIcon(this.getIconString() + "_full");
+        String prefix = "betterquesting:heart";
+    	iconQuarter = register.registerIcon(prefix + "_quarter");
+    	iconHalf = register.registerIcon(prefix + "_half");
+    	itemIcon = register.registerIcon(prefix + "_full");
     }
 }
