@@ -1,6 +1,5 @@
 package betterquesting.api.network;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 public interface IPacketSender
@@ -13,6 +12,7 @@ public interface IPacketSender
 	void sendToServer(QuestingPacket payload);
 	
 	// Misc.
-	void sendToAround(QuestingPacket payload, TargetPoint point);
+	void sendToAround(QuestingPacket payload, final double x, final double y, final double z,
+                      final double range, final int dimensionId);
 	void sendToDimension(QuestingPacket payload, int dimension);
 }

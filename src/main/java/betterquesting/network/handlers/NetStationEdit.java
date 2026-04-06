@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 import java.util.UUID;
 
@@ -63,7 +63,7 @@ public class NetStationEdit
         int px = data.getInteger("tilePosX");
         int py = data.getInteger("tilePosY");
         int pz = data.getInteger("tilePosZ");
-	    TileEntity tile = message.getSecond().worldObj.getTileEntity(px, py, pz);
+	    TileEntity tile = message.getSecond().worldObj.getBlockTileEntity(px, py, pz);
 		
 		if(tile instanceof TileSubmitStation)
         {

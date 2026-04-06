@@ -4,10 +4,14 @@ import betterquesting.api.network.IPacketSender;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api2.utils.BQThreadedIO;
 import betterquesting.core.BetterQuesting;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet250CustomPayload;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.List;
 
 public class PacketSender implements IPacketSender
@@ -23,11 +27,15 @@ public class PacketSender implements IPacketSender
             @Override
             public void run() {
                 List<NBTTagCompound> fragments = PacketAssembly.INSTANCE.splitPacket(payload.getPayload());
+                Packet250CustomPayload[] fragmentPackets = new Packet250CustomPayload[fragments.size()];
+                for (int i = 0; i < fragmentPackets.length; i++) {
+                    fragmentPackets[i] = partToPacket(fragments.get(i));
+                }
                 for(EntityPlayerMP p : players)
                 {
-                    for(NBTTagCompound tag : fragments)
+                    for(Packet250CustomPayload packet : fragmentPackets)
                     {
-                        BetterQuesting.instance.network.sendTo(new PacketQuesting(tag), p);
+                        PacketDispatcher.sendPacketToPlayer(packet, (Player) p);
                     }
                 }
             }
@@ -44,7 +52,7 @@ public class PacketSender implements IPacketSender
             public void run() {
                 for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
                 {
-                    BetterQuesting.instance.network.sendToAll(new PacketQuesting(p));
+                    PacketDispatcher.sendPacketToAllPlayers(partToPacket(p));
                 }
             }
         });
@@ -60,14 +68,15 @@ public class PacketSender implements IPacketSender
             public void run() {
                 for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
                 {
-                    BetterQuesting.instance.network.sendToServer(new PacketQuesting(p));
+                    PacketDispatcher.sendPacketToServer(partToPacket(p));
                 }
             }
         });
 	}
 	
 	@Override
-	public void sendToAround(final QuestingPacket payload, final TargetPoint point)
+	public void sendToAround(final QuestingPacket payload, final double x, final double y, final double z,
+                             final double range, final int dimensionId)
 	{
 		payload.getPayload().setString("ID", payload.getHandler().toString());
 		
@@ -76,7 +85,7 @@ public class PacketSender implements IPacketSender
             public void run() {
                 for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
                 {
-                    BetterQuesting.instance.network.sendToAllAround(new PacketQuesting(p), point);
+                    PacketDispatcher.sendPacketToAllAround(x, y, z, range, dimensionId, partToPacket(p));
                 }
             }
         });
@@ -92,9 +101,20 @@ public class PacketSender implements IPacketSender
             public void run() {
                 for(NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload()))
                 {
-                    BetterQuesting.instance.network.sendToDimension(new PacketQuesting(p), dimension);
+                    PacketDispatcher.sendPacketToAllInDimension(partToPacket(p), dimension);
                 }
             }
         });
 	}
+
+    private Packet250CustomPayload partToPacket(NBTTagCompound p) {
+        ByteArrayOutputStream outBytes = new ByteArrayOutputStream(1024);
+        // No compression - payload is already compressed
+        NBTTagCompound.writeNamedTag(p, new DataOutputStream(outBytes));
+
+        return new Packet250CustomPayload(
+                BetterQuesting.CHANNEL,
+                outBytes.toByteArray()
+        );
+    }
 }

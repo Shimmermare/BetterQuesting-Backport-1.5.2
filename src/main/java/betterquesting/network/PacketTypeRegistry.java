@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,7 +50,7 @@ public class PacketTypeRegistry implements IPacketRegistry
     {
         if(serverHandlers.containsKey(idName))
         {
-			throw new IllegalArgumentException("Cannot register dupliate packet handler: " + idName);
+			throw new IllegalArgumentException("Cannot register duplicate packet handler: " + idName);
         }
         
         serverHandlers.put(idName, method);
@@ -62,7 +62,7 @@ public class PacketTypeRegistry implements IPacketRegistry
     {
         if(clientHandlers.containsKey(idName))
         {
-			throw new IllegalArgumentException("Cannot register dupliate packet handler: " + idName);
+			throw new IllegalArgumentException("Cannot register duplicate packet handler: " + idName);
         }
         
         clientHandlers.put(idName, method);

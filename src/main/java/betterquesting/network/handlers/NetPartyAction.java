@@ -24,7 +24,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import java.util.logging.Level;
 
@@ -144,7 +144,7 @@ public class NetPartyAction
     {
         UUID uuid = null;
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        EntityPlayerMP player = server.getConfigurationManager().func_152612_a(username);
+        EntityPlayerMP player = server.getConfigurationManager().getPlayerForUsername(username);
         if(player != null) uuid = QuestingAPI.getQuestingUUID(player);
         if(uuid == null) uuid = NameCache.INSTANCE.getUUID(username);
         if(uuid != null)
@@ -187,7 +187,7 @@ public class NetPartyAction
         
         UUID uuid = null;
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        EntityPlayerMP player = server.getConfigurationManager().func_152612_a(username);
+        EntityPlayerMP player = server.getConfigurationManager().getPlayerForUsername(username);
         if(player != null) uuid = QuestingAPI.getQuestingUUID(player);
         if(uuid == null) uuid = NameCache.INSTANCE.getUUID(username);
         if(uuid == null)

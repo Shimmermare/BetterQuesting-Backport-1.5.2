@@ -20,7 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -74,7 +74,7 @@ public class NetNameSync
             NBTTagList nList = new NBTTagList();
             for(String s : names)
             {
-                if(StringUtils.isNullOrEmpty(s)) continue;
+                if(s == null || s.isEmpty()) continue;
                 nList.appendTag(new NBTTagString(null, s));
             }
             payload.setTag("names", nList);

@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
@@ -47,7 +47,7 @@ public class NetChapterSync
         }
     }
     
-    public static void sendSync(@Nullable EntityPlayerMP player, @Nullable int[] chapterIDs)
+    public static void sendSync(@Nullable final EntityPlayerMP player, @Nullable final int[] chapterIDs)
     {
         if(chapterIDs != null && chapterIDs.length <= 0) return;
         

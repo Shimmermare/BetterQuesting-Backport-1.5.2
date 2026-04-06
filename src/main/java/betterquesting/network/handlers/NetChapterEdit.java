@@ -12,15 +12,14 @@ import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
 import betterquesting.questing.QuestLineDatabase;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import java.util.logging.Level;
 
@@ -65,7 +64,7 @@ public class NetChapterEdit
 		if(!isOP) // OP pre-check
 		{
 			BetterQuesting.logger.log(Level.WARNING, "Player " + sender.getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit chapters without OP permissions!");
-			sender.addChatComponentMessage(new ChatComponentText(ChatFormatting.RED + "You need to be OP to edit quests!"));
+			sender.sendChatToPlayer(EnumChatFormatting.RED + "You need to be OP to edit quests!");
 			return; // Player is not operator. Do nothing
 		}
 		

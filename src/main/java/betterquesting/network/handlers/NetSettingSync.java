@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
+import betterquesting.backport.ResourceLocation;
 import java.util.logging.Level;
 
 import javax.annotation.Nullable;
