@@ -38,7 +38,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import betterquesting.backport.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.Configuration;
 import java.util.logging.Level;
 
 import java.io.InputStreamReader;

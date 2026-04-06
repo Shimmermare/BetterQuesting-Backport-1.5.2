@@ -14,18 +14,16 @@ import betterquesting.handlers.ConfigHandler;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.items.ItemExtraLife;
 import betterquesting.items.ItemGuideBook;
-import betterquesting.network.PacketQuesting;
+import betterquesting.network.PacketHandler;
 import betterquesting.network.PacketTypeRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
@@ -34,11 +32,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.event.ForgeSubscribe;
 
 import java.util.logging.Logger;
 
 @Mod(modid = BetterQuesting.MODID, name = BetterQuesting.NAME)
+@NetworkMod(
+        clientSideRequired = true,
+        channels = {BetterQuesting.CHANNEL},
+        packetHandler = PacketHandler.class
+)
 public class BetterQuesting
 {
     public static final String MODID = "betterquesting";
@@ -52,7 +56,6 @@ public class BetterQuesting
 	
 	@SidedProxy(clientSide = PROXY + ".ClientProxy", serverSide = PROXY + ".CommonProxy")
 	public static CommonProxy proxy;
-	public SimpleNetworkWrapper network;
 	public static Logger logger;
 	
 	public static CreativeTabs tabQuesting = new CreativeTabQuesting();
@@ -67,7 +70,6 @@ public class BetterQuesting
     public void preInit(FMLPreInitializationEvent event)
     {
     	logger = event.getModLog();
-    	network = NetworkRegistry.INSTANCE.newSimpleChannel(CHANNEL);
     	
     	ConfigHandler.config = new Configuration(event.getSuggestedConfigurationFile(), true);
     	ConfigHandler.initConfigs();
@@ -75,9 +77,6 @@ public class BetterQuesting
     	proxy.registerHandlers();
     	
     	PacketTypeRegistry.INSTANCE.init();
-    	
-    	network.registerMessage(PacketQuesting.HandleClient.class, PacketQuesting.class, 0, Side.CLIENT);
-    	network.registerMessage(PacketQuesting.HandleServer.class, PacketQuesting.class, 0, Side.SERVER);
     }
     
     @EventHandler
