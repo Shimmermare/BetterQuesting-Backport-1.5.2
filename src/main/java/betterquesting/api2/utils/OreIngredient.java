@@ -42,7 +42,7 @@ public class OreIngredient
             for (ItemStack itemstack : this.ores)
             {
                 if (itemstack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
-                    itemstack.getItem().getSubItems(itemstack.getItem(), CreativeTabs.tabAllSearch, lst);
+                    itemstack.getItem().getSubItems(itemstack.itemID, CreativeTabs.tabAllSearch, lst);
                 else
                     lst.add(itemstack);
             }

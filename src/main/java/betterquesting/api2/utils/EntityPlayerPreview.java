@@ -1,11 +1,11 @@
 package betterquesting.api2.utils;
 
 import betterquesting.core.BetterQuesting;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import betterquesting.backport.ResourceLocation;
 import net.minecraft.world.World;
 
+// FIXME restore behavior
 public class EntityPlayerPreview extends EntityOtherPlayerMP
 {
 	private final ResourceLocation resource;
@@ -15,34 +15,35 @@ public class EntityPlayerPreview extends EntityOtherPlayerMP
 	 */
 	public EntityPlayerPreview(World worldIn)
 	{
-		this(worldIn, new GameProfile(null, "Notch"));
+		this(worldIn, "Notch");
 	}
 	
-	public EntityPlayerPreview(World worldIn, GameProfile gameProfileIn)
+	public EntityPlayerPreview(World worldIn, String gameProfileIn)
 	{
 		super(worldIn, gameProfileIn);
-		this.resource = new ResourceLocation(BetterQuesting.MODID, "textures/skin_cache/" + gameProfileIn.getName());
+		this.resource = new ResourceLocation(BetterQuesting.MODID, "textures/skin_cache/" + gameProfileIn);
 	}
-	
-	@Override
+
+
+	//@Override
 	public ResourceLocation getLocationSkin()
 	{
 		return this.resource;
 	}
 	
-	@Override
+	//@Override
 	public ResourceLocation getLocationCape()
 	{
 		return null;
 	}
 	
-	@Override
+	//@Override
 	public boolean func_152123_o()
 	{
 		return true;
 	}
 	
-	@Override
+	//@Override
 	public String getDisplayName()
 	{
 		return "";

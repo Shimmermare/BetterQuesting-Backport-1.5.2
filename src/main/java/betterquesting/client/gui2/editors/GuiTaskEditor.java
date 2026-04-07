@@ -31,10 +31,10 @@ import betterquesting.client.gui2.editors.nbt.GuiNbtEditor;
 import betterquesting.network.handlers.NetQuestEdit;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.tasks.TaskRegistry;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.util.ArrayDeque;
@@ -94,7 +94,7 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
         
         cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
     
-        CanvasSearch<IFactoryData<ITask, NBTTagCompound>, IFactoryData<ITask, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<ITask, NBTTagCompound>, IFactoryData<ITask, NBTTagCompound>>((new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 48, 24, 32), 0)))
+        final CanvasSearch<IFactoryData<ITask, NBTTagCompound>, IFactoryData<ITask, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<ITask, NBTTagCompound>, IFactoryData<ITask, NBTTagCompound>>((new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 48, 24, 32), 0)))
         {
             @Override
             protected Iterator<IFactoryData<ITask, NBTTagCompound>> getIterator()
@@ -220,7 +220,7 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
         {
             ITask task = dbTsk.get(i).getValue();
             qtList.addPanel(new PanelButtonStorage<ITask>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3, QuestTranslation.translate(task.getUnlocalisedName()), task));
-            qtList.addPanel(new PanelButtonStorage<ITask>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + ChatFormatting.RED + ChatFormatting.BOLD + "x", task));
+            qtList.addPanel(new PanelButtonStorage<ITask>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "x", task));
         }
     }
 	

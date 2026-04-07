@@ -3,6 +3,7 @@ package betterquesting.commands.admin;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.handlers.NetChapterSync;
@@ -13,7 +14,7 @@ import betterquesting.questing.QuestLineDatabase;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +67,9 @@ public class QuestCommandDelete extends QuestCommandBase
             NetQuestSync.sendSync(null, null, true, true);
             NetChapterSync.sendSync(null, null);
             SaveLoadHandler.INSTANCE.markDirty();
-            
-			sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.delete.all"));
+
+            // No server-side translation on 1.5.2
+			sender.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.cmd.delete.all"));
 		} else
 		{
 			try
@@ -75,8 +77,10 @@ public class QuestCommandDelete extends QuestCommandBase
 				int id = Integer.parseInt(args[1].trim());
 				IQuest quest = QuestDatabase.INSTANCE.getValue(id);
                 NetQuestEdit.deleteQuests(new int[]{id});
-				
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.delete.single", new ChatComponentTranslation(quest.getProperty(NativeProps.NAME))));
+
+                // No server-side translation on 1.5.2
+                sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.delete.single",
+                        QuestTranslation.translate(quest.getProperty(NativeProps.NAME))));
                 SaveLoadHandler.INSTANCE.markDirty();
 			} catch(Exception e)
 			{

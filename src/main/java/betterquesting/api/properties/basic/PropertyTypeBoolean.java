@@ -1,7 +1,7 @@
 package betterquesting.api.properties.basic;
 
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraft.nbt.NBTTagByte;
 import betterquesting.backport.ResourceLocation;
 
@@ -22,7 +22,7 @@ public class PropertyTypeBoolean extends PropertyTypeBase<Boolean>
 		
 		try
 		{
-			return ((NBTPrimitive)nbt).func_150290_f() > 0;
+			return NbtUtils.byteValue(nbt) > 0;
 		} catch(Exception e)
 		{
 			return this.getDefault();

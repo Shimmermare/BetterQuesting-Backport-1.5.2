@@ -39,10 +39,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.common.Configuration;
+
+import java.nio.charset.Charset;
 import java.util.logging.Level;
 
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -270,7 +271,7 @@ public class ThemeRegistry implements IThemeRegistry
                 InputStreamReader isr = null;
                 try
                 {
-                    isr = new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8);
+                    isr = new InputStreamReader(iresource.getInputStream(), Charset.forName("UTF-8"));
                     JsonArray jAry = GSON.fromJson(isr, JsonArray.class);
                     isr.close();
                     

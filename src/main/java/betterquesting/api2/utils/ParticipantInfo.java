@@ -8,7 +8,7 @@ import betterquesting.backport.ProfileMapper;
 import betterquesting.questing.party.PartyManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.FakePlayer;
 
 import javax.annotation.Nonnull;
 import java.util.*;

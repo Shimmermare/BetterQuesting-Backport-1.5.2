@@ -1,9 +1,5 @@
 package betterquesting.api2.client.gui.events;
 
-import betterquesting.backport.Function;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.client.event.GuiOpenEvent;
-
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -86,9 +82,10 @@ public class PEventBroadcaster
 	/**
 	 * Clears event listeners whenever a new GUI loads. If you must have cross GUI communication either handle this yourself or re-register the relevant listeners.
 	 */
-	@SubscribeEvent
-	public void onGuiOpened(GuiOpenEvent event)
-	{
-		entryList.clear();
-	}
+    // FIXME replace with tick workaround
+	//@ForgeSubscribe
+	//public void onGuiOpened(GuiOpenEvent event)
+	//{
+	//	entryList.clear();
+	//}
 }

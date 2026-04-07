@@ -9,7 +9,6 @@ import betterquesting.backport.LiquidUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.Icon;
 import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.liquids.LiquidStack;
@@ -116,7 +115,7 @@ public class FluidTexture implements IGuiTexture
         return bounds;
     }
     
-    private void drawTexturedModalRect(double xCoord, double yCoord, double zDepth, IIcon textureSprite, double widthIn, double heightIn)
+    private void drawTexturedModalRect(double xCoord, double yCoord, double zDepth, Icon textureSprite, double widthIn, double heightIn)
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();

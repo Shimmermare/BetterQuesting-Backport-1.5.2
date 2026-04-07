@@ -10,17 +10,18 @@ import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.backport.Consumer;
 import betterquesting.client.BQ_Keybindings;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -368,7 +369,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
 			}
 		}
 		
-		if(!used && (BQ_Keybindings.openQuests.getKeyCode() == keycode || mc.gameSettings.keyBindInventory.getKeyCode() == keycode))
+		if(!used && (BQ_Keybindings.openQuests.keyCode == keycode || mc.gameSettings.keyBindInventory.keyCode == keycode))
 		{
         	if(this.isVolatile || this instanceof IVolatileScreen)
         	{
@@ -421,7 +422,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
 		}
 		
 		guiPanels.add(panel);
-		guiPanels.sort(ComparatorGuiDepth.INSTANCE);
+        Collections.sort(guiPanels, ComparatorGuiDepth.INSTANCE);
 		panel.getTransform().setParent(getTransform());
 		panel.initPanel();
 	}
@@ -443,8 +444,9 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
     {
         return false; // Halts packet handling if paused
     }
-	
-	@Override
+
+    // FIXME restore behavior
+	//@Override
     protected void renderToolTip(ItemStack stack, int x, int y)
     {
         FontRenderer font = stack.getItem().getFontRenderer(stack);
@@ -464,14 +466,13 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
             }
             else
             {
-                list.set(i, ChatFormatting.GRAY + list.get(i));
+                list.set(i, EnumChatFormatting.GRAY + list.get(i));
             }
         }
         
         return list;
     }
-	
-	@Override
+
     @SuppressWarnings("unchecked")
     protected void drawHoveringText(List textLines, int x, int y, @Nonnull FontRenderer font)
     {

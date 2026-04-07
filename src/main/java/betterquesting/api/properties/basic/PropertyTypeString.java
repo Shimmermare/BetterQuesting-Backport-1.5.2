@@ -19,7 +19,7 @@ public class PropertyTypeString extends PropertyTypeBase<String>
 			return this.getDefault();
 		}
 		
-		return ((NBTTagString)nbt).func_150285_a_();
+		return nbt.toString();
 	}
 	
 	@Override

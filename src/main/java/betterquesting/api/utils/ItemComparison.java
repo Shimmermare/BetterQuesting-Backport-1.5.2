@@ -1,9 +1,9 @@
 package betterquesting.api.utils;
 
 import betterquesting.api2.utils.OreIngredient;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
-import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class ItemComparison
     	} else if(isEmptyNBT(tag1)) // The opposing tag will always be null at this point if the other already is
     	{
     		return true;
-    	} else if(!(tag1 instanceof NBTPrimitive && tag2 instanceof NBTPrimitive) && tag1.getId() != tag2.getId()) return false; // Incompatible tag types (and not a numbers we can cast)
+    	} else if(!(NbtUtils.isPrimitive(tag1) && NbtUtils.isPrimitive(tag2)) && tag1.getId() != tag2.getId()) return false; // Incompatible tag types (and not a numbers we can cast)
     	
     	if(tag1 instanceof NBTTagCompound && tag2 instanceof NBTTagCompound)
     	{
@@ -67,11 +67,11 @@ public class ItemComparison
     		topLoop:
     		for(int i = 0; i < list1.tagCount(); i++)
     		{
-    			NBTBase lt1 = list1.getCompoundTagAt(i);
+    			NBTBase lt1 = NbtUtils.getCompoundTagAt(list1, i);
     			
     			for(int j = 0; j < list2.tagCount(); j++)
     			{
-    				if(CompareNBTTag(lt1, list2.getCompoundTagAt(j), partial))
+    				if(CompareNBTTag(lt1, NbtUtils.getCompoundTagAt(list2, j), partial))
     				{
     					continue topLoop;
     				}
@@ -84,7 +84,7 @@ public class ItemComparison
     		NBTTagIntArray list1 = (NBTTagIntArray)tag1;
     		NBTTagIntArray list2 = (NBTTagIntArray)tag2;
     		
-    		if(list1.func_150302_c().length > list2.func_150302_c().length || (!partial && list1.func_150302_c().length != list2.func_150302_c().length))
+    		if(list1.intArray.length > list2.intArray.length || (!partial && list1.intArray.length != list2.intArray.length))
     		{
     			return false; // Sample is missing requested tags or is not exact
     		}
@@ -92,11 +92,11 @@ public class ItemComparison
     		List<Integer> usedIdxs = new ArrayList<Integer>(); // Duplicate control
     		
     		topLoop:
-    		for(int i = 0; i < list1.func_150302_c().length; i++)
+    		for(int i = 0; i < list1.intArray.length; i++)
     		{
-    			for(int j = 0; j < list2.func_150302_c().length; j++)
+    			for(int j = 0; j < list2.intArray.length; j++)
     			{
-    				if(!usedIdxs.contains(j) && list1.func_150302_c()[i] == list2.func_150302_c()[j])
+    				if(!usedIdxs.contains(j) && list1.intArray[i] == list2.intArray[j])
     				{
     					usedIdxs.add(j);
     					continue topLoop;
@@ -112,7 +112,7 @@ public class ItemComparison
     		NBTTagByteArray list1 = (NBTTagByteArray)tag1;
     		NBTTagByteArray list2 = (NBTTagByteArray)tag2;
     		
-    		if(list1.func_150292_c().length > list2.func_150292_c().length || (!partial && list1.func_150292_c().length != list2.func_150292_c().length))
+    		if(list1.byteArray.length > list2.byteArray.length || (!partial && list1.byteArray.length != list2.byteArray.length))
     		{
     			return false; // Sample is missing requested tags or is not exact for non-partial match
     		}
@@ -120,11 +120,11 @@ public class ItemComparison
     		List<Integer> usedIdxs = new ArrayList<Integer>(); // Duplicate control
     		
     		topLoop:
-    		for(int i = 0; i < list1.func_150292_c().length; i++)
+    		for(int i = 0; i < list1.byteArray.length; i++)
     		{
-    			for(int j = 0; j < list2.func_150292_c().length; j++)
+    			for(int j = 0; j < list2.byteArray.length; j++)
     			{
-    				if(!usedIdxs.contains(j) && list1.func_150292_c()[i] == list2.func_150292_c()[j])
+    				if(!usedIdxs.contains(j) && list1.byteArray[i] == list2.byteArray[j])
     				{
     					usedIdxs.add(j);
     					continue topLoop;
@@ -136,7 +136,7 @@ public class ItemComparison
     	} else if(tag1 instanceof NBTTagString && tag2 instanceof NBTTagString)
     	{
     		return tag1.equals(tag2);
-    	} else if(tag1 instanceof NBTPrimitive && tag2 instanceof NBTPrimitive) // Standardize numbers to not care about format
+    	} else if(NbtUtils.isPrimitive(tag1) && NbtUtils.isPrimitive(tag2)) // Standardize numbers to not care about format
     	{
     		Number num1 = NBTConverter.getNumber(tag1);
     		Number num2 = NBTConverter.getNumber(tag2);
@@ -168,7 +168,7 @@ public class ItemComparison
     		return true;
     	}
     	
-    	for(String key : (Set<String>)reqTags.func_150296_c())
+    	for(String key : NbtUtils.getKeys(reqTags))
     	{
     		if(!sample.hasKey(key))
     		{

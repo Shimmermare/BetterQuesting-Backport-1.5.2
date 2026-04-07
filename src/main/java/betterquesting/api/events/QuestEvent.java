@@ -1,6 +1,6 @@
 package betterquesting.api.events;
 
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.event.Event;
 
 import java.util.*;
 

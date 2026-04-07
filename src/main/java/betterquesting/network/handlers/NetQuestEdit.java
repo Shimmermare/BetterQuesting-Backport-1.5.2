@@ -10,6 +10,7 @@ import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
@@ -17,7 +18,6 @@ import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,7 +25,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 import betterquesting.backport.ResourceLocation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -81,13 +80,13 @@ public class NetQuestEdit
 		
 		NBTTagCompound tag = message.getFirst();
 		UUID senderID = QuestingAPI.getQuestingUUID(sender);
-		int action = !message.getFirst().hasKey("action", 99) ? -1 : message.getFirst().getInteger("action");
+		int action = !NbtUtils.hasKey(message.getFirst(),"action", 99) ? -1 : message.getFirst().getInteger("action");
 		
 		switch(action)
         {
             case 0:
             {
-                editQuests(tag.getTagList("data", 10));
+                editQuests(NbtUtils.getTagList(tag,"data", 10));
                 break;
             }
             case 1:
@@ -103,7 +102,7 @@ public class NetQuestEdit
             }
             case 3:
             {
-                createQuests(tag.getTagList("data", 10));
+                createQuests(NbtUtils.getTagList(tag,"data", 10));
                 break;
             }
             default:
@@ -119,7 +118,7 @@ public class NetQuestEdit
         int[] ids = new int[data.tagCount()];
         for(int i = 0; i < data.tagCount(); i++)
         {
-            NBTTagCompound entry = data.getCompoundTagAt(i);
+            NBTTagCompound entry = NbtUtils.getCompoundTagAt(data, i);
             int questID = entry.getInteger("questID");
             ids[i] = questID;
             
@@ -209,14 +208,14 @@ public class NetQuestEdit
         int[] ids = new int[data.tagCount()];
         for(int i = 0; i < data.tagCount(); i++)
         {
-            NBTTagCompound entry = data.getCompoundTagAt(i);
-            int questID = entry.hasKey("questID", 99) ? entry.getInteger("questID") : -1;
+            NBTTagCompound entry = NbtUtils.getCompoundTagAt(data, i);
+            int questID = NbtUtils.hasKey(entry, "questID", 99) ? entry.getInteger("questID") : -1;
             if(questID < 0) questID = QuestDatabase.INSTANCE.nextID();
             ids[i] = questID;
             
             IQuest quest = QuestDatabase.INSTANCE.getValue(questID);
             if(quest == null) quest = QuestDatabase.INSTANCE.createNew(questID);
-            if(entry.hasKey("config", 10)) quest.readFromNBT(entry.getCompoundTag("config"));
+            if(NbtUtils.hasKey(entry,"config", 10)) quest.readFromNBT(entry.getCompoundTag("config"));
         }
         
         SaveLoadHandler.INSTANCE.markDirty();
@@ -226,7 +225,7 @@ public class NetQuestEdit
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message) // Imparts edit specific changes
     {
-		int action = !message.hasKey("action", 99) ? -1 : message.getInteger("action");
+		int action = !NbtUtils.hasKey(message,"action", 99) ? -1 : message.getInteger("action");
 		
 		if(action == 1) // Change to a switch statement when more actions are required
         {

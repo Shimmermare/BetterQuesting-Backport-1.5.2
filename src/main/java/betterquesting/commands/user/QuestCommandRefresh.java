@@ -12,7 +12,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 
 public class QuestCommandRefresh extends QuestCommandBase
 {
@@ -31,7 +31,7 @@ public class QuestCommandRefresh extends QuestCommandBase
 		if(server.isDedicatedServer() || !server.getServerOwner().equals(player.username))
 		{
             NetBulkSync.sendReset(player, true, true);
-			sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.refresh"));
+			sender.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.cmd.refresh"));
 		} else
         {
             boolean nameChanged = NameCache.INSTANCE.updateName(player);

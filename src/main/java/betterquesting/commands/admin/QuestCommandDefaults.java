@@ -4,6 +4,7 @@ import betterquesting.api.properties.NativeProps;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
@@ -21,7 +22,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,10 +88,10 @@ public class QuestCommandDefaults extends QuestCommandBase
 			
 			if(args.length == 3 && !args[2].equalsIgnoreCase("DefaultQuests"))
 			{
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.default.save2", args[2] + ".json"));
+                sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.default.save2", args[2] + ".json"));
 			} else
 			{
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.default.save"));
+                sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.default.save"));
 			}
 		} else if(args[1].equalsIgnoreCase("load"))
 		{

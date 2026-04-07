@@ -1,7 +1,7 @@
 package betterquesting.api.events;
 
 import betterquesting.api.nbt_doc.INbtDoc;
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.event.Event;
 
 /**
  * Can be used to override the JsonDocs in the editors with custom ones.

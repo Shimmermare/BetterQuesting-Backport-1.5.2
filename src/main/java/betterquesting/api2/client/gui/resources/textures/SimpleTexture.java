@@ -3,12 +3,13 @@ package betterquesting.api2.client.gui.resources.textures;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
-import cpw.mods.fml.client.config.GuiUtils;
+//import cpw.mods.fml.client.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import betterquesting.backport.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+// FIXME restore behavior
 public class SimpleTexture implements IGuiTexture
 {
 	private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
@@ -60,12 +61,12 @@ public class SimpleTexture implements IGuiTexture
         
         GL11.glScalef(sx, sy, 1F);
 		color.applyGlColor();
-		
-        GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-		
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-		GuiUtils.drawTexturedModalRect(0, 0, texBounds.getX(), texBounds.getY(), texBounds.getWidth(), texBounds.getHeight(), zLevel);
+
+        //GL11.glEnable(GL11.GL_BLEND);
+        //OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+		//
+		//Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		//GuiUtils.drawTexturedModalRect(0, 0, texBounds.getX(), texBounds.getY(), texBounds.getWidth(), texBounds.getHeight(), zLevel);
         
         GL11.glPopMatrix();
 	}

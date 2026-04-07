@@ -12,7 +12,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,11 +106,11 @@ public class QuestCommandReset extends QuestCommandBase
 			
 			if(uuid != null)
 			{
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.reset.player_all", pName));
+				sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.reset.player_all", pName));
 				if(player != null) NetQuestSync.sendSync(player, null, false, true);
 			} else
 			{
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.reset.all_all"));
+				sender.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.cmd.reset.all_all"));
                 NetQuestSync.quickSync(-1, false, true);
 			}
 		} else
@@ -123,12 +123,14 @@ public class QuestCommandReset extends QuestCommandBase
 				if(uuid != null)
 				{
 					quest.resetUser(uuid, true); // Clear progress and state
-					sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.reset.player_single", new ChatComponentTranslation(quest.getProperty(NativeProps.NAME)), pName));
+					sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.reset.player_single",
+                            StatCollector.translateToLocal(quest.getProperty(NativeProps.NAME)), pName));
 					if(player != null) NetQuestSync.sendSync(player, new int[]{id}, false, true);
 				} else
 				{
 					quest.resetUser(null, true);
-					sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.reset.all_single", new ChatComponentTranslation(quest.getProperty(NativeProps.NAME))));
+					sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.reset.all_single",
+                            StatCollector.translateToLocal(quest.getProperty(NativeProps.NAME))));
 					NetQuestSync.quickSync(id, false, true);
 				}
 			} catch(Exception e)

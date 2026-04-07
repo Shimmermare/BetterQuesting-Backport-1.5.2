@@ -32,10 +32,10 @@ import betterquesting.client.gui2.editors.nbt.GuiNbtEditor;
 import betterquesting.network.handlers.NetQuestEdit;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.rewards.RewardRegistry;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.util.ArrayDeque;
@@ -222,7 +222,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         {
             IReward reward = dbRew.get(i).getValue();
             qrList.addPanel(new PanelButtonStorage<IReward>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3, QuestTranslation.translate(reward.getUnlocalisedName()), reward));
-            qrList.addPanel(new PanelButtonStorage<IReward>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + ChatFormatting.RED + ChatFormatting.BOLD + "x", reward));
+            qrList.addPanel(new PanelButtonStorage<IReward>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "x", reward));
         }
     }
 	

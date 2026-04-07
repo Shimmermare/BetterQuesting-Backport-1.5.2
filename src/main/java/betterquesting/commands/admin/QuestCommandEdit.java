@@ -8,7 +8,7 @@ import betterquesting.storage.QuestSettings;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +73,10 @@ public class QuestCommandEdit extends QuestCommandBase
 		}
 		
 		QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, flag);
-		
-		sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.edit", new ChatComponentTranslation(QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE) ? "options.on" : "options.off")));
+
+        String toggleKey = QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE) ? "options.on" : "options.off";
+		sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.edit",
+                StatCollector.translateToLocal(toggleKey)));
   
 		SaveLoadHandler.INSTANCE.markDirty();
         NetSettingSync.sendSync(null);

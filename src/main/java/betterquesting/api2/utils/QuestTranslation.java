@@ -1,12 +1,17 @@
 package betterquesting.api2.utils;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.StringTranslate;
 
 public class QuestTranslation
 {
+    public static String translate(String text)
+    {
+        return StringTranslate.getInstance().translateKey(text);
+    }
+
     public static String translate(String text, Object... args)
     {
-        String out = I18n.format(text, args);
+        String out = StringTranslate.getInstance().translateKeyFormat(text, args);
         if(out.startsWith("Format error: ")) return text; // TODO: Find a more reliable way of detecting translation failure
         return out;
     }

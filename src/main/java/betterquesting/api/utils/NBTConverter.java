@@ -1,6 +1,7 @@
 package betterquesting.api.utils;
 
 import betterquesting.api.api.QuestingAPI;
+import betterquesting.backport.NbtUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -33,7 +34,7 @@ public class NBTConverter
 			return new JsonPrimitive(getNumber(tag));
 		} if(tag instanceof NBTTagString)
 		{
-			return new JsonPrimitive(((NBTTagString)tag).func_150285_a_());
+			return new JsonPrimitive(tag.toString());
 		} else if(tag instanceof NBTTagCompound)
 		{
 			return NBTtoJSON_Compound((NBTTagCompound)tag, new JsonObject(), format);
@@ -68,7 +69,7 @@ public class NBTConverter
 		{
 			JsonArray jAry = new JsonArray();
 			
-			for(byte b : ((NBTTagByteArray)tag).func_150292_c())
+			for(byte b : ((NBTTagByteArray)tag).byteArray)
 			{
 				jAry.add(new JsonPrimitive(b));
 			}
@@ -78,7 +79,7 @@ public class NBTConverter
 		{
 			JsonArray jAry = new JsonArray();
 			
-			for(int i : ((NBTTagIntArray)tag).func_150302_c())
+			for(int i : ((NBTTagIntArray)tag).intArray)
 			{
 				jAry.add(new JsonPrimitive(i));
 			}
@@ -98,7 +99,7 @@ public class NBTConverter
 			return jObj;
 		}
 		
-		for(String key : (Set<String>)parent.func_150296_c())
+		for(String key : NbtUtils.getKeys(parent))
 		{
 			NBTBase tag = parent.getTag(key);
 			
@@ -269,22 +270,22 @@ public class NBTConverter
 	{
 		if(tag instanceof NBTTagByte)
 		{
-			return ((NBTTagByte)tag).func_150290_f();
+			return ((NBTTagByte)tag).data;
 		} else if(tag instanceof NBTTagShort)
 		{
-			return ((NBTTagShort)tag).func_150289_e();
+			return ((NBTTagShort)tag).data;
 		} else if(tag instanceof NBTTagInt)
 		{
-			return ((NBTTagInt)tag).func_150287_d();
+			return ((NBTTagInt)tag).data;
 		} else if(tag instanceof NBTTagFloat)
 		{
-			return ((NBTTagFloat)tag).func_150288_h();
+			return ((NBTTagFloat)tag).data;
 		} else if(tag instanceof NBTTagDouble)
 		{
-			return ((NBTTagDouble)tag).func_150286_g();
+			return ((NBTTagDouble)tag).data;
 		} else if(tag instanceof NBTTagLong)
 		{
-			return ((NBTTagLong)tag).func_150291_c();
+			return ((NBTTagLong)tag).data;
 		} else
 		{
 			return 0;

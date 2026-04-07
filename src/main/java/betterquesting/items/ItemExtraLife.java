@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
@@ -78,12 +79,12 @@ public class ItemExtraLife extends Item
     		if(!world.isRemote)
     		{
     			LifeDatabase.INSTANCE.setLives(uuid, lives + 1);
-                player.sendChatToPlayer(StringTranslate.getInstance().translateKey("betterquesting.gui.remaining_lives")
+                player.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.gui.remaining_lives")
                                 + EnumChatFormatting.YELLOW + (lives + 1));
     		}
     	} else if(!world.isRemote)
     	{
-            player.sendChatToPlayer(StringTranslate.getInstance().translateKey("betterquesting.msg.heart_disabled"));
+            player.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.msg.heart_disabled"));
     	}
     	
 		return stack;

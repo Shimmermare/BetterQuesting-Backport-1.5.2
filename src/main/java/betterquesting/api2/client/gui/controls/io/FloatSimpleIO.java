@@ -56,7 +56,7 @@ public class FloatSimpleIO implements IValueIO<Float>
             }
             
             long d = System.currentTimeMillis() - t;
-            s = RenderUtils.lerpFloat(s, v, (float)MathHelper.clamp_double(d * (double)lerpSpd, 0D, 1D));
+            s = RenderUtils.lerpFloat(s, v, MathHelper.clamp_float(d * lerpSpd, 0F, 1F));
             if(d > 0) t = System.currentTimeMillis(); // Required if read out more than once in 1ms
             return s;
         }

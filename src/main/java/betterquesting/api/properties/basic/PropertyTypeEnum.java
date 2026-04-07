@@ -25,7 +25,7 @@ public class PropertyTypeEnum<E extends Enum<E>> extends PropertyTypeBase<E>
 		
 		try
 		{
-			return Enum.valueOf(eClazz, ((NBTTagString)nbt).func_150285_a_());
+			return Enum.valueOf(eClazz, nbt.toString());
 		} catch(Exception e)
 		{
 			return this.getDefault();

@@ -8,8 +8,8 @@ import betterquesting.storage.QuestSettings;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class QuestCommandSPHardcore extends QuestCommandBase
 {
@@ -24,16 +24,15 @@ public class QuestCommandSPHardcore extends QuestCommandBase
 	{
 		if(!server.isSinglePlayer() || !server.getServerOwner().equalsIgnoreCase(sender.getCommandSenderName()))
 		{
-			ChatComponentTranslation cc = new ChatComponentTranslation("commands.generic.permission");
-			cc.getChatStyle().setColor(EnumChatFormatting.RED);
-			sender.addChatMessage(cc);
+			sender.sendChatToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("commands.generic.permission"));
 			return;
 		}
 		
 		QuestSettings.INSTANCE.setProperty(NativeProps.HARDCORE, true);
         SaveLoadHandler.INSTANCE.saveDatabases();
         
-		sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.hardcore", new ChatComponentTranslation("options.on")));
+		sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.hardcore",
+                StatCollector.translateToLocal("options.on")));
 		NetSettingSync.sendSync(null);
 	}
 }

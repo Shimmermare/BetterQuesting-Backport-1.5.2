@@ -58,6 +58,7 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
@@ -255,17 +256,7 @@ public class EventHandler
 		NetNotices.sendNotice(quest.getProperty(NativeProps.GLOBAL) ? null : new EntityPlayerMP[]{(EntityPlayerMP)player}, icon, mainText, subText, sound);
 	}
 	
-	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
-	{
-		if(event.modID.equals(BetterQuesting.MODID))
-		{
-			ConfigHandler.config.save();
-			ConfigHandler.initConfigs();
-		}
-	}
-	
-	@SubscribeEvent
+	@ForgeSubscribe
 	public void onWorldSave(WorldEvent.Save event)
 	{
 		if(!event.world.isRemote && BQ_Settings.curWorldDir != null && event.world.provider.dimensionId == 0)
@@ -273,8 +264,9 @@ public class EventHandler
 			SaveLoadHandler.INSTANCE.saveDatabases();
 		}
 	}
-	
-	@SubscribeEvent
+
+    // FIXME replace with IConnectionHandler
+	@ForgeSubscribe
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event)
 	{
 		if(event.player.worldObj.isRemote || MinecraftServer.getServer() == null || !(event.player instanceof EntityPlayerMP)) return;
@@ -289,8 +281,9 @@ public class EventHandler
         
         NetBulkSync.sendReset(mpPlayer, true, true);
 	}
-	
-	@SubscribeEvent
+
+    // FIXME Replace with IPlayerTracker
+	@ForgeSubscribe
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		if(QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) && event.player instanceof EntityPlayerMP && !((EntityPlayerMP)event.player).playerConqueredTheEnd)
@@ -334,7 +327,7 @@ public class EventHandler
 		}
 	}
 	
-	@SubscribeEvent
+	@ForgeSubscribe
 	public void onLivingDeath(LivingDeathEvent event)
 	{
 		if(event.entityLiving.worldObj.isRemote || !QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE))
@@ -351,7 +344,7 @@ public class EventHandler
 		}
 	}
 	
-	@SubscribeEvent
+	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
 	public void onTextureStitch(TextureStitchEvent.Pre event)
 	{
@@ -363,7 +356,7 @@ public class EventHandler
 		}
 	}
 	
-	@SubscribeEvent
+	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
 	public void onDataUpdated(DatabaseEvent.Update event)
 	{
@@ -377,7 +370,7 @@ public class EventHandler
         }));
 	}
 	
-	@SubscribeEvent
+	@ForgeSubscribe
 	public void onCommand(CommandEvent event)
 	{
 		MinecraftServer server = MinecraftServer.getServer();
@@ -398,7 +391,9 @@ public class EventHandler
 	@SuppressWarnings("UnstableApiUsage")
     public static <T> ListenableFuture<T> scheduleServerTask(Callable<T> task)
     {
-        Validate.notNull(task);
+        if (task == null) {
+            throw new NullPointerException("task");
+        }
 
         if (Thread.currentThread() != serverThread)
         {
@@ -422,7 +417,8 @@ public class EventHandler
             }
         }
     }
-	
+
+    // FIXME Replace with ITickHandler
 	@SubscribeEvent
     public void onServerTick(ServerTickEvent event)
     {

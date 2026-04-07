@@ -9,6 +9,7 @@ import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import betterquesting.backport.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
@@ -221,7 +222,7 @@ public class PanelButton implements IPanelButton
             }
             default:
             {
-                font.drawString(text, MathHelper.floor_float(x + Math.floorDiv(width, 2) - RenderUtils.getStringWidth(text, font) / 2F), y, color, shadow);
+                font.drawString(text, MathHelper.floor_float(x + MathUtils.floorDiv(width, 2) - RenderUtils.getStringWidth(text, font) / 2F), y, color, shadow);
             }
         }
     }

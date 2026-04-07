@@ -36,7 +36,8 @@ public final class DBEntry<T> implements Comparable<DBEntry<T>>
     @Override
     public int compareTo(DBEntry<T> o)
     {
-        return Integer.compare(id, o.id);
+        if (id == o.id) return 0;
+        return id < o.id ? -1 : 1;
     }
     
     @Override

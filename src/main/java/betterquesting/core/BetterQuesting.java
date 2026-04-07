@@ -17,7 +17,6 @@ import betterquesting.items.ItemGuideBook;
 import betterquesting.network.PacketHandler;
 import betterquesting.network.PacketTypeRegistry;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -66,7 +65,7 @@ public class BetterQuesting
 
 	public static Block submitStation = new BlockSubmitStation(2325);
     
-    @EventHandler
+    @ForgeSubscribe
     public void preInit(FMLPreInitializationEvent event)
     {
     	logger = event.getModLog();
@@ -79,7 +78,7 @@ public class BetterQuesting
     	PacketTypeRegistry.INSTANCE.init();
     }
     
-    @EventHandler
+    @ForgeSubscribe
     public void init(FMLInitializationEvent event)
     {
         // FIXME: fluidPlaceholder
@@ -111,12 +110,12 @@ public class BetterQuesting
     	proxy.registerRenderers();
     }
     
-    @EventHandler
+    @ForgeSubscribe
     public void postInit(FMLPostInitializationEvent event)
     {
     }
 	
-	@EventHandler
+	@ForgeSubscribe
 	public void serverStart(FMLServerStartingEvent event)
 	{
 		MinecraftServer server = event.getServer();
@@ -131,7 +130,7 @@ public class BetterQuesting
 		SaveLoadHandler.INSTANCE.loadDatabases(server);
 	}
 	
-	@EventHandler
+	@ForgeSubscribe
 	public void serverStop(FMLServerStoppedEvent event)
 	{
 		SaveLoadHandler.INSTANCE.unloadDatabases();

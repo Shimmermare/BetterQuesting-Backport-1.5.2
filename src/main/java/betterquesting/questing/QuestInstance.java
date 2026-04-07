@@ -15,6 +15,7 @@ import betterquesting.api2.cache.QuestCache;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.IDatabaseNBT;
 import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.rewards.RewardStorage;
 import betterquesting.questing.tasks.TaskStorage;
@@ -23,7 +24,6 @@ import betterquesting.storage.QuestSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
@@ -464,20 +464,20 @@ public class QuestInstance implements IQuest
 	public void readFromNBT(NBTTagCompound jObj)
 	{
 		this.qInfo.readFromNBT(jObj.getCompoundTag("properties"));
-		this.tasks.readFromNBT(jObj.getTagList("tasks", 10), false);
-		this.rewards.readFromNBT(jObj.getTagList("rewards", 10), false);
+		this.tasks.readFromNBT(NbtUtils.getTagList(jObj,"tasks", 10), false);
+		this.rewards.readFromNBT(NbtUtils.getTagList(jObj, "rewards", 10), false);
 		
-		if(jObj.func_150299_b("preRequisites") == 11) // Native NBT
+		if(NbtUtils.getId(jObj, "preRequisites") == 11) // Native NBT
 		{
 		    setRequirements(jObj.getIntArray("preRequisites"));
 		} else // Probably an NBTTagList
 		{
-			List<NBTBase> rList = NBTConverter.getTagList(jObj.getTagList("preRequisites", 4));
+			List<NBTBase> rList = NBTConverter.getTagList(NbtUtils.getTagList(jObj,"preRequisites", 4));
 			int[] req = new int[rList.size()];
 			for(int i = 0; i < rList.size(); i++)
 			{
 				NBTBase pTag = rList.get(i);
-				req[i] = pTag instanceof NBTPrimitive ? ((NBTPrimitive)pTag).func_150287_d() : -1;
+				req[i] = NbtUtils.isPrimitive(pTag) ? NbtUtils.intValue(pTag) : -1;
 			}
 			setRequirements(req);
 		}
@@ -513,10 +513,10 @@ public class QuestInstance implements IQuest
 	    synchronized(completeUsers)
         {
             if(!merge) completeUsers.clear();
-            NBTTagList comList = json.getTagList("completed", 10);
+            NBTTagList comList = NbtUtils.getTagList(json,"completed", 10);
             for(int i = 0; i < comList.tagCount(); i++)
             {
-                NBTTagCompound entry = (NBTTagCompound)comList.getCompoundTagAt(i).copy();
+                NBTTagCompound entry =(NBTTagCompound) NbtUtils.getCompoundTagAt(comList, i).copy();
                 
                 try
                 {
@@ -528,7 +528,7 @@ public class QuestInstance implements IQuest
                 }
             }
     
-            tasks.readProgressFromNBT(json.getTagList("tasks", 10), merge);
+            tasks.readProgressFromNBT(NbtUtils.getTagList(json,"tasks", 10), merge);
         }
 	}
 	

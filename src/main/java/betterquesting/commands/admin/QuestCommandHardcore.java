@@ -8,7 +8,7 @@ import betterquesting.storage.QuestSettings;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +74,10 @@ public class QuestCommandHardcore extends QuestCommandBase
 		
 		QuestSettings.INSTANCE.setProperty(NativeProps.HARDCORE, flag);
         SaveLoadHandler.INSTANCE.markDirty();
-        
-		sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.hardcore", new ChatComponentTranslation(QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) ? "options.on" : "options.off")));
+
+        String toggleKey = QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) ? "options.on" : "options.off";
+        sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.hardcore",
+                StatCollector.translateToLocal(toggleKey)));
         NetSettingSync.sendSync(null);
 	}
 }

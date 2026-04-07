@@ -3,7 +3,6 @@ package betterquesting.client;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.utils.QuestTranslation;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -14,6 +13,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.ForgeSubscribe;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -35,7 +35,7 @@ public class QuestNotification
 		notices.clear();
 	}
 	
-	@SubscribeEvent
+	@ForgeSubscribe
 	public void onDrawScreen(RenderGameOverlayEvent.Post event)
 	{
 		if(event.type != RenderGameOverlayEvent.ElementType.HELMET) return;

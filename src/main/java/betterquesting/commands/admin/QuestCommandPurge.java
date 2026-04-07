@@ -11,7 +11,7 @@ import betterquesting.questing.QuestLineDatabase;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,6 +54,6 @@ public class QuestCommandPurge extends QuestCommandBase
         for(n = 0; n < bulkIDs.length; n++) bulkIDs[n] = removeQueue.get(n);
         NetQuestEdit.deleteQuests(bulkIDs);
         
-        sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.purge_hidden", removed));
+        sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.purge_hidden", removed));
     }
 }

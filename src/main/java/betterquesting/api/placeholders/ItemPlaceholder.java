@@ -16,9 +16,9 @@ public class ItemPlaceholder extends Item
 	public static Item placeholder = new ItemPlaceholder();
 	
 	// Used solely for retaining info to missing items
-	public ItemPlaceholder()
+	public ItemPlaceholder(int id)
 	{
-		this.setTextureName("betterquesting:placeholder");
+        super(id);
 		this.setUnlocalizedName("betterquesting.placeholder");
 	}
 	

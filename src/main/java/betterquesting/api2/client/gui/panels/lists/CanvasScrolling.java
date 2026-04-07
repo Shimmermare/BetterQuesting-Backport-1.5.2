@@ -12,6 +12,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -460,7 +461,7 @@ public class CanvasScrolling implements IGuiCanvas
 		if(panel == null || guiPanels.contains(panel)) return;
 		
 		guiPanels.add(panel);
-		guiPanels.sort(ComparatorGuiDepth.INSTANCE);
+		Collections.sort(guiPanels, ComparatorGuiDepth.INSTANCE);
 		
 		cullingManager.addPanel(panel, useCulling);
 		

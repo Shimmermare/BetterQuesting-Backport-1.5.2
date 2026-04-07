@@ -1,6 +1,7 @@
 package betterquesting.api.utils;
 
 import betterquesting.api2.utils.OreIngredient;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -77,7 +78,7 @@ public class BigItemStack
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean hasOreDict()
     {
-        return !StringUtils.isNullOrEmpty(this.oreDict) && this.oreIng.getMatchingStacks().length > 0;
+        return oreDict != null && !oreDict.isEmpty() && this.oreIng.getMatchingStacks().length > 0;
     }
 	
 	@Nonnull
@@ -170,7 +171,7 @@ public class BigItemStack
     public static BigItemStack loadItemStackFromNBT(@Nonnull NBTTagCompound nbt) // Can load normal ItemStack NBTs. Does NOT deal with placeholders
 	{
 		NBTTagCompound itemNBT = nbt;
-		if(!nbt.hasKey("id", 99))
+		if(!NbtUtils.hasKey(nbt,"id", 99))
         {
             itemNBT = (NBTTagCompound)nbt.copy(); // Could be slow en-mass but ID names matter more
             String idName = nbt.getString("id");

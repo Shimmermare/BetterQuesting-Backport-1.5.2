@@ -3,6 +3,7 @@ package betterquesting.commands.admin;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.network.handlers.NetQuestEdit;
 import betterquesting.questing.QuestDatabase;
@@ -11,7 +12,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StringTranslate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,9 @@ public class QuestCommandComplete extends QuestCommandBase
         IQuest quest = QuestDatabase.INSTANCE.getValue(id);
         if(quest == null) throw getException(command);
         NetQuestEdit.setQuestStates(new int[]{id}, true, uuid);
-        sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.complete", new ChatComponentTranslation(quest.getProperty(NativeProps.NAME)), pName));
+        // No server-side translations in 1.5.2
+        sender.sendChatToPlayer(StringTranslate.getInstance().translateKey("betterquesting.cmd.complete")
+                + " " + QuestTranslation.translate(quest.getProperty(NativeProps.NAME), pName));
 	}
 	
 	@Override

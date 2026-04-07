@@ -6,6 +6,7 @@ import betterquesting.api.questing.*;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.client.importers.ImportedQuestLines;
 import betterquesting.client.importers.ImportedQuests;
 import betterquesting.core.BetterQuesting;
@@ -14,11 +15,9 @@ import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
 import betterquesting.backport.ResourceLocation;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -69,8 +68,8 @@ public class NetImport
 		ImportedQuests impQuestDB = new ImportedQuests();
 		IQuestLineDatabase impQuestLineDB = new ImportedQuestLines();
 		
-		impQuestDB.readFromNBT(message.getFirst().getTagList("quests", 10), false);
-		impQuestLineDB.readFromNBT(message.getFirst().getTagList("chapters", 10), false);
+		impQuestDB.readFromNBT(NbtUtils.getTagList(message.getFirst(), "quests", 10), false);
+		impQuestLineDB.readFromNBT(NbtUtils.getTagList(message.getFirst(),"chapters", 10), false);
 		
 		BetterQuesting.logger.info("Importing " + impQuestDB.size() + " quest(s) and " + impQuestLineDB.size() + " quest line(s) from " + sender.username);
 		

@@ -4,10 +4,8 @@ import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CanvasCullingManager
@@ -74,7 +72,7 @@ public class CanvasCullingManager
                     if(cbl.enabled)
                     {
                         cachedPanels.add(panel);
-                        cachedPanels.sort(ComparatorGuiDepth.INSTANCE);
+                        Collections.sort(cachedPanels, ComparatorGuiDepth.INSTANCE);
                     }
                 }
                 

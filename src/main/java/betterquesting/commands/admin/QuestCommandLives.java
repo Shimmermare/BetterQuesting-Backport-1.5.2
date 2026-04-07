@@ -12,7 +12,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +100,7 @@ public class QuestCommandLives extends QuestCommandBase
                     }
                 }
                 if(target != null) NetLifeSync.sendSync(new EntityPlayerMP[]{target}, new UUID[]{playerID});
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.lives.set_player", pName, value));
+				sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.lives.set_player", pName, value));
 			} else
 			{
 				for(EntityPlayerMP p : (List<EntityPlayerMP>)server.getConfigurationManager().playerEntityList)
@@ -110,7 +110,7 @@ public class QuestCommandLives extends QuestCommandBase
 					NetLifeSync.sendSync(new EntityPlayerMP[]{p}, new UUID[]{uuid});
 				}
 				
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.lives.set_all", value));
+				sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.lives.set_all", value));
 			}
 		} else if(action.equalsIgnoreCase("add"))
 		{
@@ -131,10 +131,10 @@ public class QuestCommandLives extends QuestCommandBase
 				
 				if(value >= 0)
 				{
-					sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.lives.add_player", value, pName, lives));
+					sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.lives.add_player", value, pName, lives));
 				} else
 				{
-					sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.lives.remove_player", Math.abs(value), pName, lives));
+					sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.lives.remove_player", Math.abs(value), pName, lives));
 				}
 			} else
 			{
@@ -148,22 +148,22 @@ public class QuestCommandLives extends QuestCommandBase
 				
 				if(value >= 0)
 				{
-					sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.lives.add_all", value));
+					sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.lives.add_all", value));
 				} else
 				{
-					sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.lives.remove_all", Math.abs(value)));
+					sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.lives.remove_all", Math.abs(value)));
 				}
 			}
 		} else if(action.equalsIgnoreCase("max"))
 		{
 			value = Math.max(1, value);
 			QuestSettings.INSTANCE.setProperty(NativeProps.LIVES_MAX, value);
-			sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.lives.max", value));
+			sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.lives.max", value));
 		} else if(action.equalsIgnoreCase("default"))
 		{
 			value = Math.max(1, value);
 			QuestSettings.INSTANCE.setProperty(NativeProps.LIVES_DEF, value);
-            sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.lives.default" + value));
+            sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.lives.default" + value));
 		} else
 		{
 			throw getException(command);

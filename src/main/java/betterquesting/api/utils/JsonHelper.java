@@ -4,6 +4,8 @@ import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.placeholders.ItemPlaceholder;
 import betterquesting.api.placeholders.PlaceholderConverter;
 import betterquesting.api2.utils.BQThreadedIO;
+import betterquesting.backport.FileUtils;
+import betterquesting.backport.NbtUtils;
 import com.google.gson.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -14,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 
@@ -25,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.concurrent.Future;
 
 /**
@@ -36,6 +38,7 @@ import java.util.concurrent.Future;
  */
 public class JsonHelper
 {
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
 	private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	
 	public static JsonArray GetArray(JsonObject json, String id)
@@ -154,9 +157,7 @@ public class JsonHelper
 		{
 			return;
 		}
-		
-		ArrayList<String> list = new ArrayList<String>((Set<String>)tag.func_150296_c());
-		for(String key : list)
+		for(String key : NbtUtils.getKeys(tag))
 		{
 			tag.removeTag(key);
 		}
@@ -178,7 +179,7 @@ public class JsonHelper
 			try
 			{
 			    fis = new FileInputStream(file);
-			    fr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+			    fr = new InputStreamReader(fis, UTF_8);
 				JsonObject json = GSON.fromJson(fr, JsonObject.class);
 				fr.close();
 				return json;
@@ -223,7 +224,7 @@ public class JsonHelper
 	}
 	
 	@SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void WriteToFile(File file, JsonObject jObj)
+    public static void WriteToFile(final File file, final JsonObject jObj)
 	{
 	    final File tmp = new File(file.getAbsolutePath() + ".tmp");
 	    
@@ -253,7 +254,7 @@ public class JsonHelper
 			try
 			{
 			    fos = new FileOutputStream(tmp);
-			    fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+			    fw = new OutputStreamWriter(fos, UTF_8);
 			    // Attempt writing
 				GSON.toJson(jObj, fw);
 				fw.flush();
@@ -278,7 +279,7 @@ public class JsonHelper
 			try
             {
 			    fis = new FileInputStream(tmp);
-			    fr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+			    fr = new InputStreamReader(fis, UTF_8);
 				// Readback what we wrote to validate it
                 GSON.fromJson(fr, JsonObject.class);
             } catch(Exception e)
@@ -298,7 +299,7 @@ public class JsonHelper
 			
 			try
             {
-                Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                FileUtils.moveFile(tmp, file, true);
             } catch(Exception e)
             {
 				QuestingAPI.getLogger().log(Level.SEVERE, "An error occured while saving JSON to file (Temp copy):", e);
@@ -315,7 +316,7 @@ public class JsonHelper
 		try
 		{
 		    if(fileOut.getParentFile() != null) fileOut.getParentFile().mkdirs();
-		    Files.copy(fileIn.toPath(), fileOut.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            FileUtils.moveFile(fileIn, fileOut, true);
 		} catch(Exception e)
 		{
 			QuestingAPI.getLogger().log(Level.SEVERE, "Failed copy paste", e);
@@ -324,19 +325,19 @@ public class JsonHelper
 	
 	public static String makeFileNameSafe(String s)
 	{
-		for(char c : ChatAllowedCharacters.allowedCharacters)
-		{
-			s = s.replace(c, '_');
-		}
-		
+        for (int i = 0; i < ChatAllowedCharacters.allowedCharacters.length(); i++) {
+            char c = ChatAllowedCharacters.allowedCharacters.charAt(i);
+            s = s.replace(c, '_');
+        }
+
 		return s;
 	}
 	
 	public static boolean isItem(NBTTagCompound json)
 	{
-		if(json != null && json.hasKey("id") && json.hasKey("Count", 99) && json.hasKey("Damage", 99))
+		if(json != null && json.hasKey("id") && NbtUtils.hasKey(json,"Count", 99) && NbtUtils.hasKey(json,"Damage", 99))
 		{
-			if(json.hasKey("id", 8))
+			if(NbtUtils.hasKey(json,"id", 8))
 			{
 				 return Item.itemRegistry.containsKey(json.getString("id"));
 			} else
@@ -351,8 +352,8 @@ public class JsonHelper
 	public static boolean isFluid(NBTTagCompound json)
 	{
 		return json != null
-                && json.hasKey("FluidName", 8)
-                && json.hasKey("Amount", 99)
+                && NbtUtils.hasKey(json,"FluidName", 8)
+                && NbtUtils.hasKey(json,"Amount", 99)
                 && LiquidDictionary.getCanonicalLiquid(json.getString("FluidName")) != null;
 	}
 	
@@ -368,9 +369,9 @@ public class JsonHelper
 	@Nullable
 	public static BigItemStack JsonToItemStack(@Nonnull NBTTagCompound nbt)
 	{
-	    String idName = nbt.hasKey("id", 99) ? "" + nbt.getShort("id") : nbt.getString("id");
-	    Item preCheck = nbt.hasKey("id", 99) ? Item.getItemById(nbt.getShort("id")) : (Item)Item.itemRegistry.getObject(idName);
-	    if(preCheck == null && nbt.hasKey("id", 8))
+	    String idName = NbtUtils.hasKey(nbt,"id", 99) ? "" + nbt.getShort("id") : nbt.getString("id");
+	    Item preCheck = NbtUtils.hasKey(nbt,"id", 99) ? Item.getItemById(nbt.getShort("id")) : (Item)Item.itemRegistry.getObject(idName);
+	    if(preCheck == null && NbtUtils.hasKey(nbt,"id", 8))
         {
             try
             {
@@ -392,9 +393,9 @@ public class JsonHelper
 	
 	public static LiquidStack JsonToFluidStack(NBTTagCompound json)
 	{
-		String name = json.hasKey("FluidName", 8) ? json.getString("FluidName") : "water";
+		String name = NbtUtils.hasKey(json,"FluidName", 8) ? json.getString("FluidName") : "water";
 		int amount = json.getInteger("Amount");
-		NBTTagCompound tags = !json.hasKey("Tag", 10) ? null : json.getCompoundTag("Tag");
+		NBTTagCompound tags = !NbtUtils.hasKey(json,"Tag", 10) ? null : json.getCompoundTag("Tag");
 		LiquidStack fluid = LiquidDictionary.getCanonicalLiquid(name);
 		
 		return PlaceholderConverter.convertFluid(fluid, name, amount, tags);
@@ -427,8 +428,8 @@ public class JsonHelper
 		{
 			return tags;
 		}
-		
-		entity.writeToNBTOptional(tags);
+
+        entity.addEntityID(tags);
 		String id = EntityList.getEntityString(entity);
 		tags.setString("id", id != null ? id : ""); // Some entities don't write this to file in certain cases
 		return tags;
