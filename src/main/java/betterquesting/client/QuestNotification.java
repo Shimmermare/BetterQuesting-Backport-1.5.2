@@ -6,7 +6,6 @@ import betterquesting.api2.utils.QuestTranslation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -48,21 +47,21 @@ public class QuestNotification
 		}
 		
 		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution resolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 		int width = resolution.getScaledWidth();
 		int height = resolution.getScaledHeight();
 		QuestNotice notice = notices.get(0);
 		
 		if(!notice.init)
 		{
-			if(mc.isGamePaused() || mc.currentScreen != null)
+			if(mc.isGamePaused || mc.currentScreen != null)
 			{
 				return; // Do not start showing a new notice if the player isn't looking
 			}
 			
 			notice.init = true;
 			notice.startTime = Minecraft.getSystemTime();
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(notice.sound), 1.0F));
+            mc.sndManager.playSoundFX(notice.sound, 1.0F, 1.0F);
 		}
 		
 		if(notice.getTime() >= 6F)

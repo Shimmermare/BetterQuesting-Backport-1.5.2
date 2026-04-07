@@ -10,6 +10,7 @@ import betterquesting.api.properties.basic.PropertyTypeInteger;
 import betterquesting.api.properties.basic.PropertyTypeItemStack;
 import betterquesting.api.properties.basic.PropertyTypeString;
 import betterquesting.api.utils.BigItemStack;
+import net.minecraft.item.Item;
 
 // TODO: SPLIT THIS DAMN FILE UP. It's already too big and it needs to be divided up per-purpose
 /**
@@ -40,7 +41,7 @@ public class NativeProps
 	public static final IPropertyType<String> SOUND_UPDATE =				new PropertyTypeString(new ResourceLocation("betterquesting:snd_update"), "minecraft:entity.player.levelup");
 	public static final IPropertyType<String> SOUND_COMPLETE =				new PropertyTypeString(new ResourceLocation("betterquesting:snd_complete"), "minecraft:entity.player.levelup");
 	
-	public static final IPropertyType<BigItemStack> ICON =					new PropertyTypeItemStack(new ResourceLocation("betterquesting:icon"), new BigItemStack(Items.nether_star));
+	public static final IPropertyType<BigItemStack> ICON =					new PropertyTypeItemStack(new ResourceLocation("betterquesting:icon"), new BigItemStack(Item.netherStar));
 	//public static final IPropertyType<String> FRAME =                       new PropertyTypeString(new ResourceLocation("betterquesting:frame"), "");
 	
 	public static final IPropertyType<String> BG_IMAGE =					new PropertyTypeString(new ResourceLocation("betterquesting:bg_image"), "");

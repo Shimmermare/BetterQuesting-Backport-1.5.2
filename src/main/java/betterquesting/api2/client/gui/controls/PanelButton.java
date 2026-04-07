@@ -11,7 +11,6 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.backport.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.MathHelper;
 import betterquesting.backport.ResourceLocation;
@@ -251,7 +250,7 @@ public class PanelButton implements IPanelButton
 		
 		if(clicked)
 		{
-	        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(CLICK_SND, 1.0F));
+	        Minecraft.getMinecraft().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 	        onButtonClick();
 		}
 		
