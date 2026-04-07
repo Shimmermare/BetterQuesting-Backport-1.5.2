@@ -7,6 +7,7 @@ import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
@@ -123,13 +124,13 @@ public class NetPartySync
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message)
     {
-        NBTTagList data = message.getTagList("data", 10);
+        NBTTagList data = NbtUtils.getTagList(message,"data", 10);
         if(!message.getBoolean("merge")) PartyManager.INSTANCE.reset();
         
         for(int i = 0; i < data.tagCount(); i++)
         {
-            NBTTagCompound tag = data.getCompoundTagAt(i);
-            if(!tag.hasKey("partyID", 99)) continue;
+            NBTTagCompound tag = NbtUtils.getCompoundTagAt(data, i);
+            if(!NbtUtils.hasKey(tag,"partyID", 99)) continue;
             int partyID = tag.getInteger("partyID");
             
             IParty party = PartyManager.INSTANCE.getValue(partyID); // TODO: Send to client side database

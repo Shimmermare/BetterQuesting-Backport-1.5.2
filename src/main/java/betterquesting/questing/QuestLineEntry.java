@@ -1,6 +1,7 @@
 package betterquesting.questing;
 
 import betterquesting.api.questing.IQuestLineEntry;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class QuestLineEntry implements IQuestLineEntry
@@ -103,7 +104,7 @@ public class QuestLineEntry implements IQuestLineEntry
 	@Override
 	public void readFromNBT(NBTTagCompound json)
 	{
-	    if(json.hasKey("size", 99))
+	    if(NbtUtils.hasKey(json,"size", 99))
         {
             sizeX = json.getInteger("size");
             sizeY = sizeX;

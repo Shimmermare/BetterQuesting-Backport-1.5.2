@@ -1,6 +1,7 @@
 package betterquesting.commands;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 
 public class BQ_CommandDebug extends CommandBase
@@ -20,5 +21,10 @@ public class BQ_CommandDebug extends CommandBase
 	@Override
 	public void processCommand(ICommandSender sender, String[] args)
 	{
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return compareTo((ICommand)o);
     }
 }

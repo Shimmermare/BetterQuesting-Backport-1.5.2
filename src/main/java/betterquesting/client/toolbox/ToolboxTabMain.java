@@ -9,6 +9,7 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.client.toolbox.IToolTab;
 import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
+import betterquesting.backport.MathUtils;
 import betterquesting.client.gui2.editors.designer.PanelToolController;
 
 public class ToolboxTabMain implements IToolTab
@@ -54,11 +55,11 @@ public class ToolboxTabMain implements IToolTab
 		
 		float offX = -ui.getScrollX();
         offX = ((offX % snap + snap) % snap) * zs;
-		int midX = Math.floorDiv(-ui.getScrollX(), snap);
+		int midX = MathUtils.floorDiv(-ui.getScrollX(), snap);
 		
 		float offY = -ui.getScrollY();
         offY = ((offY % snap + snap) % snap) * zs;
-		int midY = Math.floorDiv(-ui.getScrollY(), snap);
+		int midY = MathUtils.floorDiv(-ui.getScrollY(), snap);
 		
 		int x = ui.getTransform().getX();
 		int y = ui.getTransform().getY();

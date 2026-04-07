@@ -16,9 +16,9 @@ public class PresetGUIs
     
     public static final GuiKey<GArgsNBT> EDIT_NBT = new GuiKey<GArgsNBT>(new ResourceLocation("betterquesting", "edit_nbt"));
     public static final GuiKey<GArgsCallback<BigItemStack>> EDIT_ITEM = new GuiKey<GArgsCallback<BigItemStack>>(new ResourceLocation("betterquesting", "edit_item"));
-    public static final GuiKey<GArgsCallback<LiquidStack>> EDIT_FLUID = new GuiKey<LiquidStack>(new ResourceLocation("betterquesting", "edit_fluid"));
-    public static final GuiKey<GArgsCallback<Entity>> EDIT_ENTITY = new GuiKey<Entity>(new ResourceLocation("betterquesting", "edit_entity"));
+    public static final GuiKey<GArgsCallback<LiquidStack>> EDIT_FLUID = new GuiKey<GArgsCallback<LiquidStack>>(new ResourceLocation("betterquesting", "edit_fluid"));
+    public static final GuiKey<GArgsCallback<Entity>> EDIT_ENTITY = new GuiKey<GArgsCallback<Entity>>(new ResourceLocation("betterquesting", "edit_entity"));
     
-    public static final GuiKey<GArgsCallback<String>> EDIT_TEXT = new GuiKey<String>(new ResourceLocation("betterquesting", "edit_text"));
+    public static final GuiKey<GArgsCallback<String>> EDIT_TEXT = new GuiKey<GArgsCallback<String>>(new ResourceLocation("betterquesting", "edit_text"));
     public static final GuiKey<GArgsFileBrowser> FILE_EXPLORE = new GuiKey<GArgsFileBrowser>(new ResourceLocation("betterquesting", "file_explore"));
 }

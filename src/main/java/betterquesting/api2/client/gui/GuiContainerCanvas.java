@@ -22,6 +22,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -169,7 +170,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 		
 		if(tt != null && tt.size() > 0)
 		{
-			this.drawHoveringText(tt, mx, my, fontRendererObj);
+			this.drawHoveringText(tt, mx, my, mc.fontRenderer);
 		}
 		
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -373,7 +374,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 			}
 		}
 		
-		if(!used && (BQ_Keybindings.openQuests.getKeyCode() == keycode || mc.gameSettings.keyBindInventory.getKeyCode() == keycode))
+		if(!used && (BQ_Keybindings.openQuests.keyCode == keycode || mc.gameSettings.keyBindInventory.keyCode == keycode))
 		{
         	if(this.isVolatile || this instanceof IVolatileScreen)
         	{
@@ -440,7 +441,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 		}
 		
 		guiPanels.add(panel);
-		guiPanels.sort(ComparatorGuiDepth.INSTANCE);
+		Collections.sort(guiPanels, ComparatorGuiDepth.INSTANCE);
 		panel.getTransform().setParent(getTransform());
 		panel.initPanel();
 	}
@@ -467,7 +468,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
     protected void renderToolTip(ItemStack stack, int x, int y)
     {
         FontRenderer font = stack.getItem().getFontRenderer(stack);
-        RenderUtils.drawHoveringText(stack, getItemToolTip(stack), x, y, width, height, -1, (font == null ? fontRendererObj : font));
+        RenderUtils.drawHoveringText(stack, getItemToolTip(stack), x, y, width, height, -1, (font == null ? mc.fontRenderer : font));
     }
     
     @SuppressWarnings("unchecked")

@@ -5,6 +5,7 @@ import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.NbtUtils;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
@@ -105,13 +106,13 @@ public class QuestCommandDefaults extends QuestCommandBase
 				JsonObject j1 = JsonHelper.ReadFromFile(qFile);
 				NBTTagCompound nbt1 = NBTConverter.JSONtoNBT_Object(j1, new NBTTagCompound(), true);
                 
-                ILegacyLoader loader = LegacyLoaderRegistry.getLoader(nbt1.hasKey("format", 8) ? nbt1.getString("format") : "0.0.0");
-                
+                ILegacyLoader loader = LegacyLoaderRegistry.getLoader(NbtUtils.hasKey(nbt1,"format", 8) ? nbt1.getString("format") : "0.0.0");
+
 				if(loader == null)
                 {
                     QuestSettings.INSTANCE.readFromNBT(nbt1.getCompoundTag("questSettings"));
-                    QuestDatabase.INSTANCE.readFromNBT(nbt1.getTagList("questDatabase", 10), false);
-                    QuestLineDatabase.INSTANCE.readFromNBT(nbt1.getTagList("questLines", 10), false);
+                    QuestDatabase.INSTANCE.readFromNBT(NbtUtils.getTagList(nbt1,"questDatabase", 10), false);
+                    QuestLineDatabase.INSTANCE.readFromNBT(NbtUtils.getTagList(nbt1,"questLines", 10), false);
                 } else
                 {
                     loader.readFromJson(j1);
@@ -124,10 +125,12 @@ public class QuestCommandDefaults extends QuestCommandBase
 				
 				if(args.length == 3 && !args[2].equalsIgnoreCase("DefaultQuests"))
 				{
-					sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.default.load2", args[2] + ".json"));
+                    // FIXME pass user context
+					sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.default.load2", args[2] + ".json"));
 				} else
 				{
-					sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.default.load"));
+                    // FIXME pass user context
+					sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.default.load"));
 				}
 				
                 NetSettingSync.sendSync(null);
@@ -136,7 +139,7 @@ public class QuestCommandDefaults extends QuestCommandBase
                 SaveLoadHandler.INSTANCE.markDirty();
 			} else
 			{
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.default.none"));
+				sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.default.none"));
 			}
 		} else if(args[1].equalsIgnoreCase("set") && args.length == 3)
 		{
@@ -151,10 +154,10 @@ public class QuestCommandDefaults extends QuestCommandBase
 				
 				JsonHelper.CopyPaste(qFile, defFile);
 				
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.default.set", args[2]));
+				sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.default.set", args[2]));
 			} else
 			{
-				sender.addChatMessage(new ChatComponentTranslation("betterquesting.cmd.default.none"));
+				sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.default.none"));
 			}
 		} else
 		{

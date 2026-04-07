@@ -3,6 +3,7 @@ package betterquesting.questing.party;
 import betterquesting.api.enums.EnumPartyStatus;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.INBTPartial;
+import betterquesting.backport.NbtUtils;
 import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.handlers.NetInviteSync;
@@ -189,7 +190,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
         if(!merge) invites.clear();
         for(int i = 0; i < nbt.tagCount(); i++)
         {
-            NBTTagCompound userEntry = nbt.getCompoundTagAt(i);
+            NBTTagCompound userEntry = NbtUtils.getCompoundTagAt(nbt, i);
             UUID uuid;
             try
             {
@@ -199,15 +200,15 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID>
                 continue;
             }
             
-            NBTTagList invList = userEntry.getTagList("invites", 10);
+            NBTTagList invList = NbtUtils.getTagList(userEntry, "invites", 10);
             HashMap<Integer,Long> map = new HashMap<Integer, Long>();
             invites.put(uuid, map);
             map.clear();
             for(int n = 0; n < invList.tagCount(); n++)
             {
-                NBTTagCompound invEntry = invList.getCompoundTagAt(n);
-                int partyID = invEntry.hasKey("partyID", 99) ? invEntry.getInteger("partyID") : -1;
-                long timestamp = invEntry.hasKey("expiry", 99) ? invEntry.getLong("expiry") : -1;
+                NBTTagCompound invEntry = NbtUtils.getCompoundTagAt(invList, n);
+                int partyID = NbtUtils.hasKey(invEntry,"partyID", 99) ? invEntry.getInteger("partyID") : -1;
+                long timestamp = NbtUtils.hasKey(invEntry,"expiry", 99) ? invEntry.getLong("expiry") : -1;
                 if(partyID < 0) continue;
                 map.put(partyID, timestamp);
             }

@@ -8,6 +8,7 @@ import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.BQThreadedIO;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -107,13 +108,13 @@ public class NetChapterSync
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message)
     {
-        NBTTagList data = message.getTagList("data", 10);
+        NBTTagList data = NbtUtils.getTagList(message,"data", 10);
         if(!message.getBoolean("merge")) QuestLineDatabase.INSTANCE.reset();
         
         for(int i = 0; i < data.tagCount(); i++)
         {
-            NBTTagCompound tag = data.getCompoundTagAt(i);
-            if(!tag.hasKey("chapterID", 99)) continue;
+            NBTTagCompound tag = NbtUtils.getCompoundTagAt(data, i);
+            if(!NbtUtils.hasKey(tag,"chapterID", 99)) continue;
             int chapterID = tag.getInteger("chapterID");
             //int order = tag.getInteger("order");
             

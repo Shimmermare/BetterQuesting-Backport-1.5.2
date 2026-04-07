@@ -45,6 +45,15 @@ public class NbtUtils {
         }
     }
 
+    public static String getStringTagAt(NBTTagList list, int i) {
+        if (i >= 0 && i < list.tagCount()) {
+            NBTBase tag = list.tagAt(i);
+            return tag.toString();
+        } else {
+            return "";
+        }
+    }
+
     public static boolean isPrimitive(NBTBase tag) {
         return tag instanceof NBTTagByte
                 || tag instanceof NBTTagShort

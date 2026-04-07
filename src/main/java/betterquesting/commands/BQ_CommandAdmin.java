@@ -3,6 +3,7 @@ package betterquesting.commands;
 import betterquesting.commands.admin.*;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 
@@ -137,5 +138,10 @@ public class BQ_CommandAdmin extends CommandBase
 		}
 		
 		return false;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return compareTo((ICommand)o);
     }
 }

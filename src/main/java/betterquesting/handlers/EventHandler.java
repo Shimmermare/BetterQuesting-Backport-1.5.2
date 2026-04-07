@@ -35,6 +35,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -80,7 +81,7 @@ public class EventHandler
 {
 	public static final EventHandler INSTANCE = new EventHandler();
 	
-	@SubscribeEvent
+	// FIXME replace with key handler
 	@SideOnly(Side.CLIENT)
 	public void onKey(InputEvent.KeyInputEvent event)
 	{
@@ -104,7 +105,7 @@ public class EventHandler
 		}
 	}
     
-    @SubscribeEvent
+    @ForgeSubscribe
     public void onEntityJoin(EntityJoinWorldEvent event)
     {
         if(event.entity instanceof EntityPlayer && event.entity.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString()) == null)
@@ -112,7 +113,7 @@ public class EventHandler
             event.entity.registerExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString(), new QuestCache());
         }
     }
-    
+    // FIXME
     @SubscribeEvent
     public void onPlayerClone(Clone event)
     {
@@ -127,7 +128,7 @@ public class EventHandler
         }
     }
 	
-	@SubscribeEvent
+	@ForgeSubscribe
 	public void onLivingUpdate(BQLivingUpdateEvent event)
 	{
 		if(event.entityLiving.worldObj.isRemote) return;

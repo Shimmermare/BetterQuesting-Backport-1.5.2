@@ -5,6 +5,7 @@ import betterquesting.api.questing.IQuestLineDatabase;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
 import betterquesting.api2.utils.QuestLineSorter;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
@@ -44,7 +45,7 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
 	public synchronized List<DBEntry<IQuestLine>> getSortedEntries()
 	{
 	    List<DBEntry<IQuestLine>> list = new ArrayList<DBEntry<IQuestLine>>(this.getEntries());
-	    list.sort(SORTER);
+	    Collections.sort(list, SORTER);
 	    return list;
 	}
 	
@@ -90,10 +91,10 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
 		
 		for(int i = 0; i < json.tagCount(); i++)
 		{
-			NBTTagCompound jql = json.getCompoundTagAt(i);
+			NBTTagCompound jql = NbtUtils.getCompoundTagAt(json, i);
 			
-			int id = jql.hasKey("lineID", 99) ? jql.getInteger("lineID") : -1;
-			int order = jql.hasKey("order", 99) ? jql.getInteger("order") : -1;
+			int id = NbtUtils.hasKey(jql,"lineID", 99) ? jql.getInteger("lineID") : -1;
+			int order = NbtUtils.hasKey(jql,"order", 99) ? jql.getInteger("order") : -1;
 			
 			IQuestLine line = getValue(id);
 			if(line == null) line = new QuestLine();

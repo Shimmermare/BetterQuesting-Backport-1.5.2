@@ -72,7 +72,7 @@ public class GuiTextEditor extends GuiScreenCanvas implements IPEventListener, I
         EnumChatFormatting[] tfValues = EnumChatFormatting.values();
         for(int i = 0; i < tfValues.length; i++)
         {
-            cvFormatList.addPanel(new PanelButtonStorage<String>(new GuiRectangle(0, i * 16, 100, 16), 1, tfValues[i].getFriendlyName(), tfValues[i].toString()));
+            cvFormatList.addPanel(new PanelButtonStorage<String>(new GuiRectangle(0, i * 16, 100, 16), 1, tfValues[i].name().toLowerCase(), tfValues[i].toString()));
         }
     
         PanelVScrollBar scFormatScroll = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(0, 0, -8, 0), 0));

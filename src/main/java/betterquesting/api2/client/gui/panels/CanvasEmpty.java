@@ -4,6 +4,7 @@ import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -181,7 +182,7 @@ public class CanvasEmpty implements IGuiCanvas
 		}
 		
 		guiPanels.add(panel);
-		guiPanels.sort(ComparatorGuiDepth.INSTANCE);
+		Collections.sort(guiPanels, ComparatorGuiDepth.INSTANCE);
 		panel.getTransform().setParent(getTransform());
 		panel.initPanel();
 	}

@@ -1,6 +1,7 @@
 package betterquesting.api.placeholders;
 
 import betterquesting.api.utils.BigItemStack;
+import betterquesting.core.BetterQuesting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
@@ -35,13 +36,13 @@ public class PlaceholderConverter
 	{
 		if(item == null)
 		{
-			BigItemStack stack = new BigItemStack(ItemPlaceholder.placeholder, count, damage).setOreDict(oreDict);
+			BigItemStack stack = new BigItemStack(BetterQuesting.placeholder, count, damage).setOreDict(oreDict);
 			stack.SetTagCompound(new NBTTagCompound());
 			stack.GetTagCompound().setString("orig_id", name);
 			stack.GetTagCompound().setInteger("orig_meta", damage);
 			if(nbt != null) stack.GetTagCompound().setTag("orig_tag", nbt);
 			return stack;
-		} else if(item == ItemPlaceholder.placeholder)
+		} else if(item == BetterQuesting.placeholder)
 		{
 			if(nbt != null)
 			{

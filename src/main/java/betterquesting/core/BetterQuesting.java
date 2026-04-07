@@ -34,6 +34,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.event.ForgeSubscribe;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 @Mod(modid = BetterQuesting.MODID, name = BetterQuesting.NAME)
@@ -62,15 +63,21 @@ public class BetterQuesting
     // FIXME Make block and item IDs configurable
 	public static Item extraLife = new ItemExtraLife(8250);
 	public static Item guideBook = new ItemGuideBook(8251);
+    public static Item placeholder = new ItemPlaceholder(8252);
 
 	public static Block submitStation = new BlockSubmitStation(2325);
-    
+
+    public static File modConfigDir;
+
     @ForgeSubscribe
     public void preInit(FMLPreInitializationEvent event)
     {
     	logger = event.getModLog();
-    	
-    	ConfigHandler.config = new Configuration(event.getSuggestedConfigurationFile(), true);
+
+        modConfigDir = new File(event.getSuggestedConfigurationFile(), NAME);
+
+        File modConfigFile = new File(modConfigDir, "Main.cfg");
+    	ConfigHandler.config = new Configuration(modConfigFile, true);
     	ConfigHandler.initConfigs();
     	
     	proxy.registerHandlers();
@@ -84,7 +91,7 @@ public class BetterQuesting
         // FIXME: fluidPlaceholder
     	FluidRegistry.registerFluid(FluidPlaceholder.fluidPlaceholder);
     	
-    	GameRegistry.registerItem(ItemPlaceholder.placeholder, "placeholder");
+    	GameRegistry.registerItem(BetterQuesting.placeholder, "placeholder");
     	GameRegistry.registerItem(extraLife, "extra_life");
     	GameRegistry.registerItem(guideBook, "guide_book");
     	

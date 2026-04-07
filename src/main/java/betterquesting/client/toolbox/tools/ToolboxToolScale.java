@@ -131,7 +131,7 @@ public class ToolboxToolScale implements IToolboxTool
     @Override
     public List<String> getTooltip(int mx, int my)
     {
-        return grabList.size() <= 0 ? null : Collections.emptyList();
+        return grabList.size() <= 0 ? null : Collections.<String>emptyList();
     }
 
 	@Override

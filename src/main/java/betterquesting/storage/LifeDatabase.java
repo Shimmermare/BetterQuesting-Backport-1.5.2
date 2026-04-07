@@ -2,6 +2,7 @@ package betterquesting.storage;
 
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.storage.ILifeDatabase;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
@@ -57,10 +58,10 @@ public final class LifeDatabase implements ILifeDatabase
 	public synchronized void readFromNBT(NBTTagCompound nbt, boolean merge)
 	{
 		if(!merge) playerLives.clear();
-		NBTTagList tagList = nbt.getTagList("playerLives", 10);
+		NBTTagList tagList = NbtUtils.getTagList(nbt,"playerLives", 10);
 		for(int i = 0; i < tagList.tagCount(); i++)
 		{
-			NBTTagCompound j = tagList.getCompoundTagAt(i);
+			NBTTagCompound j = NbtUtils.getCompoundTagAt(tagList, i);
 			
 			try
 			{

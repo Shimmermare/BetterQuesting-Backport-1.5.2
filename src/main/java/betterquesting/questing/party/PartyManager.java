@@ -6,6 +6,7 @@ import betterquesting.api.questing.party.IParty;
 import betterquesting.api.questing.party.IPartyDatabase;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
+import betterquesting.backport.NbtUtils;
 import betterquesting.storage.QuestSettings;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -85,9 +86,9 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
 		
 		for(int i = 0; i < json.tagCount(); i++)
 		{
-			NBTTagCompound jp = json.getCompoundTagAt(i);
+			NBTTagCompound jp = NbtUtils.getCompoundTagAt(json, i);
 			
-			int partyID = jp.hasKey("partyID", 99) ? jp.getInteger("partyID") : -1;
+			int partyID = NbtUtils.hasKey(jp, "partyID", 99) ? jp.getInteger("partyID") : -1;
 			if(partyID < 0) continue;
 			
 			IParty party = new PartyInstance();

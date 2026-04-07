@@ -42,7 +42,7 @@ public abstract class CanvasFileDirectory extends CanvasSearch<File, File>
         }
         if(files == null) files = new File[0];
         List<File> fList = Arrays.asList(files);
-        fList.sort(sorter);
+        Collections.sort(fList, sorter);
         return fList.iterator();
     }
     

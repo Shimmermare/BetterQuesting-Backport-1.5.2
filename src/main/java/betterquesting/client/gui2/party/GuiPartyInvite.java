@@ -98,7 +98,7 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener
         cvNameList.setScrollDriverY(scNameScroll);
         
         int listWidth = cvBackground.getTransform().getWidth() - 64;
-        int nameSize = RenderUtils.getStringWidth("________________", fontRendererObj);
+        int nameSize = RenderUtils.getStringWidth("________________", mc.fontRenderer);
         int columnNum = listWidth/nameSize;
         
         List<String> nameList = new ArrayList<String>();

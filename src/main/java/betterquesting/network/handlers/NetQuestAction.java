@@ -5,6 +5,7 @@ import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -55,7 +56,7 @@ public class NetQuestAction
     
     private static void onServer(Tuple2<NBTTagCompound, EntityPlayerMP> message)
     {
-		int action = !message.getFirst().hasKey("action", 99) ? -1 : message.getFirst().getInteger("action");
+		int action = !NbtUtils.hasKey(message.getFirst(),"action", 99) ? -1 : message.getFirst().getInteger("action");
 		
 		switch(action)
         {

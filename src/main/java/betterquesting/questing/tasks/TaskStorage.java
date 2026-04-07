@@ -6,6 +6,7 @@ import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.IDatabaseNBT;
 import betterquesting.api2.storage.SimpleDatabase;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import betterquesting.backport.ResourceLocation;
@@ -40,9 +41,9 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
 		
 		for(int i = 0; i < json.tagCount(); i++)
 		{
-			NBTTagCompound jsonTask = json.getCompoundTagAt(i);
+			NBTTagCompound jsonTask = NbtUtils.getCompoundTagAt(json, i);
 			ResourceLocation loc = new ResourceLocation(jsonTask.getString("taskID"));
-			int index = jsonTask.hasKey("index", 99) ? jsonTask.getInteger("index") : -1;
+			int index = NbtUtils.hasKey(jsonTask,"index", 99) ? jsonTask.getInteger("index") : -1;
 			ITask task = TaskRegistry.INSTANCE.createNew(loc);
 			
 			if(task instanceof TaskPlaceholder)
@@ -99,8 +100,8 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
 	{
 		for(int i = 0; i < json.tagCount(); i++)
 		{
-			NBTTagCompound jsonTask = json.getCompoundTagAt(i);
-			int index = jsonTask.hasKey("index", 99) ? jsonTask.getInteger("index") : -1;
+			NBTTagCompound jsonTask = NbtUtils.getCompoundTagAt(json, i);
+			int index = NbtUtils.hasKey(jsonTask,"index", 99) ? jsonTask.getInteger("index") : -1;
 			ResourceLocation loc = new ResourceLocation(jsonTask.getString("taskID"));
 			ITask task = getValue(index);
 			

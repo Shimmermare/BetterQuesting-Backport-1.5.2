@@ -12,6 +12,7 @@ import betterquesting.api.questing.IQuestLineEntry;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
+import betterquesting.backport.NbtUtils;
 import betterquesting.storage.PropertyContainer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -146,12 +147,12 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
 		
 		if(!merge) reset();
 		
-		NBTTagList qList = json.getTagList("quests", 10);
+		NBTTagList qList = NbtUtils.getTagList(json,"quests", 10);
 		for(int i = 0; i < qList.tagCount(); i++)
 		{
-			NBTTagCompound qTag = qList.getCompoundTagAt(i);
+			NBTTagCompound qTag = NbtUtils.getCompoundTagAt(qList, i);
 			
-			int id = qTag.hasKey("id", 99) ? qTag.getInteger("id") : -1;
+			int id = NbtUtils.hasKey(qTag, "id", 99) ? qTag.getInteger("id") : -1;
 			if(id< 0) continue;
 			
 			add(id, new QuestLineEntry(qTag));

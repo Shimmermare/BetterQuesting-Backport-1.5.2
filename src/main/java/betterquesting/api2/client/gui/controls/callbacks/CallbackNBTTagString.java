@@ -1,6 +1,7 @@
 package betterquesting.api2.client.gui.controls.callbacks;
 
 import betterquesting.api.misc.ICallback;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -34,7 +35,7 @@ public class CallbackNBTTagString implements ICallback<String>
             ((NBTTagCompound)tag).setString(sKey, value);
         } else
         {
-            ((NBTTagList)tag).func_150304_a(iKey, new NBTTagString(null, value));
+            NbtUtils.setAt((NBTTagList) tag, iKey, new NBTTagString(null, value));
         }
     }
 }

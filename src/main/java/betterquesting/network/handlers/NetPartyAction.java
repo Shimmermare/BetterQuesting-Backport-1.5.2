@@ -10,6 +10,7 @@ import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
@@ -64,8 +65,8 @@ public class NetPartyAction
     {
         EntityPlayerMP sender = message.getSecond();
         
-		int action = !message.getFirst().hasKey("action", 99) ? -1 : message.getFirst().getInteger("action");
-		int partyID = !message.getFirst().hasKey("partyID", 99) ? -1 : message.getFirst().getInteger("partyID");
+		int action = !NbtUtils.hasKey(message.getFirst(),"action", 99) ? -1 : message.getFirst().getInteger("action");
+		int partyID = !NbtUtils.hasKey(message.getFirst(), "partyID", 99) ? -1 : message.getFirst().getInteger("partyID");
         IParty party = PartyManager.INSTANCE.getValue(partyID);
         int permission = party == null ? 0 : checkPermission(QuestingAPI.getQuestingUUID(sender), party);
 		
@@ -262,8 +263,8 @@ public class NetPartyAction
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message)
     {
-		int action = !message.hasKey("action", 99) ? -1 : message.getInteger("action");
-		int partyID = !message.hasKey("partyID", 99) ? -1 : message.getInteger("partyID");
+		int action = !NbtUtils.hasKey(message,"action", 99) ? -1 : message.getInteger("action");
+		int partyID = !NbtUtils.hasKey(message,"partyID", 99) ? -1 : message.getInteger("partyID");
 		
 		switch(action)
         {

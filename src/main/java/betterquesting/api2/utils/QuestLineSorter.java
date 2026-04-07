@@ -17,6 +17,6 @@ public class QuestLineSorter implements Comparator<DBEntry<IQuestLine>>
     @Override
     public int compare(DBEntry<IQuestLine> objA, DBEntry<IQuestLine> objB)
     {
-        return Integer.compare(QL_DB.getOrderIndex(objA.getID()), QL_DB.getOrderIndex(objB.getID()));
+        return Integer.valueOf(QL_DB.getOrderIndex(objA.getID())).compareTo(QL_DB.getOrderIndex(objB.getID()));
     }
 }

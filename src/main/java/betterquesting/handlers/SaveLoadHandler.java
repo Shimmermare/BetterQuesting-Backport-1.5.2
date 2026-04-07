@@ -6,6 +6,7 @@ import betterquesting.api.properties.NativeProps;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
+import betterquesting.backport.NbtUtils;
 import betterquesting.client.QuestNotification;
 import betterquesting.client.gui2.GuiHome;
 import betterquesting.core.BetterQuesting;
@@ -128,7 +129,7 @@ public class SaveLoadHandler
 		
 		NBTTagCompound nbt1 = NBTConverter.JSONtoNBT_Object(j1, new NBTTagCompound(), true);
 		
-		String fVer = nbt1.hasKey("format", 8) ? nbt1.getString("format") : "0.0.0";
+		String fVer = NbtUtils.hasKey(nbt1,"format", 8) ? nbt1.getString("format") : "0.0.0";
 		String bVer = nbt1.getString("build");
 		String cVer = Loader.instance().activeModContainer().getVersion();
 		
@@ -152,8 +153,8 @@ public class SaveLoadHandler
 		if(loader == null)
 		{
 			QuestSettings.INSTANCE.readFromNBT(nbt1.getCompoundTag("questSettings"));
-			QuestDatabase.INSTANCE.readFromNBT(nbt1.getTagList("questDatabase", 10), false);
-			QuestLineDatabase.INSTANCE.readFromNBT(nbt1.getTagList("questLines", 10), false);
+			QuestDatabase.INSTANCE.readFromNBT(NbtUtils.getTagList(nbt1,"questDatabase", 10), false);
+			QuestLineDatabase.INSTANCE.readFromNBT(NbtUtils.getTagList(nbt1,"questLines", 10), false);
 		} else
 		{
 			loader.readFromJson(j1);
@@ -169,7 +170,7 @@ public class SaveLoadHandler
 		if(loader == null)
 		{
 			NBTTagCompound nbt2 = NBTConverter.JSONtoNBT_Object(j2, new NBTTagCompound(), true);
-			QuestDatabase.INSTANCE.readProgressFromNBT(nbt2.getTagList("questProgress", 10), false);
+			QuestDatabase.INSTANCE.readProgressFromNBT(NbtUtils.getTagList(nbt2,"questProgress", 10), false);
 		} else
 		{
 			loader.readProgressFromJson(j2);
@@ -180,14 +181,14 @@ public class SaveLoadHandler
 	    JsonObject j3 = JsonHelper.ReadFromFile(fileParties);
 	    
 		NBTTagCompound nbt3 = NBTConverter.JSONtoNBT_Object(j3, new NBTTagCompound(), true);
-	    PartyManager.INSTANCE.readFromNBT(nbt3.getTagList("parties", 10), false);
+	    PartyManager.INSTANCE.readFromNBT(NbtUtils.getTagList(nbt3,"parties", 10), false);
 	    
 	    // === NAMES ===
 	    
 	    JsonObject j4 = JsonHelper.ReadFromFile(fileNames);
 	    
 		NBTTagCompound nbt4 = NBTConverter.JSONtoNBT_Object(j4, new NBTTagCompound(), true);
-	    NameCache.INSTANCE.readFromNBT(nbt4.getTagList("nameCache", 10), false);
+	    NameCache.INSTANCE.readFromNBT(NbtUtils.getTagList(nbt4,"nameCache", 10), false);
 	    
 	    // === LIVES ===
 	    

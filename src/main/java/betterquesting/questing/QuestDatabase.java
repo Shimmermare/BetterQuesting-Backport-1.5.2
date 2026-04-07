@@ -4,6 +4,7 @@ import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestDatabase;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -84,9 +85,9 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
 		
 		for(int i = 0; i < nbt.tagCount(); i++)
 		{
-			NBTTagCompound qTag = nbt.getCompoundTagAt(i);
+			NBTTagCompound qTag = NbtUtils.getCompoundTagAt(nbt, i);
 			
-			int qID = qTag.hasKey("questID", 99) ? qTag.getInteger("questID") : -1;
+			int qID = NbtUtils.hasKey(qTag, "questID", 99) ? qTag.getInteger("questID") : -1;
 			if(qID < 0) continue;
 			
 			IQuest quest = getValue(qID);
@@ -113,9 +114,9 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
 	{
 		for(int i = 0; i < json.tagCount(); i++)
 		{
-			NBTTagCompound qTag = json.getCompoundTagAt(i);
+			NBTTagCompound qTag = NbtUtils.getCompoundTagAt(json, i);
 			
-			int qID = qTag.hasKey("questID", 99) ? qTag.getInteger("questID") : -1;
+			int qID = NbtUtils.hasKey(qTag, "questID", 99) ? qTag.getInteger("questID") : -1;
 			if(qID < 0) continue;
 			
 			IQuest quest = getValue(qID);

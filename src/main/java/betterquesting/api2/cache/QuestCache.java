@@ -6,6 +6,7 @@ import betterquesting.api.enums.EnumQuestVisibility;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.backport.NbtUtils;
 import betterquesting.network.handlers.NetCacheSync;
 import betterquesting.questing.QuestDatabase;
 import net.minecraft.entity.Entity;
@@ -203,11 +204,11 @@ public class QuestCache implements IExtendedEntityProperties
         for(int i : nbt.getIntArray("autoClaims")) autoClaims.add(i);
         for(int i : nbt.getIntArray("markedDirty")) markedDirty.add(i);
         
-        NBTTagList tagList = nbt.getTagList("resetSchedule", 10);
+        NBTTagList tagList = NbtUtils.getTagList(nbt, "resetSchedule", 10);
         for(int i = 0; i < tagList.tagCount(); i++)
         {
-            NBTTagCompound tagEntry = tagList.getCompoundTagAt(i);
-            if(tagEntry.hasKey("quest", 99))
+            NBTTagCompound tagEntry = NbtUtils.getCompoundTagAt(tagList, i);
+            if(NbtUtils.hasKey(tagEntry,"quest", 99))
             {
                 resetSchedule.add(new QResetTime(tagEntry.getInteger("quest"), tagEntry.getLong("time")));
             }

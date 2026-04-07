@@ -12,6 +12,7 @@ import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
 import betterquesting.api2.storage.IDatabaseNBT;
+import betterquesting.backport.NbtUtils;
 import betterquesting.legacy.ILegacyLoader;
 import betterquesting.questing.*;
 import betterquesting.questing.rewards.RewardRegistry;
@@ -88,7 +89,8 @@ public final class LegacyLoader_v0 implements ILegacyLoader
     public void readProgressFromJson(JsonElement json)
     {
         if(!json.isJsonObject()) return;
-        QuestDatabase.INSTANCE.readProgressFromNBT(NBTConverter.JSONtoNBT_Object(json.getAsJsonObject(), new NBTTagCompound(), true).getTagList("questProgress", 10), false);
+        NBTTagCompound tag = NBTConverter.JSONtoNBT_Object(json.getAsJsonObject(), new NBTTagCompound(), true);
+        QuestDatabase.INSTANCE.readProgressFromNBT(NbtUtils.getTagList(tag, "questProgress", 10), false);
     }
 	
 	public void readLineDatabase(JsonArray jAry)

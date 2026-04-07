@@ -30,7 +30,7 @@ public class CanvasEntityDatabase extends CanvasSearch<String, String>
     @Override
     protected void queryMatches(String ee, String query, final ArrayDeque<String> results)
     {
-        if(StringUtils.isNullOrEmpty(ee)) return;
+        if(ee == null || ee.isEmpty()) return;
         
         if(ee.toLowerCase().contains(query)) results.add(ee);
     }

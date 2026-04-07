@@ -5,6 +5,7 @@ import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -63,7 +64,7 @@ public class NetInviteSync
         int action = message.getInteger("action");
         if(action == 0)
         {
-            PartyInvitations.INSTANCE.readFromNBT(message.getTagList("data", 10), true);
+            PartyInvitations.INSTANCE.readFromNBT(NbtUtils.getTagList(message,"data", 10), true);
             MinecraftForge.EVENT_BUS.post(new DatabaseEvent.Update(DBType.PARTY));
         } else if(action == 1)
         {

@@ -5,6 +5,7 @@ import betterquesting.api.properties.IPropertyContainer;
 import betterquesting.api.properties.IPropertyType;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
+import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.storage.PropertyContainer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -184,7 +185,7 @@ public class PartyInstance implements IParty
 	@Override
 	public void readFromNBT(NBTTagCompound jObj)
 	{
-		if(jObj.hasKey("properties", 10))
+		if(NbtUtils.hasKey(jObj,"properties", 10))
 		{
 			pInfo.readFromNBT(jObj.getCompoundTag("properties"));
 		} else // Legacy stuff
@@ -194,13 +195,13 @@ public class PartyInstance implements IParty
 		}
 		
 		members.clear();
-		NBTTagList memList = jObj.getTagList("members", 10);
+		NBTTagList memList = NbtUtils.getTagList(jObj,"members", 10);
 		for(int i = 0; i < memList.tagCount(); i++)
 		{
 			try
 			{
-			    NBTTagCompound jMem = memList.getCompoundTagAt(i);
-			    if(!jMem.hasKey("uuid", 8) || !jMem.hasKey("status")) continue;
+			    NBTTagCompound jMem = NbtUtils.getCompoundTagAt(memList, i);
+			    if(!NbtUtils.hasKey(jMem,"uuid", 8) || !jMem.hasKey("status")) continue;
 				UUID uuid = UUID.fromString(jMem.getString("uuid"));
 				EnumPartyStatus priv = EnumPartyStatus.valueOf(jMem.getString("status"));
 				members.put(uuid, priv);

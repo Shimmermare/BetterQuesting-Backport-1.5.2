@@ -39,7 +39,7 @@ public class OreDictTexture extends SlideShowTexture
             if(stack.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE)
             {
                 List<ItemStack> subItems = new ArrayList<ItemStack>();
-                stack.getBaseStack().getItem().getSubItems(stack.getBaseStack().getItem(), CreativeTabs.tabAllSearch, subItems);
+                stack.getBaseStack().getItem().getSubItems(stack.getBaseStack().itemID, CreativeTabs.tabAllSearch, subItems);
                 for (ItemStack subItem : subItems) {
                     BigItemStack bis = new BigItemStack(subItem);
                     bis.stackSize = stack.stackSize;
@@ -57,7 +57,7 @@ public class OreDictTexture extends SlideShowTexture
             if(iStack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
             {
                 List<ItemStack> subItems = new ArrayList<ItemStack>();
-                iStack.getItem().getSubItems(iStack.getItem(), CreativeTabs.tabAllSearch, subItems);
+                iStack.getItem().getSubItems(iStack.itemID, CreativeTabs.tabAllSearch, subItems);
                 
                 for(ItemStack sStack : subItems)
                 {

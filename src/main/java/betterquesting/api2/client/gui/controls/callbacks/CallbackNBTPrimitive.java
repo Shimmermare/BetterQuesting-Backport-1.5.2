@@ -1,6 +1,7 @@
 package betterquesting.api2.client.gui.controls.callbacks;
 
 import betterquesting.api.misc.ICallback;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.*;
 
 public class CallbackNBTPrimitive<T extends Number> implements ICallback<T>
@@ -68,22 +69,22 @@ public class CallbackNBTPrimitive<T extends Number> implements ICallback<T>
         switch(tagID)
         {
             case 1:
-                list.func_150304_a(iKey, new NBTTagByte(null, value.byteValue()));
+                NbtUtils.setAt(list, iKey, new NBTTagByte(null, value.byteValue()));
                 break;
             case 2:
-                list.func_150304_a(iKey, new NBTTagShort(null, value.shortValue()));
+                NbtUtils.setAt(list, iKey, new NBTTagShort(null, value.shortValue()));
                 break;
             case 3:
-                list.func_150304_a(iKey, new NBTTagInt(null, value.intValue()));
+                NbtUtils.setAt(list, iKey, new NBTTagInt(null, value.intValue()));
                 break;
             case 4:
-                list.func_150304_a(iKey, new NBTTagLong(null, value.longValue()));
+                NbtUtils.setAt(list, iKey, new NBTTagLong(null, value.longValue()));
                 break;
             case 5:
-                list.func_150304_a(iKey, new NBTTagFloat(null, value.floatValue()));
+                NbtUtils.setAt(list, iKey, new NBTTagFloat(null, value.floatValue()));
                 break;
             case 6:
-                list.func_150304_a(iKey, new NBTTagDouble(null, value.doubleValue()));
+                NbtUtils.setAt(list, iKey, new NBTTagDouble(null, value.doubleValue()));
                 break;
         }
     }

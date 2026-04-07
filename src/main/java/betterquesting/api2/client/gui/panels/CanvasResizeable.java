@@ -217,7 +217,7 @@ public class CanvasResizeable implements IGuiCanvas
 			}
 		}
 		
-		return (bgTexture != null && rectLerp.contains(mx, my)) ? Collections.emptyList() : null;
+		return (bgTexture != null && rectLerp.contains(mx, my)) ? Collections.<String>emptyList() : null;
 	}
 	
 	@Override
@@ -229,7 +229,7 @@ public class CanvasResizeable implements IGuiCanvas
 		}
 		
 		guiPanels.add(panel);
-		guiPanels.sort(ComparatorGuiDepth.INSTANCE);
+		Collections.sort(guiPanels, ComparatorGuiDepth.INSTANCE);
 		panel.getTransform().setParent(getTransform());
 		panel.initPanel();
 	}

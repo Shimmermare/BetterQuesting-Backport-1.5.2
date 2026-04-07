@@ -103,7 +103,7 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack>
             if(stack.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE)
             {
                 List<ItemStack> subItems = new ArrayList<ItemStack>();
-                stack.getBaseStack().getItem().getSubItems(stack.getBaseStack().getItem(), CreativeTabs.tabAllSearch, subItems);
+                stack.getBaseStack().getItem().getSubItems(stack.getBaseStack().itemID, CreativeTabs.tabAllSearch, subItems);
                 
                 for(ItemStack sStack : subItems)
                 {
@@ -123,7 +123,7 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack>
             if(iStack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
             {
                 List<ItemStack> subItems = new ArrayList<ItemStack>();
-                iStack.getItem().getSubItems(iStack.getItem(), CreativeTabs.tabAllSearch, subItems);
+                iStack.getItem().getSubItems(iStack.itemID, CreativeTabs.tabAllSearch, subItems);
                 
                 for(ItemStack sStack : subItems)
                 {

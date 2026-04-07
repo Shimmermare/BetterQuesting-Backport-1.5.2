@@ -4,10 +4,7 @@ import betterquesting.commands.user.QuestCommandHelp;
 import betterquesting.commands.user.QuestCommandRefresh;
 import betterquesting.commands.user.QuestCommandSPHardcore;
 import cpw.mods.fml.common.FMLCommonHandler;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.*;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -147,5 +144,10 @@ public class BQ_CommandUser extends CommandBase
 		}
 		
 		return false;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return compareTo((ICommand)o);
     }
 }

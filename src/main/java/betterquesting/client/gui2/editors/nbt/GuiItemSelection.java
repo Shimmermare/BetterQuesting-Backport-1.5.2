@@ -127,7 +127,7 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         
         String oreName = "NONE";
         int oreIdx = -1;
-        if(itemStack != null && !StringUtils.isNullOrEmpty(itemStack.getOreDict()))
+        if(itemStack != null && itemStack.getOreDict() != null && !itemStack.getOreDict().isEmpty())
         {
             oreName = itemStack.getOreDict();
             int[] oreIds = OreDictionary.getOreIDs(itemStack.getBaseStack());

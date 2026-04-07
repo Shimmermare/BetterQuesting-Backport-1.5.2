@@ -11,7 +11,7 @@ public abstract class CanvasSearch<T, E> extends CanvasScrolling
 {
     private String searchTerm = "";
     private Iterator<E> searching = null;
-    private final Stopwatch searchTime = Stopwatch.createStarted();
+    private final Stopwatch searchTime = new Stopwatch();
     private int resultWidth = 256; // Used for organising ongoing search results even if the size changes midway
     private int searchIdx = 0; // Where are we in the ongoing search?
     private final ArrayDeque<T> pendingResults = new ArrayDeque<T>();
@@ -19,6 +19,7 @@ public abstract class CanvasSearch<T, E> extends CanvasScrolling
     public CanvasSearch(IGuiRect rect)
     {
         super(rect);
+        searchTime.start();
     }
     
     public void setSearchFilter(String text)

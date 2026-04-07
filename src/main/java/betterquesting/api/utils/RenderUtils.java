@@ -75,7 +75,7 @@ public class RenderUtils
 		
 		try
 		{
-		    itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), stack, x, y);
+		    itemRender.renderItemAndEffectIntoGUI(font, mc.renderEngine, stack, x, y);
 		    
 		    if (stack.stackSize != 1 || text != null)
 			{
@@ -113,7 +113,7 @@ public class RenderUtils
 		    	GL11.glPopMatrix();
 			}
 			
-			itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), stack, x, y, "");
+			itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, "");
 		} catch(Exception e)
 		{
 			BetterQuesting.logger.log(Level.WARNING, "Unabled to render item " + stack, e);
@@ -389,7 +389,7 @@ public class RenderUtils
 		
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution r = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution r = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 		int f = r.getScaleFactor();
 		
 		// Have to do all this fancy stuff because glScissor() isn't affected by glScale() or glTranslate() and rather than try and convince devs to use some custom hack

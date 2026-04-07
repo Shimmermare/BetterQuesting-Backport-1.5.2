@@ -1,6 +1,7 @@
 package betterquesting.storage;
 
 import betterquesting.api.storage.INameCache;
+import betterquesting.backport.NbtUtils;
 import betterquesting.backport.ProfileMapper;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -98,7 +99,7 @@ public final class NameCache implements INameCache
         if(!merge) cache.clear();
         for(int i = 0; i < nbt.tagCount(); i++)
         {
-            NBTTagCompound jn = nbt.getCompoundTagAt(i);
+            NBTTagCompound jn = NbtUtils.getCompoundTagAt(nbt, i);
     
             try
             {
@@ -132,7 +133,7 @@ public final class NameCache implements INameCache
 		
         for(NBTTagCompound tag : cache.values())
         {
-            if(tag != null && tag.hasKey("name", 8))
+            if(tag != null && NbtUtils.hasKey(tag,"name", 8))
             {
                 nameCache.add(tag.getString("name"));
             }

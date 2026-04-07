@@ -9,6 +9,7 @@ import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.BQThreadedIO;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -126,32 +127,32 @@ public class NetQuestSync
     private static void onServer(Tuple2<NBTTagCompound, EntityPlayerMP> message)
     {
         NBTTagCompound payload = message.getFirst();
-        int[] reqIDs = !payload.hasKey("requestIDs", 11) ? null : payload.getIntArray("requestIDs");
+        int[] reqIDs = !NbtUtils.hasKey(payload,"requestIDs", 11) ? null : payload.getIntArray("requestIDs");
         sendSync(message.getSecond(), reqIDs, payload.getBoolean("getConfig"), payload.getBoolean("getProgress"));
     }
     
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message)
     {
-        NBTTagList data = message.getTagList("data", 10);
+        NBTTagList data = NbtUtils.getTagList(message,"data", 10);
         boolean merge = message.getBoolean("merge");
         if(!merge) QuestDatabase.INSTANCE.reset();
         
         for(int i = 0; i < data.tagCount(); i++)
         {
-            NBTTagCompound tag = data.getCompoundTagAt(i);
-            if(!tag.hasKey("questID", 99)) continue;
+            NBTTagCompound tag = NbtUtils.getCompoundTagAt(data, i);
+            if(!NbtUtils.hasKey(tag,"questID", 99)) continue;
             int questID = tag.getInteger("questID");
             
             IQuest quest = QuestDatabase.INSTANCE.getValue(questID);
             
-            if(tag.hasKey("config", 10))
+            if(NbtUtils.hasKey(tag,"config", 10))
             {
                 if(quest == null) quest = QuestDatabase.INSTANCE.createNew(questID);
                 quest.readFromNBT(tag.getCompoundTag("config"));
             }
             
-            if(tag.hasKey("progress", 10) && quest != null)
+            if(NbtUtils.hasKey(tag,"progress", 10) && quest != null)
             {
                 // TODO: Fix this properly
                 // If there we're not running the LAN server off this client then we overwrite always

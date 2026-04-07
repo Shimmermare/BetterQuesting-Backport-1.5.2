@@ -145,7 +145,7 @@ public class CanvasCullingManager
         
         if(changed)
         {
-            cachedPanels.sort(ComparatorGuiDepth.INSTANCE);
+            Collections.sort(cachedPanels, ComparatorGuiDepth.INSTANCE);
         }
     }
     

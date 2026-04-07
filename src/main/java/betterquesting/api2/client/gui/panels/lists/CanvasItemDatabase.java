@@ -45,7 +45,7 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
         {
             final List<ItemStack> subList = new ArrayList<ItemStack>();
             
-            item.getSubItems(item, CreativeTabs.tabAllSearch, subList);
+            item.getSubItems(item.itemID, CreativeTabs.tabAllSearch, subList);
             if(subList.isEmpty()) subList.add(new ItemStack(item));
             
             if(regName.toLowerCase().contains(query) || item.getUnlocalizedName().toLowerCase().contains(query) || QuestTranslation.translate(item.getUnlocalizedName()).toLowerCase().contains(query))
@@ -58,7 +58,7 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
             for (ItemStack subItem : subList) {
                 try
                 {
-                    if(subItem.getUnlocalizedName().toLowerCase().contains(query) || subItem.getDisplayName().toLowerCase().contains(query))
+                    if(subItem.getItemName().toLowerCase().contains(query) || subItem.getDisplayName().toLowerCase().contains(query))
                     {
                         results.add(subItem);
                         continue;

@@ -157,7 +157,7 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
         cvUserList.setScrollDriverY(scUserList);
         
         List<UUID> partyMemList = party.getMembers();
-        int elSize = RenderUtils.getStringWidth("...", fontRendererObj);
+        int elSize = RenderUtils.getStringWidth("...", mc.fontRenderer);
         int cvWidth = cvUserList.getTransform().getWidth();
         boolean hardcore = QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE);
         ItemTexture txHeart = new ItemTexture(new BigItemStack(BetterQuesting.extraLife));
@@ -167,7 +167,7 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
             UUID mid = partyMemList.get(i);
             String mName = NameCache.INSTANCE.getName(mid);
             
-            if(RenderUtils.getStringWidth(mName, fontRendererObj) > cvWidth - 58)
+            if(RenderUtils.getStringWidth(mName, mc.fontRenderer) > cvWidth - 58)
             {
                 mName = mc.fontRenderer.trimStringToWidth(mName, cvWidth - 58 - elSize) + "...";
             }

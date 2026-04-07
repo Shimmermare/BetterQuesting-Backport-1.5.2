@@ -20,7 +20,7 @@ public class ContainerSubmitStation extends Container
 			@Override
 		    public boolean isItemValid(ItemStack stack)
 		    {
-		        return inventory.isItemValidForSlot(0, stack);
+		        return inventory.isStackValidForSlot(0, stack);
 		    }
 		});
 		

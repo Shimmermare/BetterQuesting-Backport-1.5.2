@@ -40,6 +40,8 @@ java {
 tasks {
     compileJava {
         options.release.set(compileTargetVersion)
+        // Show all compile errors
+        options.compilerArgs.addAll(listOf("-Xmaxerrs", "10000"))
     }
     compileTestJava {
         options.release.set(jdkVersion)

@@ -25,11 +25,14 @@ import betterquesting.api2.client.gui.panels.lists.CanvasScrolling;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.LiquidUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -114,7 +117,7 @@ public class GuiNbtAdd extends GuiScreenCanvas implements IPEventListener, IVola
         
         // Standard Objects
         options.add(new PanelButtonStorage<NBTBase>(new GuiTransform(GuiAlign.MID_CENTER, 0, n * 16, 100, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.item"), JsonHelper.ItemStackToJson(new BigItemStack(Block.stone), new NBTTagCompound())));
-        options.add(new PanelButtonStorage<NBTBase>(new GuiTransform(GuiAlign.MID_CENTER, 100, n++ * 16, 92, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.fluid"), JsonHelper.FluidStackToJson(new FluidStack(FluidRegistry.WATER, 1000), new NBTTagCompound())));
+        options.add(new PanelButtonStorage<NBTBase>(new GuiTransform(GuiAlign.MID_CENTER, 100, n++ * 16, 92, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.fluid"), JsonHelper.FluidStackToJson(LiquidDictionary.getLiquid(LiquidUtils.WATER_NAME, 1000), new NBTTagCompound())));
         options.add(new PanelButtonStorage<NBTBase>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.entity"), JsonHelper.EntityToJson(new EntityPig(mc.theWorld), new NBTTagCompound())));
 
         // NBT types

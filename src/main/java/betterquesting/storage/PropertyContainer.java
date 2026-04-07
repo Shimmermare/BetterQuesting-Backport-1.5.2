@@ -3,6 +3,7 @@ package betterquesting.storage;
 import betterquesting.api.properties.IPropertyContainer;
 import betterquesting.api.properties.IPropertyType;
 import betterquesting.api2.storage.INBTSaveLoad;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import betterquesting.backport.ResourceLocation;
@@ -85,8 +86,7 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
     {
         synchronized(nbtInfo)
         {
-            List<String> keys = new ArrayList<String>((Set<String>)nbtInfo.func_150296_c());
-            for(String key : keys) nbtInfo.removeTag(key);
+            for(String key : NbtUtils.getKeys(nbtInfo)) nbtInfo.removeTag(key);
         }
     }
 	
@@ -106,7 +106,7 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
 	{
 	    synchronized(nbtInfo)
         {
-            for(String key : (Set<String>)nbtInfo.func_150296_c()) nbtInfo.removeTag(key);
+            for(String key : NbtUtils.getKeys(nbtInfo)) nbtInfo.removeTag(key);
             merge(nbtInfo, nbt);
         }
 	}
@@ -119,13 +119,13 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
 	@SuppressWarnings("unchecked")
     private void merge(NBTTagCompound parent, NBTTagCompound other)
     {
-        for (String s : (Set<String>)other.func_150296_c())
+        for (String s : NbtUtils.getKeys(other))
         {
             NBTBase nbtbase = other.getTag(s);
 
             if (nbtbase.getId() == 10)
             {
-                if (parent.hasKey(s, 10))
+                if (NbtUtils.hasKey(parent, s, 10))
                 {
                     NBTTagCompound nbttagcompound = parent.getCompoundTag(s);
                     merge(nbttagcompound, (NBTTagCompound)nbtbase);

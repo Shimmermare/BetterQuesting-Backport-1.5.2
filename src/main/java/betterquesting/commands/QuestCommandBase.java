@@ -2,9 +2,7 @@ package betterquesting.commands;
 
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.storage.NameCache;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
@@ -60,7 +58,7 @@ public abstract class QuestCommandBase
 		
 		try
 		{
-			player = CommandBase.getPlayer(sender, name);
+			player = getPlayer(sender, name);
 		} catch(Exception ignored){}
 		
 		if(player == null)
@@ -89,4 +87,20 @@ public abstract class QuestCommandBase
 	{
 		return false;
 	}
+
+    public static EntityPlayerMP getPlayer(ICommandSender sender, String username) {
+        EntityPlayerMP player = PlayerSelector.matchOnePlayer(sender, username);
+
+        if (player != null) {
+            return player;
+        } else {
+            player = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(username);
+
+            if (player == null) {
+                throw new PlayerNotFoundException();
+            } else {
+                return player;
+            }
+        }
+    }
 }

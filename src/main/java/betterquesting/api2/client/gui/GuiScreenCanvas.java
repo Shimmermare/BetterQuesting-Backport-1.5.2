@@ -450,7 +450,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
     protected void renderToolTip(ItemStack stack, int x, int y)
     {
         FontRenderer font = stack.getItem().getFontRenderer(stack);
-        RenderUtils.drawHoveringText(stack, this.getItemToolTip(stack), x, y, width, height, -1, (font == null ? fontRendererObj : font));
+        RenderUtils.drawHoveringText(stack, this.getItemToolTip(stack), x, y, width, height, -1, (font == null ? mc.fontRenderer : font));
     }
     
     @SuppressWarnings("unchecked")

@@ -5,6 +5,7 @@ import betterquesting.api.questing.rewards.IReward;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.IDatabaseNBT;
 import betterquesting.api2.storage.SimpleDatabase;
+import betterquesting.backport.NbtUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import betterquesting.backport.ResourceLocation;
@@ -40,9 +41,9 @@ public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseN
 		
 		for(int i = 0; i < json.tagCount(); i++)
 		{
-			NBTTagCompound jsonReward = json.getCompoundTagAt(i);
+			NBTTagCompound jsonReward = NbtUtils.getCompoundTagAt(json, i);
 			ResourceLocation loc = new ResourceLocation(jsonReward.getString("rewardID"));
-			int index = jsonReward.hasKey("index", 99) ? jsonReward.getInteger("index") : -1;
+			int index = NbtUtils.hasKey(jsonReward,"index", 99) ? jsonReward.getInteger("index") : -1;
 			IReward reward = RewardRegistry.INSTANCE.createNew(loc);
 			
 			if(reward instanceof RewardPlaceholder)

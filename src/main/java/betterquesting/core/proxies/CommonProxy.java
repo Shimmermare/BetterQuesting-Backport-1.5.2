@@ -21,9 +21,8 @@ public class CommonProxy
 		
 		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
 		MinecraftForge.TERRAIN_GEN_BUS.register(EventHandler.INSTANCE);
-        FMLCommonHandler.instance().bus().register(EventHandler.INSTANCE);
-		
-		NetworkRegistry.INSTANCE.registerGuiHandler(BetterQuesting.instance, new GuiHandler());
+
+		NetworkRegistry.instance().registerGuiHandler(BetterQuesting.instance, new GuiHandler());
 	}
 	
 	public void registerRenderers()

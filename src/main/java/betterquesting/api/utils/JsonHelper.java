@@ -6,6 +6,7 @@ import betterquesting.api.placeholders.PlaceholderConverter;
 import betterquesting.api2.utils.BQThreadedIO;
 import betterquesting.backport.FileUtils;
 import betterquesting.backport.NbtUtils;
+import betterquesting.core.BetterQuesting;
 import com.google.gson.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -375,8 +376,8 @@ public class JsonHelper
                 preCheck = Item.getItemById(Short.parseShort(idName));
             } catch(Exception ignored){}
         }
-	    if(preCheck != null && preCheck != ItemPlaceholder.placeholder) return BigItemStack.loadItemStackFromNBT(nbt);
-		return PlaceholderConverter.convertItem(preCheck, idName, nbt.getInteger("Count"), nbt.getShort("Damage"), nbt.getString("OreDict"), !nbt.hasKey("tag", 10) ? null : nbt.getCompoundTag("tag"));
+	    if(preCheck != null && preCheck != BetterQuesting.placeholder) return BigItemStack.loadItemStackFromNBT(nbt);
+		return PlaceholderConverter.convertItem(preCheck, idName, nbt.getInteger("Count"), nbt.getShort("Damage"), nbt.getString("OreDict"), !NbtUtils.hasKey(nbt, "tag", 10) ? null : nbt.getCompoundTag("tag"));
 	}
 	
 	/**

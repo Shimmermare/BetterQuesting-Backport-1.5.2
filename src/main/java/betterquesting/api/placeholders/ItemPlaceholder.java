@@ -13,8 +13,6 @@ import java.util.List;
 
 public class ItemPlaceholder extends Item
 {
-	public static Item placeholder = new ItemPlaceholder();
-	
 	// Used solely for retaining info to missing items
 	public ItemPlaceholder(int id)
 	{

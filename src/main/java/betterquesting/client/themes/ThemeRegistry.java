@@ -2,6 +2,7 @@ package betterquesting.client.themes;
 
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.BigItemStack;
+import betterquesting.api.utils.FileExtensionFilter;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.misc.GuiPadding;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -30,20 +31,17 @@ import betterquesting.client.gui2.editors.nbt.GuiNbtEditor;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.ConfigHandler;
 import com.google.gson.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.common.Configuration;
 
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.logging.Level;
 
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -247,186 +245,189 @@ public class ThemeRegistry implements IThemeRegistry
 	
     @Override
     @SuppressWarnings("unchecked")
-    public void loadResourceThemes()
-    {
-        for(ResourceLocation resLoc : loadedThemes) {
+    public void loadResourceThemes() {
+        for (ResourceLocation resLoc : loadedThemes) {
             themes.remove(resLoc);
         }
         loadedThemes.clear();
-        
-        IResourceManager resManager = Minecraft.getMinecraft().getResourceManager();
-        
-        for(String domain : (Set<String>)resManager.getResourceDomains())
-        {
-            ResourceLocation res = new ResourceLocation(domain, "bq_themes.json");
-            List<IResource> list;
-            
-            try
-            {
-                list = (List<IResource>)resManager.getAllResources(res);
-            } catch (Exception e) { continue; } // Not going to log errors everytime the file isn't found
-            
-            for(IResource iresource : list)
-            {
-                InputStreamReader isr = null;
-                try
-                {
-                    isr = new InputStreamReader(iresource.getInputStream(), Charset.forName("UTF-8"));
-                    JsonArray jAry = GSON.fromJson(isr, JsonArray.class);
-                    isr.close();
-                    
-                    for(int i = 0; i < jAry.size(); i++)
-                    {
-                        JsonElement je = jAry.get(i);
-                        
-                        if(!(je instanceof JsonObject))
-                        {
-                            BetterQuesting.logger.log(Level.WARNING, "Invalid theme entry at index " + i + " in " + domain);
-                            continue;
-                        }
-                        
-                        JsonObject jThm = je.getAsJsonObject();
-                        
-                        if(jThm.has("themeType"))
-                        {
-                            BetterQuesting.logger.warning("Deprecated legacy theme entry " + i + " in " + domain);
-                            BetterQuesting.logger.warning("Please convert this to the new format");
-                            loadLegacy(jThm, domain);
-                            continue;
-                        }
-                        
-                        ResourceLocation parentID = !jThm.has("themeParent") ? null : new ResourceLocation(JsonHelper.GetString(jThm, "themeParent", "minecraft:null"));
-                        String themeName = JsonHelper.GetString(jThm, "themeName", "Unnamed Theme");
-                        String idRaw = JsonHelper.GetString(jThm, "themeID", themeName);
-                        idRaw = idRaw.toLowerCase().trim().replaceAll(" ", "_");
-                        if(!idRaw.contains(":")) idRaw = domain + ":" + idRaw;
-                        ResourceLocation themeId = new ResourceLocation(idRaw);
-                        
-                        int n = 0;
-                        while(themes.containsKey(themeId)) themeId = new ResourceLocation(domain, idRaw + n++);
-                        
-                        ResourceTheme resTheme;
-                        
-                        try
-                        {
-                            resTheme = new ResourceTheme(parentID, themeId, themeName);
-                        } catch(Exception e)
-                        {
-                            BetterQuesting.logger.log(Level.SEVERE, "Failed to load theme entry " + i + " in " + domain, e);
-                            continue;
-                        }
-                        
-                        JsonObject jsonTextureRoot = JsonHelper.GetObject(jThm, "textures");
-                        for(Entry<String, JsonElement> entry : jsonTextureRoot.entrySet())
-                        {
-                            if(!entry.getValue().isJsonObject()) continue;
-                            JsonObject joTex = entry.getValue().getAsJsonObject();
-                            
-                            ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joTex, "textureType", ""));
-                            IFactoryData<IGuiTexture, JsonObject> tFact = ResourceRegistry.INSTANCE.getTexReg().getFactory(typeID);
-                            
-                            if(tFact == null)
-                            {
-                                BetterQuesting.logger.severe("Unknown texture type " + typeID + " for theme " + themeName + " in " + domain);
-                                continue;
-                            }
-                            
-                            IGuiTexture gTex = tFact.loadFromData(joTex);
-                            
-                            if(gTex == null)
-                            {
-                                BetterQuesting.logger.severe("Failed to load texture type " + typeID + " for theme " + themeName + " in " + domain);
-                                continue;
-                            }
-                            
-                            resTheme.setTexture(new ResourceLocation(entry.getKey()), gTex);
-                        }
-                        
-                        JsonObject jsonColourRoot = JsonHelper.GetObject(jThm, "colors");
-                        for(Entry<String, JsonElement> entry : jsonColourRoot.entrySet())
-                        {
-                            if(!(entry.getValue() instanceof JsonObject)) continue;
-                            JsonObject joCol = entry.getValue().getAsJsonObject();
-                            
-                            ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joCol, "colorType", ""));
-                            IFactoryData<IGuiColor, JsonObject> cFact = ResourceRegistry.INSTANCE.getColorReg().getFactory(typeID);
-                            
-                            if(cFact == null)
-                            {
-                                BetterQuesting.logger.severe("Unknown color type " + typeID + " for theme " + themeName + " in " + domain);
-                                continue;
-                            }
-                            
-                            IGuiColor gCol = cFact.loadFromData(joCol);
-                            
-                            if(gCol == null)
-                            {
-                                BetterQuesting.logger.severe("Failed to load color type " + typeID + " for theme " + themeName + " in " + domain);
-                                continue;
-                            }
-                            
-                            resTheme.setColor(new ResourceLocation(entry.getKey()), gCol);
-                        }
-                        
-                        JsonObject jsonLinesRoot = JsonHelper.GetObject(jThm, "lines");
-                        for(Entry<String, JsonElement> entry : jsonLinesRoot.entrySet())
-                        {
-                            if(!(entry.getValue() instanceof JsonObject)) continue;
-                            JsonObject joLine = entry.getValue().getAsJsonObject();
-                            
-                            ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joLine, "lineType", ""));
-                            IFactoryData<IGuiLine, JsonObject> lFact = ResourceRegistry.INSTANCE.getLineReg().getFactory(typeID);
-                            
-                            if(lFact == null)
-                            {
-                                BetterQuesting.logger.severe("Unknown line type " + typeID + " for theme " + themeName + " in " + domain);
-                                continue;
-                            }
-                            
-                            IGuiLine gLine = lFact.loadFromData(joLine);
-                            
-                            if(gLine == null)
-                            {
-                                BetterQuesting.logger.severe("Failed to load line type " + typeID + " for theme " + themeName + " in " + domain);
-                                continue;
-                            }
-                            
-                            resTheme.setLine(new ResourceLocation(entry.getKey()), gLine);
-                        }
-                        
-                        themes.put(resTheme.getID(), resTheme);
-                        loadedThemes.add(resTheme.getID());
-                    }
-                } catch (Exception e)
-                {
-                    BetterQuesting.logger.log(Level.SEVERE, "Error reading bq_themes.json from " + domain, e);
-                } finally
-                {
-                    if(isr != null)
-                    {
-                        try { isr.close(); } catch(Exception ignored) {}
-                    }
-                }
+
+        File themeFile = new File(BetterQuesting.modConfigDir, "hq_themes.json");
+        if (!themeFile.exists()) {
+            placeDefaultThemeFile(themeFile);
+        }
+
+        loadThemeFromFile(themeFile);
+    }
+
+    private void placeDefaultThemeFile(File themeFile) {
+        InputStream in = null;
+        FileOutputStream out = null;
+        try {
+            in = ThemeRegistry.class.getResourceAsStream("/default_hq_themes.json");
+            if (in == null) {
+                throw new IllegalStateException("Can't find default_hq_themes.json in jar");
             }
+            out = new FileOutputStream(themeFile);
+            byte[] buffer = new byte[1024];
+            int length;
+
+            // Read from source and write to destination
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+        } catch (Exception e) {
+            BetterQuesting.logger.log(Level.SEVERE, "Failed to write default theme file to " + themeFile.getPath(), e);
+        } finally {
+            try {
+                if (in != null) in.close();
+                if (out != null) out.close();
+            } catch (IOException ignored) {}
         }
     }
-    
-    @Deprecated
-    private void loadLegacy(JsonObject json, String domain)
-    {
-        IGuiTheme theme = LegacyThemeLoader.INSTANCE.loadTheme(json, domain);
-        
-        if(theme == null)
-        {
-            BetterQuesting.logger.severe("Failed to load legacy theme from " + domain);
+
+    private void loadThemeFromFile(File themeFile) {
+        JsonObject jObj = JsonHelper.ReadFromFile(themeFile);
+
+        if (jObj.has("themeType")) {
+            BetterQuesting.logger.warning("Deprecated legacy theme " + themeFile.getName()
+                    + " - please convert to the new format.");
             return;
-        } else if(themes.containsKey(theme.getID()))
-        {
-            BetterQuesting.logger.severe("Unable to register legacy resource theme with duplicate ID: " + theme.getID());
         }
-        
-        themes.put(theme.getID(), theme);
-        loadedThemes.add(theme.getID());
+
+        // No resourcepacks in 1.5.2, assume everyting is in mod domain.
+        String domain = BetterQuesting.MODID;
+
+        InputStreamReader isr = null;
+        try
+        {
+            isr = new InputStreamReader(new FileInputStream(themeFile), Charset.forName("UTF-8"));
+            JsonArray jAry = GSON.fromJson(isr, JsonArray.class);
+            isr.close();
+
+            for(int i = 0; i < jAry.size(); i++)
+            {
+                JsonElement je = jAry.get(i);
+
+                if(!(je instanceof JsonObject))
+                {
+                    BetterQuesting.logger.log(Level.WARNING, "Invalid theme entry at index " + i + " in " + domain);
+                    continue;
+                }
+
+                JsonObject jThm = je.getAsJsonObject();
+
+                ResourceLocation parentID = !jThm.has("themeParent") ? null : new ResourceLocation(JsonHelper.GetString(jThm, "themeParent", "minecraft:null"));
+                String themeName = JsonHelper.GetString(jThm, "themeName", "Unnamed Theme");
+                String idRaw = JsonHelper.GetString(jThm, "themeID", themeName);
+                idRaw = idRaw.toLowerCase().trim().replaceAll(" ", "_");
+                if(!idRaw.contains(":")) idRaw = domain + ":" + idRaw;
+                ResourceLocation themeId = new ResourceLocation(idRaw);
+
+                int n = 0;
+                while(themes.containsKey(themeId)) themeId = new ResourceLocation(domain, idRaw + n++);
+
+                ResourceTheme resTheme;
+
+                try
+                {
+                    resTheme = new ResourceTheme(parentID, themeId, themeName);
+                } catch(Exception e)
+                {
+                    BetterQuesting.logger.log(Level.SEVERE, "Failed to load theme entry " + i + " in " + domain, e);
+                    continue;
+                }
+
+                JsonObject jsonTextureRoot = JsonHelper.GetObject(jThm, "textures");
+                for(Entry<String, JsonElement> entry : jsonTextureRoot.entrySet())
+                {
+                    if(!entry.getValue().isJsonObject()) continue;
+                    JsonObject joTex = entry.getValue().getAsJsonObject();
+
+                    ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joTex, "textureType", ""));
+                    IFactoryData<IGuiTexture, JsonObject> tFact = ResourceRegistry.INSTANCE.getTexReg().getFactory(typeID);
+
+                    if(tFact == null)
+                    {
+                        BetterQuesting.logger.severe("Unknown texture type " + typeID + " for theme " + themeName + " in " + domain);
+                        continue;
+                    }
+
+                    IGuiTexture gTex = tFact.loadFromData(joTex);
+
+                    if(gTex == null)
+                    {
+                        BetterQuesting.logger.severe("Failed to load texture type " + typeID + " for theme " + themeName + " in " + domain);
+                        continue;
+                    }
+
+                    resTheme.setTexture(new ResourceLocation(entry.getKey()), gTex);
+                }
+
+                JsonObject jsonColourRoot = JsonHelper.GetObject(jThm, "colors");
+                for(Entry<String, JsonElement> entry : jsonColourRoot.entrySet())
+                {
+                    if(!(entry.getValue() instanceof JsonObject)) continue;
+                    JsonObject joCol = entry.getValue().getAsJsonObject();
+
+                    ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joCol, "colorType", ""));
+                    IFactoryData<IGuiColor, JsonObject> cFact = ResourceRegistry.INSTANCE.getColorReg().getFactory(typeID);
+
+                    if(cFact == null)
+                    {
+                        BetterQuesting.logger.severe("Unknown color type " + typeID + " for theme " + themeName + " in " + domain);
+                        continue;
+                    }
+
+                    IGuiColor gCol = cFact.loadFromData(joCol);
+
+                    if(gCol == null)
+                    {
+                        BetterQuesting.logger.severe("Failed to load color type " + typeID + " for theme " + themeName + " in " + domain);
+                        continue;
+                    }
+
+                    resTheme.setColor(new ResourceLocation(entry.getKey()), gCol);
+                }
+
+                JsonObject jsonLinesRoot = JsonHelper.GetObject(jThm, "lines");
+                for(Entry<String, JsonElement> entry : jsonLinesRoot.entrySet())
+                {
+                    if(!(entry.getValue() instanceof JsonObject)) continue;
+                    JsonObject joLine = entry.getValue().getAsJsonObject();
+
+                    ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joLine, "lineType", ""));
+                    IFactoryData<IGuiLine, JsonObject> lFact = ResourceRegistry.INSTANCE.getLineReg().getFactory(typeID);
+
+                    if(lFact == null)
+                    {
+                        BetterQuesting.logger.severe("Unknown line type " + typeID + " for theme " + themeName + " in " + domain);
+                        continue;
+                    }
+
+                    IGuiLine gLine = lFact.loadFromData(joLine);
+
+                    if(gLine == null)
+                    {
+                        BetterQuesting.logger.severe("Failed to load line type " + typeID + " for theme " + themeName + " in " + domain);
+                        continue;
+                    }
+
+                    resTheme.setLine(new ResourceLocation(entry.getKey()), gLine);
+                }
+
+                themes.put(resTheme.getID(), resTheme);
+                loadedThemes.add(resTheme.getID());
+            }
+        } catch (Exception e)
+        {
+            BetterQuesting.logger.log(Level.SEVERE, "Error reading theme file at " + themeFile.getPath(), e);
+        } finally
+        {
+            if(isr != null)
+            {
+                try { isr.close(); } catch(Exception ignored) {}
+            }
+        }
     }
 	
 	@Override

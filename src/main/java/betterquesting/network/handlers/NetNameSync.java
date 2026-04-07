@@ -6,6 +6,7 @@ import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.NbtUtils;
 import betterquesting.backport.ProfileMapper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
@@ -147,25 +148,25 @@ public class NetNameSync
         UUID[] uuids = null;
         String[] names = null;
         
-        if(message.getFirst().hasKey("uuids", 9))
+        if(NbtUtils.hasKey(message.getFirst(),"uuids", 9))
         {
-            NBTTagList uList = message.getFirst().getTagList("uuids", 8);
+            NBTTagList uList = NbtUtils.getTagList(message.getFirst(),"uuids", 8);
             uuids = new UUID[uList.tagCount()];
             for(int i = 0; i < uuids.length; i++)
             {
                 try
                 {
-                    uuids[i] = UUID.fromString(uList.getStringTagAt(i));
+                    uuids[i] = UUID.fromString(NbtUtils.getStringTagAt(uList, i));
                 } catch(Exception ignored){}
             }
         }
-        if(message.getFirst().hasKey("names", 9))
+        if(NbtUtils.hasKey(message.getFirst(),"names", 9))
         {
-            NBTTagList uList = message.getFirst().getTagList("names", 8);
+            NBTTagList uList = NbtUtils.getTagList(message.getFirst(),"names", 8);
             names = new String[uList.tagCount()];
             for(int i = 0; i < names.length; i++)
             {
-                names[i] =uList.getStringTagAt(i);
+                names[i] =NbtUtils.getStringTagAt(uList, i);
             }
         }
         sendNames(new EntityPlayerMP[]{message.getSecond()}, uuids, names);
@@ -174,7 +175,7 @@ public class NetNameSync
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message)
     {
-        NameCache.INSTANCE.readFromNBT(message.getTagList("data", 10), message.getBoolean("merge"));
+        NameCache.INSTANCE.readFromNBT(NbtUtils.getTagList(message,"data", 10), message.getBoolean("merge"));
         MinecraftForge.EVENT_BUS.post(new DatabaseEvent.Update(DBType.NAMES));
     }
 }
