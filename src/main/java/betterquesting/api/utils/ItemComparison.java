@@ -2,6 +2,7 @@ package betterquesting.api.utils;
 
 import betterquesting.api2.utils.OreIngredient;
 import betterquesting.backport.NbtUtils;
+import betterquesting.backport.OreDictionaryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 import net.minecraftforge.oredict.OreDictionary;
@@ -205,20 +206,8 @@ public class ItemComparison
         if(stack1 == null) return false; // One is null the other is not
         if(nbtCheck && !CompareNBTTagCompound(stack1.getTagCompound(), stack2.getTagCompound(), partialNBT)) return false; // NBT check failed
     	if(StackMatch(stack1, stack2, false, false)) return true; // Stacks are compatible (NBT was already checked at this point)
-    	
+
         // Final Ore Dictionary test...
-    	int[] oreIDs1 = OreDictionary.getOreIDs(stack1);
-    	int[] oreIDs2 = OreDictionary.getOreIDs(stack2);
-    	
-    	// Search all ore dictionary listings for matches
-    	for(int i1 : oreIDs1)
-    	{
-    	    for(int i2 : oreIDs2)
-            {
-                if(i1 == i2) return true; // Shared ore dictionary entries found
-            }
-    	}
-    	
-    	return false; // No shared ore dictionary types
+        return OreDictionaryHelper.match(stack1, stack2);
     }
 }

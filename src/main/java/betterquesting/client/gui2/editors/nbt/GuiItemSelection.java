@@ -31,6 +31,7 @@ import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.OreDictionaryHelper;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -130,7 +131,7 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         if(itemStack != null && itemStack.getOreDict() != null && !itemStack.getOreDict().isEmpty())
         {
             oreName = itemStack.getOreDict();
-            int[] oreIds = OreDictionary.getOreIDs(itemStack.getBaseStack());
+            int[] oreIds = OreDictionaryHelper.getOreIDs(itemStack.getBaseStack());
             for(int i = 0; i < oreIds.length; i++)
             {
                 if(OreDictionary.getOreName(oreIds[i]).equalsIgnoreCase(oreName))
@@ -238,7 +239,7 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
             }
         } else if(btn.getButtonID() == 2 && btn instanceof PanelButtonStorage && itemStack != null)
         {
-            int[] oreIds = OreDictionary.getOreIDs(itemStack.getBaseStack());
+            int[] oreIds = OreDictionaryHelper.getOreIDs(itemStack.getBaseStack());
             int idx = ((PanelButtonStorage<Integer>)btn).getStoredValue();
             idx++;
             

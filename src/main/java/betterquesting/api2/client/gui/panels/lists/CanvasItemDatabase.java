@@ -5,6 +5,7 @@ import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.content.PanelItemSlot;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.backport.OreDictionaryHelper;
 import betterquesting.core.BetterQuesting;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -63,7 +64,7 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
                     }
 
                     boolean anyMatch = false;
-                    for (int id : OreDictionary.getOreIDs(subItem)) {
+                    for (int id : OreDictionaryHelper.getOreIDs(subItem)) {
                         if (OreDictionary.getOreName(id).toLowerCase().contains(query)) {
                             anyMatch = true;
                             break;
