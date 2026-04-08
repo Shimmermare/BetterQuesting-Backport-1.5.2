@@ -1,8 +1,10 @@
 import net.fabricmc.loom.RunConfig
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     java
     alias(libs.plugins.voldeloom)
+    alias(libs.plugins.shadow)
 }
 
 repositories {
@@ -20,6 +22,8 @@ val modBaseName: String by project
 val jdkVersion = 11
 val compileTargetVersion = 6
 
+val shadowInclude by configurations.creating
+
 dependencies {
     minecraft(libs.minecraft)
     forge(variantOf(libs.forge) { classifier("universal"); artifactType("zip") })
@@ -27,8 +31,8 @@ dependencies {
 
     compileOnly(libs.jsr305)
 
-    // FIXME Configure shadow plugin for GSON
-    implementation(libs.gson)
+    shadowInclude(libs.gson)
+    compileOnly(libs.gson)
 }
 
 java {
@@ -51,6 +55,15 @@ tasks {
     }
     jar {
         archiveBaseName.set(modBaseName)
+        archiveClassifier.set("core")
+    }
+    shadowJar {
+        configurations = listOf(shadowInclude)
+        relocate("com.google.gson", "betterquesting.shadow.com.google.gson")
+        archiveClassifier.set("")
+    }
+    build {
+        dependsOn("shadowJar")
     }
 }
 
