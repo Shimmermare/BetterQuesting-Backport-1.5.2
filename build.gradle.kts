@@ -60,9 +60,9 @@ tasks {
     shadowJar {
         configurations = listOf(shadowInclude)
         relocate("com.google.gson", "betterquesting.shadow.com.google.gson")
-        archiveClassifier.set("")
+        archiveClassifier.set("dev")
     }
-    build {
+    remapJarForRelease {
         dependsOn("shadowJar")
     }
 }
