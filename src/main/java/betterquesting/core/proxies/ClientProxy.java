@@ -11,16 +11,9 @@ import betterquesting.client.toolbox.ToolboxRegistry;
 import betterquesting.client.toolbox.ToolboxTabMain;
 import betterquesting.core.BetterQuesting;
 import betterquesting.core.ExpansionLoader;
-import betterquesting.misc.QuestResourcesFile;
-import betterquesting.misc.QuestResourcesFolder;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import net.minecraft.client.Minecraft;
 import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.ArrayList;
-import java.util.logging.Level;
 
 public class ClientProxy extends CommonProxy
 {
@@ -52,20 +45,6 @@ public class ClientProxy extends CommonProxy
 		
 		MinecraftForge.EVENT_BUS.register(new QuestNotification());
 		BQ_Keybindings.RegisterKeys();
-		
-		try
-		{
-			ArrayList list = ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "defaultResourcePacks", "field_110449_ao");
-			QuestResourcesFolder qRes1 = new QuestResourcesFolder();
-			QuestResourcesFile qRes2 = new QuestResourcesFile();
-			list.add(qRes1);
-			list.add(qRes2);
-			((SimpleReloadableResourceManager)Minecraft.getMinecraft().getResourceManager()).reloadResourcePack(qRes1); // Make sure the pack(s) are visible to everything
-			((SimpleReloadableResourceManager)Minecraft.getMinecraft().getResourceManager()).reloadResourcePack(qRes2); // Make sure the pack(s) are visible to everything
-		} catch(Exception e)
-		{
-			BetterQuesting.logger.log(Level.SEVERE, "Unable to install questing resource loaders", e);
-		}
 		
 		ToolboxRegistry.INSTANCE.registerToolTab(new ResourceLocation(BetterQuesting.MODID, "main"), ToolboxTabMain.INSTANCE);
 	}
