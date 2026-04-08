@@ -9,9 +9,7 @@ import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
-import betterquesting.backport.Consumer;
-import betterquesting.backport.NbtUtils;
-import betterquesting.backport.ProfileMapper;
+import betterquesting.backport.*;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
@@ -25,7 +23,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import java.util.logging.Level;
 
@@ -241,7 +238,7 @@ public class NetPartyAction
                     player = (EntityPlayerMP)o;
                 }
             }
-            if(player != null && server.getConfigurationManager().getOps().contains(player.username.toLowerCase())) return 4; // Can kick owners or force invites without needing to be a member of the party
+            if(player != null && PlayerUtils.isEffectivelyOP(player)) return 4; // Can kick owners or force invites without needing to be a member of the party
         }
         
         EnumPartyStatus status = party.getStatus(playerID);

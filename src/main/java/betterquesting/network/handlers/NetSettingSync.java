@@ -4,6 +4,7 @@ import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
+import betterquesting.backport.PlayerUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.PacketSender;
@@ -73,8 +74,7 @@ public class NetSettingSync
     
     private static void onServer(Tuple2<NBTTagCompound, EntityPlayerMP> message)
     {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if(!server.getConfigurationManager().getOps().contains(message.getSecond().username.toLowerCase()))
+        if(!PlayerUtils.isEffectivelyOP(message.getSecond()))
         {
 			BetterQuesting.logger.log(Level.WARNING, "Player " + message.getSecond().getCommandSenderName() + " (UUID:" + QuestingAPI.getQuestingUUID(message.getSecond()) + ") tried to edit settings without OP permissions!");
             sendSync(message.getSecond());

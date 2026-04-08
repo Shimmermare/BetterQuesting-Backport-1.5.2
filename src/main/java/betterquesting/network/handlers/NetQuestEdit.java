@@ -9,9 +9,7 @@ import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
-import betterquesting.backport.Consumer;
-import betterquesting.backport.NbtUtils;
-import betterquesting.backport.ProfileMapper;
+import betterquesting.backport.*;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.PacketSender;
@@ -25,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import betterquesting.backport.ResourceLocation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import java.util.logging.Level;
@@ -69,7 +66,7 @@ public class NetQuestEdit
         MinecraftServer server = sender.mcServer;
         if(server == null) return; // Here mostly just to keep intellisense happy
         
-        boolean isOP = server.getConfigurationManager().getOps().contains(sender.username.toLowerCase());
+        boolean isOP = PlayerUtils.isEffectivelyOP(sender);;
 		
 		if(!isOP) // OP pre-check
 		{

@@ -8,6 +8,7 @@ import betterquesting.api.questing.IQuestLine;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
 import betterquesting.backport.NbtUtils;
+import betterquesting.backport.PlayerUtils;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.PacketSender;
@@ -60,7 +61,7 @@ public class NetChapterEdit
         MinecraftServer server = sender.mcServer;
         if(server == null) return; // Here mostly just to keep intellisense happy
         
-        boolean isOP = server.getConfigurationManager().getOps().contains(sender.username.toLowerCase());
+        boolean isOP = PlayerUtils.isEffectivelyOP(sender);
 		
 		if(!isOP) // OP pre-check
 		{

@@ -2,6 +2,7 @@ package betterquesting.storage;
 
 import betterquesting.api.storage.INameCache;
 import betterquesting.backport.NbtUtils;
+import betterquesting.backport.PlayerUtils;
 import betterquesting.backport.ProfileMapper;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +32,7 @@ public final class NameCache implements INameCache
         }
         
         String name = player.username;
-        boolean isOP = server.getConfigurationManager().getOps().contains(player.username.toLowerCase());
+        boolean isOP = PlayerUtils.isEffectivelyOP(player);
         
         if(!tag.getString("name").equals(name) || tag.getBoolean("isOP") != isOP)
         {

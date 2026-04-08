@@ -7,6 +7,7 @@ import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.Tuple2;
 import betterquesting.backport.Consumer;
 import betterquesting.backport.NbtUtils;
+import betterquesting.backport.PlayerUtils;
 import betterquesting.client.importers.ImportedQuestLines;
 import betterquesting.client.importers.ImportedQuests;
 import betterquesting.core.BetterQuesting;
@@ -56,7 +57,7 @@ public class NetImport
 	    EntityPlayerMP sender = message.getSecond();
 		if(sender.mcServer == null) return;
 		
-		boolean isOP = sender.mcServer.getConfigurationManager().getOps().contains(sender.username.toLowerCase());
+		boolean isOP = PlayerUtils.isEffectivelyOP(sender);
 		
 		if(!isOP)
 		{

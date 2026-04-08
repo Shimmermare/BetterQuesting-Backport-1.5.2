@@ -1,33 +1,48 @@
 package betterquesting.api2.client.gui;
 
-import javax.annotation.Nullable;
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.TickType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 
-public class SceneController
-{
+import javax.annotation.Nullable;
+import java.util.EnumSet;
+
+public class SceneController implements ITickHandler {
     private static IScene curScene = null;
-    
+
     @Nullable
-    public static IScene getActiveScene()
-    {
+    public static IScene getActiveScene() {
         return curScene;
     }
-    
-    public static void setActiveScene(@Nullable IScene scene)
-    {
-        curScene = scene;
+
+    @Override
+    public void tickStart(EnumSet<TickType> enumSet, Object... objects) {
+        updateScene();
     }
 
-    // FIXME restore behavior
-    //@SubscribeEvent
-    //@SideOnly(Side.CLIENT)
-    //public void onGuiOpened(GuiOpenEvent event)
-    //{
-    //    if(event.gui instanceof IScene)
-    //    {
-    //        // TODO: Review the following
-    //        // Does this need to be cleared if the GUI isn't compatible?
-    //        // Would this interfere with an overlay canvas?
-    //        curScene = (IScene)event.gui;
-    //    }
-    //}
+    @Override
+    public void tickEnd(EnumSet<TickType> enumSet, Object... objects) {
+        updateScene();
+    }
+
+    private void updateScene() {
+        GuiScreen gui = Minecraft.getMinecraft().currentScreen;
+        if (gui instanceof IScene) {
+            // TODO: Review the following
+            // Does this need to be cleared if the GUI isn't compatible?
+            // Would this interfere with an overlay canvas?
+            curScene = (IScene) gui;
+        }
+    }
+
+    @Override
+    public EnumSet<TickType> ticks() {
+        return null;
+    }
+
+    @Override
+    public String getLabel() {
+        return "";
+    }
 }

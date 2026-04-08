@@ -13,6 +13,8 @@ import betterquesting.backport.ResourceLocation;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
+import static betterquesting.api2.client.gui.resources.textures.GuiTextureUtils.drawTexturedModalRect;
+
 public class SlicedTexture implements IGuiTexture
 {
 	private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
@@ -244,17 +246,6 @@ public class SlicedTexture implements IGuiTexture
 			drawTexturedModalRect(x + leftBorder + canvasWidth, y + topBorder + (j * fillerHeight), u + leftBorder + fillerWidth, v + topBorder, rightBorder, (j == yPasses ? remainderHeight : fillerHeight), zLevel);
 		}
 	}
-
-    private static void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, float zLevel) {
-        float mult = 1 / 256F;
-        Tessellator t = Tessellator.instance;
-        t.startDrawingQuads();
-        t.addVertexWithUV(x, y + height, zLevel, u * mult, (v + height) * mult);
-        t.addVertexWithUV(x + width, y + height, zLevel, (u + width) * mult, (v + height) * mult);
-        t.addVertexWithUV(x + width, y, zLevel, (u + width) * mult, v * mult);
-        t.addVertexWithUV(x, y, zLevel, u * mult, v * mult);
-        t.draw();
-    }
 	
 	public enum SliceMode
 	{

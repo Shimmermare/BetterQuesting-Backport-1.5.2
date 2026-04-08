@@ -14,6 +14,8 @@ import betterquesting.client.toolbox.ToolboxTabMain;
 import betterquesting.core.BetterQuesting;
 import betterquesting.core.ExpansionLoader;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ClientProxy extends CommonProxy
@@ -31,7 +33,7 @@ public class ClientProxy extends CommonProxy
 		super.registerHandlers();
 		
 		MinecraftForge.EVENT_BUS.register(PEventBroadcaster.INSTANCE);
-		MinecraftForge.EVENT_BUS.register(new SceneController());
+		TickRegistry.registerTickHandler(new SceneController(), Side.CLIENT);
 		
 		ExpansionLoader.INSTANCE.initClientAPIs();
 		

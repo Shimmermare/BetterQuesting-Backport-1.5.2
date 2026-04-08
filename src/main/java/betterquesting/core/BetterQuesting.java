@@ -82,7 +82,7 @@ public class BetterQuesting
     {
     	logger = event.getModLog();
 
-        modConfigDir = new File(event.getSuggestedConfigurationFile(), NAME);
+        modConfigDir = new File(event.getModConfigurationDirectory(), NAME);
 
         File modConfigFile = new File(modConfigDir, "Main.cfg");
     	ConfigHandler.config = new Configuration(modConfigFile, true);

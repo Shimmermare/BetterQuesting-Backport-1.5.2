@@ -1,6 +1,7 @@
 package betterquesting.api.utils;
 
 import betterquesting.api2.utils.OreIngredient;
+import betterquesting.backport.ItemUtils;
 import betterquesting.backport.NbtUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -170,12 +171,26 @@ public class BigItemStack
 	@Nullable
     public static BigItemStack loadItemStackFromNBT(@Nonnull NBTTagCompound nbt) // Can load normal ItemStack NBTs. Does NOT deal with placeholders
 	{
-        ItemStack miniStack = ItemStack.loadItemStackFromNBT(nbt);
-        if(miniStack == null || miniStack.getItem() == null) return null;
+        int itemID = nbt.getShort("id");
+        if (ItemUtils.getByIdOrNull(itemID) == null) {
+            return null;
+        }
+
+        int stackSize = NbtUtils.intValue(nbt.getTag("Count"));
+        int meta = nbt.getShort("Damage");
+        if (meta < 0) {
+            meta = OreDictionary.WILDCARD_VALUE;
+        }
+
+        NBTTagCompound tag = nbt.hasKey("tag") ? nbt.getCompoundTag("tag") : null;
+
+        ItemStack miniStack = new ItemStack(itemID, stackSize, meta);
+        miniStack.setTagCompound(tag);
+
 		BigItemStack bigStack = new BigItemStack(miniStack);
-		bigStack.stackSize = nbt.getInteger("Count");
+		bigStack.stackSize = stackSize;
 		bigStack.setOreDict(nbt.getString("OreDict"));
-        if(nbt.getShort("Damage") < 0) bigStack.baseStack.setItemDamage(OreDictionary.WILDCARD_VALUE);
+
 		return bigStack;
 	}
 	
