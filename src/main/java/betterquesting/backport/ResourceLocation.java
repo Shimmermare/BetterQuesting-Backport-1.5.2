@@ -4,6 +4,8 @@ public class ResourceLocation {
     private final String resourceDomain;
     private final String resourcePath;
 
+    private String cachedTexturePath;
+
     public ResourceLocation(String namespace, String path) {
         if (path == null) {
             throw new NullPointerException("ID cannot be null");
@@ -41,6 +43,13 @@ public class ResourceLocation {
 
     public String getResourceDomain() {
         return this.resourceDomain;
+    }
+
+    public String getTexturePath() {
+        if (cachedTexturePath == null) {
+            cachedTexturePath = "/mods/" + resourceDomain + "/" + resourcePath;
+        }
+        return cachedTexturePath;
     }
 
     public String toString() {

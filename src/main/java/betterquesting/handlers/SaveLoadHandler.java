@@ -19,7 +19,9 @@ import betterquesting.storage.LifeDatabase;
 import betterquesting.storage.NameCache;
 import betterquesting.storage.QuestSettings;
 import com.google.gson.JsonObject;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
@@ -218,7 +220,9 @@ public class SaveLoadHandler
             jsonCon.setTag("questLines", QuestLineDatabase.INSTANCE.writeToNBT(new NBTTagList(), null));
     
             jsonCon.setString("format", BetterQuesting.FORMAT);
-            jsonCon.setString("build", Loader.instance().activeModContainer().getVersion());
+
+            ModContainer modContainer = FMLCommonHandler.instance().findContainerFor(BetterQuesting.instance);
+            jsonCon.setString("build", modContainer.getVersion());
     
             JsonHelper.WriteToFile(new File(BQ_Settings.curWorldDir, "QuestDatabase.json"), NBTConverter.NBTtoJSON_Compound(jsonCon, new JsonObject(), true));
         }

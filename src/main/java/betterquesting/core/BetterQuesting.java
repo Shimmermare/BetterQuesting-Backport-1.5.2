@@ -1,10 +1,10 @@
 package betterquesting.core;
 
 import betterquesting.api.placeholders.EntityPlaceholder;
+import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.api.placeholders.ItemPlaceholder;
 import betterquesting.backport.OreDictionaryHelper;
 import betterquesting.blocks.BlockSubmitStation;
-import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.blocks.TileSubmitStation;
 import betterquesting.client.CreativeTabQuesting;
 import betterquesting.commands.BQ_CommandAdmin;
@@ -24,21 +24,24 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Mod(modid = BetterQuesting.MODID, name = BetterQuesting.NAME)
@@ -88,6 +91,8 @@ public class BetterQuesting
     	proxy.registerHandlers();
     	
     	PacketTypeRegistry.INSTANCE.init();
+
+        loadLocalizations();
     }
     
     @Mod.Init
@@ -151,5 +156,22 @@ public class BetterQuesting
 
     private boolean isDeobfuscated() {
         return World.class.getSimpleName().equals("World");
+    }
+
+    private void loadLocalizations() {
+        @SuppressWarnings("unchecked")
+        Map<String, String> languages = StringTranslate.getInstance().getLanguageList();
+
+        List<String> loaded = new ArrayList<String>();
+        for (Map.Entry<String, String> entry : languages.entrySet()) {
+            String lang = entry.getKey();
+            String file = "/mods/betterquesting/lang/" + lang + ".lang";
+            if (this.getClass().getResource(file) != null) {
+                LanguageRegistry.instance().loadLocalization(file, lang, false);
+                loaded.add(lang);
+            }
+        }
+
+        logger.info("Loaded localizations: " + loaded);
     }
 }

@@ -72,7 +72,7 @@ public class SlicedTexture implements IGuiTexture
 			float sx = (float)(w - (texBounds.getWidth() - iw)) / (float)iw;
 			float sy = (float)(h - (texBounds.getHeight() - ih)) / (float)ih;
 			
-			Minecraft.getMinecraft().renderEngine.bindTexture(texture.getResourcePath());
+			Minecraft.getMinecraft().renderEngine.bindTexture(texture.getTexturePath());
 			
 			// TOP LEFT
 			GL11.glPushMatrix();
@@ -142,7 +142,7 @@ public class SlicedTexture implements IGuiTexture
 	        GL11.glEnable(GL11.GL_BLEND);
 	        OpenGLHelperBP.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 			
-			Minecraft.getMinecraft().renderEngine.bindTexture(texture.getResourcePath());
+			Minecraft.getMinecraft().renderEngine.bindTexture(texture.getTexturePath());
 			drawTexturedModalRect(0, 0, texBounds.getX(), texBounds.getY(), texBounds.getWidth(), texBounds.getHeight(), zLevel);
 		}
         
@@ -198,7 +198,7 @@ public class SlicedTexture implements IGuiTexture
 	// Slightly modified version from GuiUtils.class
 	private static void drawContinuousTexturedBox(ResourceLocation res, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight, int topBorder, int bottomBorder, int leftBorder, int rightBorder, float zLevel)
 	{
-		Minecraft.getMinecraft().renderEngine.bindTexture(res.getResourcePath());
+		Minecraft.getMinecraft().renderEngine.bindTexture(res.getTexturePath());
 		
 		GL11.glEnable(GL11.GL_BLEND);
 		OpenGLHelperBP.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);

@@ -263,7 +263,7 @@ public class ThemeRegistry implements IThemeRegistry
         InputStream in = null;
         FileOutputStream out = null;
         try {
-            in = ThemeRegistry.class.getResourceAsStream("/default_hq_themes.json");
+            in = ThemeRegistry.class.getResourceAsStream("/mods/betterquesting/default_bq_themes.json");
             if (in == null) {
                 throw new IllegalStateException("Can't find default_hq_themes.json in jar");
             }
@@ -286,14 +286,6 @@ public class ThemeRegistry implements IThemeRegistry
     }
 
     private void loadThemeFromFile(File themeFile) {
-        JsonObject jObj = JsonHelper.ReadFromFile(themeFile);
-
-        if (jObj.has("themeType")) {
-            BetterQuesting.logger.warning("Deprecated legacy theme " + themeFile.getName()
-                    + " - please convert to the new format.");
-            return;
-        }
-
         // No resourcepacks in 1.5.2, assume everyting is in mod domain.
         String domain = BetterQuesting.MODID;
 
@@ -301,8 +293,16 @@ public class ThemeRegistry implements IThemeRegistry
         try
         {
             isr = new InputStreamReader(new FileInputStream(themeFile), Charset.forName("UTF-8"));
-            JsonArray jAry = GSON.fromJson(isr, JsonArray.class);
+            JsonElement jsonElement = GSON.fromJson(isr, JsonElement.class);
             isr.close();
+
+            if (jsonElement.isJsonObject() && jsonElement.getAsJsonObject().has("themeType")) {
+                BetterQuesting.logger.warning("Deprecated legacy theme " + themeFile.getName()
+                        + " - please convert to the new format.");
+                return;
+            }
+
+            JsonArray jAry = jsonElement.getAsJsonArray();
 
             for(int i = 0; i < jAry.size(); i++)
             {

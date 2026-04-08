@@ -1,9 +1,15 @@
 package betterquesting.api2.client.gui.events;
 
 import javax.annotation.Nonnull;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import betterquesting.backport.Consumer;
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.TickType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 
 /*
     Provides a means of broadcasting various things to and around the currently open GUI.
@@ -78,14 +84,8 @@ public class PEventBroadcaster
 		
 		return event.canCancel() && event.isCancelled();
 	}
-	
-	/**
-	 * Clears event listeners whenever a new GUI loads. If you must have cross GUI communication either handle this yourself or re-register the relevant listeners.
-	 */
-    // FIXME replace with tick workaround
-	//@ForgeSubscribe
-	//public void onGuiOpened(GuiOpenEvent event)
-	//{
-	//	entryList.clear();
-	//}
+
+    public void clear() {
+        entryList.clear();
+    }
 }

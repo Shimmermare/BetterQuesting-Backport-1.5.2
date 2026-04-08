@@ -3,6 +3,7 @@ package betterquesting.api2.client.gui;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.RenderUtils;
+import betterquesting.api2.client.gui.events.PEventBroadcaster;
 import betterquesting.api2.client.gui.misc.*;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.client.gui.popups.PopChoice;
@@ -110,6 +111,8 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
     	super.onGuiClosed();
 		
 		Keyboard.enableRepeatEvents(false);
+
+        PEventBroadcaster.INSTANCE.clear();
     }
 	
 	@Override

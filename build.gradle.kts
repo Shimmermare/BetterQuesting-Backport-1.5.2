@@ -50,6 +50,11 @@ tasks {
     compileTestJava {
         options.release.set(jdkVersion)
     }
+    processResources {
+        filesMatching("mcmod.info") {
+            expand("version" to project.version, "mcversion" to libs.versions.minecraft.get())
+        }
+    }
     test {
         useJUnitPlatform()
     }

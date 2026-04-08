@@ -10,12 +10,12 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.util.logging.Level;
 
 public class PacketHandler implements IPacketHandler {
@@ -31,7 +31,8 @@ public class PacketHandler implements IPacketHandler {
 
         NBTTagCompound tags;
         try {
-            tags = CompressedStreamTools.readCompressed(new ByteArrayInputStream(data));
+            DataInputStream datainputstream = new DataInputStream(new ByteArrayInputStream(data));
+            tags = (NBTTagCompound) NBTTagCompound.readNamedTag(datainputstream);
         } catch (Exception e) {
             BetterQuesting.logger.log(Level.SEVERE, "Failed to read incoming packet", e);
             return;

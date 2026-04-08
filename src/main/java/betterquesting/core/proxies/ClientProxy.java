@@ -4,6 +4,7 @@ import betterquesting.api.placeholders.EntityPlaceholder;
 import betterquesting.api2.client.gui.SceneController;
 import betterquesting.api2.client.gui.events.PEventBroadcaster;
 import betterquesting.backport.OpenGLHelperBP;
+import betterquesting.backport.ResourceLocation;
 import betterquesting.client.BQ_Keybindings;
 import betterquesting.client.QuestNotification;
 import betterquesting.client.renderer.EntityPlaceholderRenderer;
@@ -13,7 +14,6 @@ import betterquesting.client.toolbox.ToolboxTabMain;
 import betterquesting.core.BetterQuesting;
 import betterquesting.core.ExpansionLoader;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import betterquesting.backport.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ClientProxy extends CommonProxy
