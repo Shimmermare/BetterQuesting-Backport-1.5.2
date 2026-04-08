@@ -34,10 +34,7 @@ import betterquesting.storage.QuestSettings;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -53,7 +50,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.management.BanEntry;
-import net.minecraft.server.management.UserListBansEntry;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -64,7 +60,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.event.world.WorldEvent;
-import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -80,30 +75,6 @@ import java.util.concurrent.FutureTask;
 public class EventHandler
 {
 	public static final EventHandler INSTANCE = new EventHandler();
-	
-	// FIXME replace with key handler
-	@SideOnly(Side.CLIENT)
-	public void onKey(InputEvent.KeyInputEvent event)
-	{
-		Minecraft mc = Minecraft.getMinecraft();
-		
-		if(BQ_Keybindings.openQuests.isPressed())
-		{
-			if(mc.thePlayer.isSneaking() && mc.thePlayer.getCommandSenderName().equalsIgnoreCase("Funwayguy"))
-			{
-				mc.displayGuiScreen(new GuiScreenTest(mc.currentScreen));
-			} else
-			{
-				if(BQ_Settings.useBookmark && GuiHome.bookmark != null)
-				{
-					mc.displayGuiScreen(GuiHome.bookmark);
-				} else
-				{
-					mc.displayGuiScreen(ThemeRegistry.INSTANCE.getGui(PresetGUIs.HOME, GArgsNone.NONE));
-				}
-			}
-		}
-	}
     
     @ForgeSubscribe
     public void onEntityJoin(EntityJoinWorldEvent event)
