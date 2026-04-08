@@ -74,7 +74,7 @@ public class BetterQuesting
 
     public static File modConfigDir;
 
-    @ForgeSubscribe
+    @Mod.PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
     	logger = event.getModLog();
@@ -90,7 +90,7 @@ public class BetterQuesting
     	PacketTypeRegistry.INSTANCE.init();
     }
     
-    @ForgeSubscribe
+    @Mod.Init
     public void init(FMLInitializationEvent event)
     {
         LiquidDictionary.getOrCreateLiquid("Placeholder",  new LiquidStack(fluidPlaceholder, 1000));
@@ -122,13 +122,13 @@ public class BetterQuesting
     	proxy.registerRenderers();
     }
     
-    @ForgeSubscribe
+    @Mod.PostInit
     public void postInit(FMLPostInitializationEvent event)
     {
         OreDictionaryHelper.init();
     }
 	
-	@ForgeSubscribe
+	@Mod.ServerStarting
 	public void serverStart(FMLServerStartingEvent event)
 	{
 		MinecraftServer server = event.getServer();
@@ -143,7 +143,7 @@ public class BetterQuesting
 		SaveLoadHandler.INSTANCE.loadDatabases(server);
 	}
 	
-	@ForgeSubscribe
+	@Mod.ServerStopped
 	public void serverStop(FMLServerStoppedEvent event)
 	{
 		SaveLoadHandler.INSTANCE.unloadDatabases();
