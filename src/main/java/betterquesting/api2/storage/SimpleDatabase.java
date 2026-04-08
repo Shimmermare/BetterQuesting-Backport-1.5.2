@@ -27,8 +27,9 @@ public abstract class SimpleDatabase<T> implements IDatabase<T>
             throw new IllegalArgumentException("ID cannot be negative");
         } else
         {
-            if(mapDB.putIfAbsent(id, value) == null)
+            if(!mapDB.containsKey(id))
             {
+                mapDB.put(id, value);
                 idMap.set(id);
                 refCache = null;
                 return new DBEntry<T>(id, value);

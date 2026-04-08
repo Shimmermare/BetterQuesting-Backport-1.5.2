@@ -6,11 +6,10 @@ import betterquesting.api2.client.gui.controls.io.ValueFuncIO;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.utils.EntityPlayerPreview;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import betterquesting.backport.ResourceLocation;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class PanelPlayerPortrait implements IGuiPanel
 	private final IGuiRect transform;
 	private boolean enabled = true;
 	
-	private final AbstractClientPlayer player;
+	private final EntityPlayer player;
 	
 	private final IValueIO<Float> basePitch;
 	private final IValueIO<Float> baseYaw;
@@ -33,23 +32,19 @@ public class PanelPlayerPortrait implements IGuiPanel
 	
 	public PanelPlayerPortrait(IGuiRect rect, UUID playerID, String username)
 	{
-		this(rect, new EntityPlayerPreview(Minecraft.getMinecraft().theWorld, new GameProfile(playerID, username)));
+		this(rect, new EntityPlayerPreview(Minecraft.getMinecraft().theWorld, username));
 	}
 	
-	public PanelPlayerPortrait(IGuiRect rect, AbstractClientPlayer player)
+	public PanelPlayerPortrait(IGuiRect rect, EntityPlayer player)
 	{
 		this.transform = rect;
-		this.player = new EntityPlayerPreview(player.worldObj, player.getGameProfile());
+		this.player = new EntityPlayerPreview(player.worldObj, player.username);
 		this.player.limbSwing = 0F;
-		this.player.limbSwingAmount = 0F;
+		this.player.limbYaw = 0F;
 		this.player.rotationYawHead = 0F;
-		
-		ResourceLocation resource = this.player.getLocationSkin();
-		
-		if(Minecraft.getMinecraft().getTextureManager().getTexture(resource) == null)
-		{
-			AbstractClientPlayer.getDownloadImageSkin(resource, player.getGameProfile().getName());
-		}
+
+        // Keep original skin URL even if it doesn't work so fixer mods can handle this natively
+        this.player.skinUrl = "http://skins.minecraft.net/MinecraftSkins/" + this.player.username + ".png";
 		
 		this.basePitch = new ValueFuncIO<Float>(new Callable<Float>() {
             @Override
@@ -157,4 +152,12 @@ public class PanelPlayerPortrait implements IGuiPanel
 	{
 		return null;
 	}
+
+    private static class EntityPlayerPreview extends EntityOtherPlayerMP
+    {
+        public EntityPlayerPreview(World worldIn, String gameProfileIn)
+        {
+            super(worldIn, gameProfileIn);
+        }
+    }
 }

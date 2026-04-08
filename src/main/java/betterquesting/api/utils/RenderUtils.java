@@ -3,6 +3,7 @@ package betterquesting.api.utils;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
+import betterquesting.backport.OpenGLHelperBP;
 import betterquesting.core.BetterQuesting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -362,7 +363,7 @@ public class RenderUtils
         Tessellator tessellator = Tessellator.instance;
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+        OpenGLHelperBP.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
         color.applyGlColor();
         tessellator.startDrawingQuads();
         tessellator.addVertex((double)rect.getX(), (double)rect.getY() + rect.getHeight(), 0.0D);
@@ -872,7 +873,7 @@ public class RenderUtils
         GL11.glDisable(3553);
         GL11.glEnable(3042);
         GL11.glDisable(3008);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        OpenGLHelperBP.glBlendFunc(770, 771, 1, 0);
         GL11.glShadeModel(7425);
         Tessellator var15 = Tessellator.instance;
         var15.startDrawingQuads();

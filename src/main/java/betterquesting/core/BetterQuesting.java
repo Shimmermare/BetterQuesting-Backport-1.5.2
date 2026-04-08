@@ -1,9 +1,9 @@
 package betterquesting.core;
 
 import betterquesting.api.placeholders.EntityPlaceholder;
-import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.api.placeholders.ItemPlaceholder;
 import betterquesting.blocks.BlockSubmitStation;
+import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.blocks.TileSubmitStation;
 import betterquesting.client.CreativeTabQuesting;
 import betterquesting.commands.BQ_CommandAdmin;
@@ -31,8 +31,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -65,7 +68,8 @@ public class BetterQuesting
 	public static Item guideBook = new ItemGuideBook(8251);
     public static Item placeholder = new ItemPlaceholder(8252);
 
-	public static Block submitStation = new BlockSubmitStation(2325);
+    public static Block fluidPlaceholder = new FluidPlaceholder(2320);
+	public static Block submitStation = new BlockSubmitStation(2321);
 
     public static File modConfigDir;
 
@@ -88,15 +92,15 @@ public class BetterQuesting
     @ForgeSubscribe
     public void init(FMLInitializationEvent event)
     {
-        // FIXME: fluidPlaceholder
-    	FluidRegistry.registerFluid(FluidPlaceholder.fluidPlaceholder);
+        LiquidDictionary.getOrCreateLiquid("Placeholder",  new LiquidStack(fluidPlaceholder, 1000));
     	
     	GameRegistry.registerItem(BetterQuesting.placeholder, "placeholder");
     	GameRegistry.registerItem(extraLife, "extra_life");
     	GameRegistry.registerItem(guideBook, "guide_book");
     	
     	GameRegistry.registerBlock(submitStation, "submit_station");
-    	
+    	GameRegistry.registerBlock(fluidPlaceholder, "fluid_placeholder");
+
     	GameRegistry.registerTileEntity(TileSubmitStation.class, "submit_station");
     	
     	GameRegistry.addShapelessRecipe(new ItemStack(submitStation), new ItemStack(Item.book), new ItemStack(Block.glass), new ItemStack(Block.chest));
@@ -131,8 +135,8 @@ public class BetterQuesting
 		
 		manager.registerCommand(new BQ_CommandAdmin());
 		manager.registerCommand(new BQ_CommandUser());
-  
-		if((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment")) manager.registerCommand(new BQ_CommandDebug());
+
+		if(isDeobfuscated()) manager.registerCommand(new BQ_CommandDebug());
 		
 		SaveLoadHandler.INSTANCE.loadDatabases(server);
 	}
@@ -142,4 +146,8 @@ public class BetterQuesting
 	{
 		SaveLoadHandler.INSTANCE.unloadDatabases();
 	}
+
+    private boolean isDeobfuscated() {
+        return World.class.getSimpleName().equals("World");
+    }
 }

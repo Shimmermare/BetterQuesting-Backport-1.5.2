@@ -170,23 +170,7 @@ public class BigItemStack
 	@Nullable
     public static BigItemStack loadItemStackFromNBT(@Nonnull NBTTagCompound nbt) // Can load normal ItemStack NBTs. Does NOT deal with placeholders
 	{
-		NBTTagCompound itemNBT = nbt;
-		if(!NbtUtils.hasKey(nbt,"id", 99))
-        {
-            itemNBT = (NBTTagCompound)nbt.copy(); // Could be slow en-mass but ID names matter more
-            String idName = nbt.getString("id");
-            Item item = (Item)Item.itemRegistry.getObject(idName);
-            if(item == null) // Might still be an ID number but stored as a string
-            {
-                try
-                {
-                    item = Item.getItemById(Short.parseShort(idName));
-                } catch(Exception ignored){}
-            }
-            if(item == null) return null;
-            itemNBT.setInteger("id", Item.itemRegistry.getIDForObject(item));
-        }
-        ItemStack miniStack = ItemStack.loadItemStackFromNBT(itemNBT);
+        ItemStack miniStack = ItemStack.loadItemStackFromNBT(nbt);
         if(miniStack == null || miniStack.getItem() == null) return null;
 		BigItemStack bigStack = new BigItemStack(miniStack);
 		bigStack.stackSize = nbt.getInteger("Count");
@@ -195,22 +179,9 @@ public class BigItemStack
 		return bigStack;
 	}
 	
-	@Deprecated // Should really just create a new stack
-	public void readFromNBT(NBTTagCompound tags)
-	{
-		BigItemStack stack = loadItemStackFromNBT(tags);
-		if(stack == null) return;
-		this.baseStack = stack.baseStack;
-		this.oreDict = stack.oreDict;
-		this.stackSize = stack.stackSize;
-		this.oreIng = stack.oreIng;
-	}
-	
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
 		baseStack.writeToNBT(nbt);
-		String iRes = Item.itemRegistry.getNameForObject(baseStack.getItem());
-		nbt.setString("id", iRes == null ? "minecraft:air" : iRes);
 		nbt.setInteger("Count", this.stackSize);
 		nbt.setString("OreDict", this.getOreDict());
 		return nbt;

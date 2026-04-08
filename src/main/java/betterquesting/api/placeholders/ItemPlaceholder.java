@@ -1,5 +1,7 @@
 package betterquesting.api.placeholders;
 
+import betterquesting.backport.ItemUtils;
+import betterquesting.backport.NbtUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
@@ -52,7 +54,7 @@ public class ItemPlaceholder extends Item
     	EntityPlayer player = (EntityPlayer)entity;
     	
     	NBTTagCompound tags = stack.getTagCompound();
-    	Item i = (Item)Item.itemRegistry.getObject(tags.getString("orig_id"));
+    	Item i = ItemUtils.getByIdOrNull(NbtUtils.shortValue(tags.getTag("orig_id")));
     	int m = stack.getItemDamage() > 0? stack.getItemDamage() : tags.getInteger("orig_meta");
     	NBTTagCompound t = tags.hasKey("orig_tag")? tags.getCompoundTag("orig_tag") : null;
     	

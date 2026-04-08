@@ -27,10 +27,9 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
     }
     
     @Override
-    @SuppressWarnings("unchecked")
     protected Iterator<Item> getIterator()
     {
-        return (Iterator<Item>)Item.itemRegistry.iterator();
+        return Arrays.asList(Item.itemsList).iterator();
     }
     
     @Override
@@ -38,8 +37,7 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
     {
         if(item == null) return;
         
-        String regName = Item.itemRegistry.getNameForObject(item); // This is gonna be really slow but... meh. It's rate limited in the parent class
-        if(regName == null) return;
+        String idStr = String.valueOf(item.itemID);
         
         try
         {
@@ -48,7 +46,7 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
             item.getSubItems(item.itemID, CreativeTabs.tabAllSearch, subList);
             if(subList.isEmpty()) subList.add(new ItemStack(item));
             
-            if(regName.toLowerCase().contains(query) || item.getUnlocalizedName().toLowerCase().contains(query) || QuestTranslation.translate(item.getUnlocalizedName()).toLowerCase().contains(query))
+            if(idStr.toLowerCase().contains(query) || item.getUnlocalizedName().toLowerCase().contains(query) || QuestTranslation.translate(item.getUnlocalizedName()).toLowerCase().contains(query))
             {
                 results.addAll(subList);
                 return;
@@ -77,12 +75,12 @@ public class CanvasItemDatabase extends CanvasSearch<ItemStack, Item>
                     }
                 } catch(Exception e)
                 {
-                    BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching itemstack " + subItem.toString() + " from item \"" + regName + "\" (" + item.getClass().getName() + ").\nNBT: " + subItem.writeToNBT(new NBTTagCompound()), e);
+                    BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching itemstack " + subItem.toString() + " from item \"" + idStr + "\" (" + item.getClass().getName() + ").\nNBT: " + subItem.writeToNBT(new NBTTagCompound()), e);
                 }
             }
         } catch(Exception e)
         {
-            BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching item \"" + regName + "\" (" + item.getClass().getName() + ")", e);
+            BetterQuesting.logger.log(Level.SEVERE, "An error occured while searching item \"" + idStr + "\" (" + item.getClass().getName() + ")", e);
         }
     }
     

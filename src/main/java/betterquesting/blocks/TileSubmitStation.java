@@ -16,11 +16,12 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.liquids.ILiquidTank;
 import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidStack;
@@ -140,18 +141,17 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
     
     @Nonnull
 	@Override
-	public String getInventoryName()
+	public String getInvName()
 	{
 		return BetterQuesting.submitStation.getLocalizedName();
 	}
 
-	@Override
-	public boolean hasCustomInventoryName()
-	{
-		return false;
-	}
+    @Override
+    public boolean isInvNameLocalized() {
+        return false;
+    }
 
-	@Override
+    @Override
 	public int getInventoryStackLimit()
 	{
 		return 64;
@@ -160,21 +160,21 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-        return (owner == null || player.getUniqueID().equals(owner)) && player.getDistanceSq(this.xCoord, this.yCoord, this.zCoord) < 256;
+        return (owner == null ||  ProfileMapper.getUuid(player).equals(owner)) && player.getDistanceSq(this.xCoord, this.yCoord, this.zCoord) < 256;
+    }
+
+    @Override
+    public void openChest() {
+
+    }
+
+    @Override
+    public void closeChest() {
+
     }
 
 	@Override
-	public void openInventory()
-	{
-	}
-
-	@Override
-	public void closeInventory()
-	{
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int idx, ItemStack stack)
+	public boolean isStackValidForSlot(int idx, ItemStack stack)
 	{
 		if(idx != 0)
 		{
@@ -191,7 +191,10 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
 	{
 		IFluidTask t = getFluidTask();
 		
-		if(!isSetup() || t == null) return 0;
+		if(!isSetup() || t == null || t.isComplete(owner)
+                || !t.canAcceptFluid(owner, getQuest(), new LiquidStack(fluid.itemID, 1, fluid.itemMeta, fluid.extra))) {
+            return 0;
+        }
 
         LiquidStack remainder;
 		int amount = fluid.amount;
@@ -218,6 +221,11 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
 	}
 
     @Override
+    public int fill(int i, LiquidStack liquidStack, boolean doFill) {
+        return fill(ForgeDirection.UNKNOWN, liquidStack, doFill);
+    }
+
+    @Override
     public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
     {
         return null;
@@ -228,28 +236,17 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
         return null;
     }
 
-    // FIXME IFluidHandler.canFill
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid)
-	{
-		IFluidTask t = getFluidTask();
-		
-		return t != null && !t.isComplete(owner) && t.canAcceptFluid(owner, getQuest(), new FluidStack(fluid, 1));
-	}
-
-    // FIXME IFluidHandler.canDrain
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid)
-	{
-		return false;
-	}
-
     @Override
     public ILiquidTank[] getTanks(ForgeDirection from) {
         return new ILiquidTank[0];
     }
-	
-	@Override
+
+    @Override
+    public ILiquidTank getTank(ForgeDirection forgeDirection, LiquidStack liquidStack) {
+        return null;
+    }
+
+    @Override
 	public void updateEntity()
 	{
 		if(worldObj.isRemote || !isSetup() || QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE)) return;
@@ -365,7 +362,7 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
     {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
         this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbtTagCompound);
+        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbtTagCompound);
     }
     
     /**
@@ -378,12 +375,11 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
      * @param pkt The data packet
      */
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
-    	this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
+        this.readFromNBT(pkt.customParam1);
     }
-	
-	@Override
+
+    @Override
 	public void readFromNBT(NBTTagCompound tags)
 	{
 		super.readFromNBT(tags);
@@ -433,7 +429,7 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side)
 	{
-		return isItemValidForSlot(slot, stack);
+		return isStackValidForSlot(slot, stack);
 	}
 
 	@Override

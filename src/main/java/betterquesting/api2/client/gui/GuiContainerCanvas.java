@@ -465,7 +465,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
     }
 	
 	@Override
-    protected void renderToolTip(ItemStack stack, int x, int y)
+    protected void drawItemStackTooltip(ItemStack stack, int x, int y)
     {
         FontRenderer font = stack.getItem().getFontRenderer(stack);
         RenderUtils.drawHoveringText(stack, getItemToolTip(stack), x, y, width, height, -1, (font == null ? mc.fontRenderer : font));

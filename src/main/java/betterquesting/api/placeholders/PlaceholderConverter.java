@@ -1,12 +1,15 @@
 package betterquesting.api.placeholders;
 
 import betterquesting.api.utils.BigItemStack;
+import betterquesting.backport.ItemUtils;
+import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 
 /**
@@ -32,43 +35,36 @@ public class PlaceholderConverter
 		return entity;
 	}
 	
-	public static BigItemStack convertItem(Item item, String name, int count, int damage, String oreDict, NBTTagCompound nbt)
+	public static BigItemStack convertItem(Item item, short id, int count, int damage, String oreDict, NBTTagCompound nbt)
 	{
 		if(item == null)
 		{
 			BigItemStack stack = new BigItemStack(BetterQuesting.placeholder, count, damage).setOreDict(oreDict);
 			stack.SetTagCompound(new NBTTagCompound());
-			stack.GetTagCompound().setString("orig_id", name);
+			stack.GetTagCompound().setShort("orig_id", id);
 			stack.GetTagCompound().setInteger("orig_meta", damage);
 			if(nbt != null) stack.GetTagCompound().setTag("orig_tag", nbt);
 			return stack;
-		} else if(item == BetterQuesting.placeholder)
+		}
+
+        if(item == BetterQuesting.placeholder && nbt != null)
 		{
-			if(nbt != null)
-			{
-			    String idName = nbt.getString("orig_id"); // This is always a string (or should be)
-				Item restored = (Item)Item.itemRegistry.getObject(idName);
-				
-				if(restored == null)
-                {
-                    try
-                    {
-                        restored = Item.getItemById(Short.parseShort(idName));
-                    } catch(Exception ignored){}
-                }
-				
-				if(restored != null)
-				{
-					BigItemStack stack = new BigItemStack(restored, count, nbt.hasKey("orig_meta")? nbt.getInteger("orig_meta") : damage).setOreDict(oreDict);
-					if(nbt.hasKey("orig_tag")) stack.SetTagCompound(nbt.getCompoundTag("orig_tag"));
-					
-					return stack;
-				} else if(damage > 0 && !nbt.hasKey("orig_meta"))
-				{
-					nbt.setInteger("orig_meta", damage);
-					damage = 0;
-				}
-			}
+            int origId = NbtUtils.shortValue(nbt.getTag("orig_id"));
+            Item restored = ItemUtils.getByIdOrNull(origId);
+
+            if(restored != null)
+            {
+                BigItemStack stack = new BigItemStack(restored, count, nbt.hasKey("orig_meta")
+                        ? nbt.getInteger("orig_meta")
+                        : damage).setOreDict(oreDict);
+                if(nbt.hasKey("orig_tag")) stack.SetTagCompound(nbt.getCompoundTag("orig_tag"));
+
+                return stack;
+            } else if(damage > 0 && !nbt.hasKey("orig_meta"))
+            {
+                nbt.setInteger("orig_meta", damage);
+                damage = 0;
+            }
 		}
 		
 		BigItemStack stack = new BigItemStack(item, count, damage).setOreDict(oreDict);
@@ -79,29 +75,24 @@ public class PlaceholderConverter
 	
 	public static LiquidStack convertFluid(LiquidStack fluid, String name, int amount, NBTTagCompound nbt)
 	{
-        // FIXME: fluidPlaceholder
 		if(fluid == null)
 		{
-            LiquidStack stack = new LiquidStack(FluidPlaceholder.fluidPlaceholder, amount);
+            LiquidStack stack = new LiquidStack(BetterQuesting.fluidPlaceholder, amount);
 			NBTTagCompound orig = new NBTTagCompound();
 			orig.setString("orig_id", name);
 			if(nbt != null) orig.setTag("orig_tag", nbt);
-			stack.tag = orig;
+			stack.extra = orig;
 			return stack;
-		} else if(fluid == FluidPlaceholder.fluidPlaceholder && nbt != null)
+		} else if(fluid.itemID == BetterQuesting.fluidPlaceholder.blockID && nbt != null)
 		{
-			Fluid restored = FluidRegistry.getFluid(nbt.getString("orig_id"));
-			
-			if(restored != null)
-			{
-				FluidStack stack = new FluidStack(restored, amount);
-				if(nbt.hasKey("orig_tag")) stack.tag = nbt.getCompoundTag("orig_tag");
-				return stack;
-			}
+              LiquidStack stack = LiquidDictionary.getLiquid(nbt.getString("orig_id"), amount);
+              if(nbt.hasKey("orig_tag")) stack.extra = nbt.getCompoundTag("orig_tag");
+              return stack;
 		}
-		
-		FluidStack stack = new FluidStack(fluid, amount);
-		if(nbt != null) stack.tag = nbt;
+
+        LiquidStack stack = fluid.copy();
+        stack.amount = amount;
+		if(nbt != null) stack.extra = nbt;
 		
 		return stack;
 	}

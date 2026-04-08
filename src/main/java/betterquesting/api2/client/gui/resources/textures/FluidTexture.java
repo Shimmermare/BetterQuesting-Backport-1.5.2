@@ -91,10 +91,10 @@ public class FluidTexture implements IGuiTexture
         // TODO: Add tiling option
         
         Minecraft mc = Minecraft.getMinecraft();
-        mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        mc.renderEngine.bindTexture("/terrain.png");
         Icon icon = LiquidUtils.getIcon(liquid);
         if (icon == null) {
-            icon = ((TextureMap)mc.renderEngine.getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missigno");
+            icon = mc.renderEngine.textureMapBlocks.getMissingIcon();
         }
         this.drawTexturedModalRect(0, 0, 0, icon, 16, 16);
         

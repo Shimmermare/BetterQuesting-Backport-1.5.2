@@ -1,13 +1,11 @@
 package betterquesting.api.placeholders;
 
+import net.minecraft.block.BlockStationary;
+import net.minecraft.block.material.Material;
 
-// FIXME: fluidPlaceholder
-public class FluidPlaceholder extends Fluid
-{
-	public static Fluid fluidPlaceholder = new FluidPlaceholder();
-	
-	public FluidPlaceholder()
-	{
-		super("betterquesting.placeholder");
-	}
+public class FluidPlaceholder extends BlockStationary {
+    public FluidPlaceholder(int i) {
+        super(i, Material.water);
+        setUnlocalizedName("betterquesting.placeholder");
+    }
 }

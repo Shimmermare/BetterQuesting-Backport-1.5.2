@@ -18,7 +18,7 @@ public class SSItemHandler
  
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
 	{
-		if(stack == null || !tile.isItemValidForSlot(slot, stack))
+		if(stack == null || !tile.isStackValidForSlot(slot, stack))
 		{
 			return stack;
 		}

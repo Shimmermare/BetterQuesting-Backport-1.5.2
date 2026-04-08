@@ -5,6 +5,7 @@ import betterquesting.api.placeholders.ItemPlaceholder;
 import betterquesting.api.placeholders.PlaceholderConverter;
 import betterquesting.api2.utils.BQThreadedIO;
 import betterquesting.backport.FileUtils;
+import betterquesting.backport.ItemUtils;
 import betterquesting.backport.NbtUtils;
 import betterquesting.core.BetterQuesting;
 import com.google.gson.*;
@@ -333,14 +334,17 @@ public class JsonHelper
 	
 	public static boolean isItem(NBTTagCompound json)
 	{
-		if(json != null && json.hasKey("id") && NbtUtils.hasKey(json,"Count", 99) && NbtUtils.hasKey(json,"Damage", 99))
+		if(json != null && json.hasKey("id")
+                && NbtUtils.hasKey(json,"Count", 99)
+                && NbtUtils.hasKey(json,"Damage", 99))
 		{
-			if(NbtUtils.hasKey(json,"id", 8))
+			if(NbtUtils.hasKey(json,"id", 99))
 			{
-				 return Item.itemRegistry.containsKey(json.getString("id"));
+                short id = NbtUtils.shortValue(json.getTag("id"));
+                return ItemUtils.getByIdOrNull(id) != null;
 			} else
 			{
-				return Item.itemRegistry.getObjectById(json.getInteger("id")) != null;
+				return false;
 			}
 		}
 		
@@ -367,17 +371,12 @@ public class JsonHelper
 	@Nullable
 	public static BigItemStack JsonToItemStack(@Nonnull NBTTagCompound nbt)
 	{
-	    String idName = NbtUtils.hasKey(nbt,"id", 99) ? "" + nbt.getShort("id") : nbt.getString("id");
-	    Item preCheck = NbtUtils.hasKey(nbt,"id", 99) ? Item.getItemById(nbt.getShort("id")) : (Item)Item.itemRegistry.getObject(idName);
-	    if(preCheck == null && NbtUtils.hasKey(nbt,"id", 8))
-        {
-            try
-            {
-                preCheck = Item.getItemById(Short.parseShort(idName));
-            } catch(Exception ignored){}
-        }
+	    Short id = NbtUtils.hasKey(nbt,"id", 99)
+                ? NbtUtils.shortValue(nbt.getTag("id"))
+                : null;
+	    Item preCheck = id != null ? ItemUtils.getByIdOrNull(id) : null;
 	    if(preCheck != null && preCheck != BetterQuesting.placeholder) return BigItemStack.loadItemStackFromNBT(nbt);
-		return PlaceholderConverter.convertItem(preCheck, idName, nbt.getInteger("Count"), nbt.getShort("Damage"), nbt.getString("OreDict"), !NbtUtils.hasKey(nbt, "tag", 10) ? null : nbt.getCompoundTag("tag"));
+		return PlaceholderConverter.convertItem(preCheck, id, nbt.getInteger("Count"), nbt.getShort("Damage"), nbt.getString("OreDict"), !NbtUtils.hasKey(nbt, "tag", 10) ? null : nbt.getCompoundTag("tag"));
 	}
 	
 	/**
