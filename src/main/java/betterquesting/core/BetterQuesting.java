@@ -2,6 +2,7 @@ package betterquesting.core;
 
 import betterquesting.api.placeholders.EntityPlaceholder;
 import betterquesting.api.placeholders.ItemPlaceholder;
+import betterquesting.backport.OreDictionaryHelper;
 import betterquesting.blocks.BlockSubmitStation;
 import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.blocks.TileSubmitStation;
@@ -124,6 +125,7 @@ public class BetterQuesting
     @ForgeSubscribe
     public void postInit(FMLPostInitializationEvent event)
     {
+        OreDictionaryHelper.init();
     }
 	
 	@ForgeSubscribe

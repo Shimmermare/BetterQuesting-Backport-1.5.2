@@ -4,8 +4,12 @@ import betterquesting.core.BetterQuesting;
 import betterquesting.core.ExpansionLoader;
 import betterquesting.handlers.EventHandler;
 import betterquesting.handlers.GuiHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
+import betterquesting.handlers.BQPlayerTracker;
+import betterquesting.handlers.ServerTickHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy
@@ -21,6 +25,9 @@ public class CommonProxy
 		
 		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
 		MinecraftForge.TERRAIN_GEN_BUS.register(EventHandler.INSTANCE);
+
+        TickRegistry.registerTickHandler(new ServerTickHandler(), Side.SERVER);
+        GameRegistry.registerPlayerTracker(new BQPlayerTracker());
 
 		NetworkRegistry.instance().registerGuiHandler(BetterQuesting.instance, new GuiHandler());
 	}

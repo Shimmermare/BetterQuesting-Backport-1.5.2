@@ -6,33 +6,17 @@ import betterquesting.api.events.BQLivingUpdateEvent;
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.QuestEvent;
 import betterquesting.api.events.QuestEvent.Type;
-import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.party.IParty;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api2.cache.QuestCache;
 import betterquesting.api2.cache.QuestCache.QResetTime;
 import betterquesting.api2.storage.DBEntry;
-import betterquesting.core.BetterQuesting;
-import betterquesting.network.handlers.NetBulkSync;
-import betterquesting.network.handlers.NetNameSync;
 import betterquesting.network.handlers.NetNotices;
 import betterquesting.network.handlers.NetQuestSync;
 import betterquesting.questing.QuestDatabase;
-import betterquesting.questing.party.PartyInvitations;
-import betterquesting.questing.party.PartyManager;
 import betterquesting.storage.LifeDatabase;
-import betterquesting.storage.NameCache;
 import betterquesting.storage.QuestSettings;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListenableFutureTask;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -42,11 +26,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.server.management.BanEntry;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -55,9 +34,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 /**
  * Event handling for standard quests and core BetterQuesting functionality
@@ -251,80 +227,6 @@ public class EventHandler
 			SaveLoadHandler.INSTANCE.saveDatabases();
 		}
 	}
-
-    // FIXME replace with IConnectionHandler
-	@ForgeSubscribe
-	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event)
-	{
-		if(event.player.worldObj.isRemote || MinecraftServer.getServer() == null || !(event.player instanceof EntityPlayerMP)) return;
-		
-		EntityPlayerMP mpPlayer = (EntityPlayerMP)event.player;
-  
-		if(BetterQuesting.proxy.isClient() && !MinecraftServer.getServer().isDedicatedServer() && MinecraftServer.getServer().getServerOwner().equals(event.player.username))
-		{
-		    NameCache.INSTANCE.updateName(mpPlayer);
-			return;
-		}
-        
-        NetBulkSync.sendReset(mpPlayer, true, true);
-	}
-
-    // FIXME Replace with IPlayerTracker
-	@ForgeSubscribe
-	public void onPlayerRespawn(PlayerRespawnEvent event)
-	{
-		if(QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) && event.player instanceof EntityPlayerMP && !((EntityPlayerMP)event.player).playerConqueredTheEnd)
-		{
-			EntityPlayerMP mpPlayer = (EntityPlayerMP)event.player;
-			
-			int lives = LifeDatabase.INSTANCE.getLives(QuestingAPI.getQuestingUUID(mpPlayer));
-			
-			if(lives <= 0)
-			{
-				MinecraftServer server = MinecraftServer.getServer();
-				
-				if(server == null)
-				{
-					return;
-				}
-	            
-	            if (server.isSinglePlayer() && mpPlayer.getCommandSenderName().equals(server.getServerOwner()))
-                {
-                    mpPlayer.playerNetServerHandler.kickPlayerFromServer("You have died. Game over, man, it\'s game over!");
-                    server.deleteWorldAndStopServer();
-                }
-                else
-                {
-                    BanEntry banEntry = new BanEntry(mpPlayer.username);
-                    banEntry.setBannedBy("Death in Hardcore");
-                    banEntry.setBanReason("(You just lost the game)");
-                    server.getConfigurationManager().getBannedPlayers().put(banEntry);
-                    mpPlayer.playerNetServerHandler.kickPlayerFromServer("You have died. Game over, man, it\'s game over!");
-                }
-			} else
-			{
-				if(lives == 1)
-				{
-					mpPlayer.addChatComponentMessage(new ChatComponentText("This is your last life!"));
-				} else
-				{
-					mpPlayer.addChatComponentMessage(new ChatComponentText(lives + " lives remaining!"));
-				}
-			}
-		}
-	}
-	
-	@ForgeSubscribe
-	@SideOnly(Side.CLIENT)
-	public void onTextureStitch(TextureStitchEvent.Pre event)
-	{
-		if(event.map.getTextureType() == 0)
-		{
-            // FIXME: fluidPlaceholder
-            IIcon icon = event.map.registerIcon("betterquesting:fluid_placeholder");
-            FluidPlaceholder.fluidPlaceholder.setIcons(icon);
-		}
-	}
 	
 	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
@@ -332,12 +234,9 @@ public class EventHandler
 	{
 		// TODO: Change this to a proper panel event. Also explain WHAT updated
 		final GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-		if(screen instanceof INeedsRefresh) Minecraft.getMinecraft().func_152343_a(Executors.callable(new Runnable() {
-            @Override
-            public void run() {
-                ((INeedsRefresh)screen).refreshGui();
-            }
-        }));
+		if(screen instanceof INeedsRefresh) {
+            ((INeedsRefresh)screen).refreshGui();
+        }
 	}
 	
 	@ForgeSubscribe
@@ -347,98 +246,8 @@ public class EventHandler
 		
 		if(server != null && (event.command.getCommandName().equalsIgnoreCase("op") || event.command.getCommandName().equalsIgnoreCase("deop")))
 		{
-		    EntityPlayerMP playerMP = server.getConfigurationManager().func_152612_a(event.parameters[0]);
-			if(playerMP != null) opQueue.add(playerMP); // Has to be delayed until after the event when the command has executed
+		    EntityPlayerMP playerMP = server.getConfigurationManager().getPlayerForUsername(event.parameters[0]);
+			if(playerMP != null) ServerTickHandler.queueOp(playerMP); // Has to be delayed until after the event when the command has executed
 		}
 	}
-	
-	private final ArrayDeque<EntityPlayerMP> opQueue = new ArrayDeque<EntityPlayerMP>();
-	private boolean openToLAN = false;
-	
-	private static final ArrayDeque<FutureTask> serverTasks = new ArrayDeque<FutureTask>();
-	private static Thread serverThread = null;
-	
-	@SuppressWarnings("UnstableApiUsage")
-    public static <T> ListenableFuture<T> scheduleServerTask(Callable<T> task)
-    {
-        if (task == null) {
-            throw new NullPointerException("task");
-        }
-
-        if (Thread.currentThread() != serverThread)
-        {
-            ListenableFutureTask<T> listenablefuturetask = ListenableFutureTask.create(task);
-
-            synchronized (serverTasks)
-            {
-                serverTasks.add(listenablefuturetask);
-                return listenablefuturetask;
-            }
-        }
-        else
-        {
-            try
-            {
-                return Futures.immediateFuture(task.call());
-            }
-            catch (Exception exception)
-            {
-                return Futures.immediateFailedCheckedFuture(exception);
-            }
-        }
-    }
-
-    // FIXME Replace with ITickHandler
-	@SubscribeEvent
-    public void onServerTick(ServerTickEvent event)
-    {
-        if(event.phase == Phase.START)
-        {
-            if(serverThread == null) serverThread = Thread.currentThread();
-            
-            synchronized(serverTasks)
-            {
-                while(!serverTasks.isEmpty()) serverTasks.poll().run();
-            }
-            
-            return;
-        }
-        
-        MinecraftServer server = MinecraftServer.getServer();
-        
-        if(!server.isDedicatedServer())
-        {
-            boolean tmp = openToLAN;
-            openToLAN = server instanceof IntegratedServer && ((IntegratedServer)server).getPublic();
-            if(openToLAN && !tmp) opQueue.addAll(server.getConfigurationManager().playerEntityList);
-        } else if(!openToLAN)
-        {
-            openToLAN = true;
-        }
-        
-        while(!opQueue.isEmpty())
-        {
-            EntityPlayerMP playerMP = opQueue.poll();
-            if(playerMP != null && NameCache.INSTANCE.updateName(playerMP))
-            {
-                DBEntry<IParty> party = PartyManager.INSTANCE.getParty(QuestingAPI.getQuestingUUID(playerMP));
-                if(party != null)
-                {
-                    NetNameSync.quickSync(null, party.getID());
-                } else
-                {
-                    NetNameSync.sendNames(new EntityPlayerMP[]{playerMP}, new UUID[]{QuestingAPI.getQuestingUUID(playerMP)}, null);
-                }
-            }
-        }
-        
-        if(server.getTickCounter() % 60 == 0) PartyInvitations.INSTANCE.cleanExpired();
-        
-        // === FIX FOR OnLivingUpdate FIRING MULTIPLE TIMES PER TICK ===
-        //noinspection unchecked
-        for(EntityPlayerMP player : (List<EntityPlayerMP>)server.getConfigurationManager().playerEntityList)
-        {
-            MinecraftForge.EVENT_BUS.post(new BQLivingUpdateEvent(player));
-        }
-    }
 }

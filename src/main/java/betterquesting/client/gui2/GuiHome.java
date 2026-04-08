@@ -34,6 +34,7 @@ import betterquesting.client.gui2.party.GuiPartyCreate;
 import betterquesting.client.gui2.party.GuiPartyManage;
 import betterquesting.handlers.EventHandler;
 import betterquesting.handlers.SaveLoadHandler;
+import betterquesting.handlers.ServerTickHandler;
 import betterquesting.network.handlers.NetChapterSync;
 import betterquesting.network.handlers.NetQuestSync;
 import betterquesting.network.handlers.NetSettingSync;
@@ -174,7 +175,7 @@ public class GuiHome extends GuiScreenCanvas implements IPEventListener
 			
 			if(qFile.exists())
 			{
-				EventHandler.scheduleServerTask(Executors.callable(new Runnable() {
+				ServerTickHandler.scheduleServerTask(Executors.callable(new Runnable() {
                     @Override
                     public void run() {
                         boolean editMode = QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE);
