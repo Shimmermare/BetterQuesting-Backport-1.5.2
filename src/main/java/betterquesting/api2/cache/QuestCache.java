@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import betterquesting.backport.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
@@ -27,8 +26,8 @@ import java.util.UUID;
 
 public class QuestCache implements IExtendedEntityProperties
 {
-    public static final ResourceLocation LOC_QUEST_CACHE = new ResourceLocation("betterquesting", "quest_cache");
-    
+    public static final String LOC_QUEST_CACHE = "quest_cache";
+
     // Quests that are visible to the player
     private final TreeSet<Integer> visibleQuests = new TreeSet<Integer>();
     

@@ -259,7 +259,7 @@ public class TileSubmitStation extends TileEntity implements ITankContainer, ISi
             IItemTask t = getItemTask();
             MinecraftServer server = MinecraftServer.getServer();
             EntityPlayerMP player = getPlayerByUUID(owner);
-            QuestCache qc = player == null ? null : (QuestCache)player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+            QuestCache qc = player == null ? null : (QuestCache)player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
             
 			if(q != null && t != null && itemStack[0] != null && itemStack[1] == null)
 			{

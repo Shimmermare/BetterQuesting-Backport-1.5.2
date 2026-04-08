@@ -13,13 +13,7 @@ import betterquesting.api.questing.party.IParty;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api2.cache.QuestCache;
 import betterquesting.api2.cache.QuestCache.QResetTime;
-import betterquesting.api2.client.gui.GuiScreenTest;
-import betterquesting.api2.client.gui.themes.gui_args.GArgsNone;
-import betterquesting.api2.client.gui.themes.presets.PresetGUIs;
 import betterquesting.api2.storage.DBEntry;
-import betterquesting.client.BQ_Keybindings;
-import betterquesting.client.gui2.GuiHome;
-import betterquesting.client.themes.ThemeRegistry;
 import betterquesting.core.BetterQuesting;
 import betterquesting.network.handlers.NetBulkSync;
 import betterquesting.network.handlers.NetNameSync;
@@ -58,13 +52,9 @@ import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.event.world.WorldEvent;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -75,27 +65,52 @@ import java.util.concurrent.FutureTask;
 public class EventHandler
 {
 	public static final EventHandler INSTANCE = new EventHandler();
-    
+
+    private static final Map<String, NBTTagCompound> deadPlayerCache = new HashMap<String, NBTTagCompound>();
+
+    @ForgeSubscribe
+    public void onLivingDeath(LivingDeathEvent event)
+    {
+        if (!(event.entityLiving instanceof EntityPlayer)) {
+            return;
+        }
+        if (!event.entityLiving.worldObj.isRemote) {
+            return;
+        }
+
+        EntityPlayer player = (EntityPlayer) event.entityLiving;
+        QuestCache cache = (QuestCache) player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
+        if (cache != null) {
+            NBTTagCompound tmp = new NBTTagCompound();
+            cache.saveNBTData(tmp);
+            deadPlayerCache.put(player.username, tmp);
+        }
+
+        if(QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE))
+        {
+            UUID uuid = QuestingAPI.getQuestingUUID(((EntityPlayer)event.entityLiving));
+            int lives = LifeDatabase.INSTANCE.getLives(uuid);
+            LifeDatabase.INSTANCE.setLives(uuid, lives - 1);
+        }
+    }
+
     @ForgeSubscribe
     public void onEntityJoin(EntityJoinWorldEvent event)
     {
-        if(event.entity instanceof EntityPlayer && event.entity.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString()) == null)
-        {
-            event.entity.registerExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString(), new QuestCache());
+        if (!(event.entity instanceof EntityPlayer)) {
+            return;
         }
-    }
-    // FIXME
-    @SubscribeEvent
-    public void onPlayerClone(Clone event)
-    {
-        QuestCache oCache = (QuestCache)event.original.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
-        QuestCache nCache = (QuestCache)event.entityPlayer.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
-        
-        if(oCache != null && nCache != null)
+
+        EntityPlayer player = (EntityPlayer) event.entity;
+        NBTTagCompound savedCache = deadPlayerCache.remove(player.username);
+
+        if(event.entity.getExtendedProperties(QuestCache.LOC_QUEST_CACHE) == null)
         {
-            NBTTagCompound tmp = new NBTTagCompound();
-            oCache.saveNBTData(tmp);
-            nCache.loadNBTData(tmp);
+            QuestCache questCache = new QuestCache();
+            if (savedCache != null) {
+                questCache.loadNBTData(savedCache);
+            }
+            event.entity.registerExtendedProperties(QuestCache.LOC_QUEST_CACHE, questCache);
         }
     }
 	
@@ -107,7 +122,7 @@ public class EventHandler
         if(event.entityLiving.ticksExisted%20 != 0) return; // Only triggers once per second
         
         EntityPlayerMP player = (EntityPlayerMP)event.entityLiving;
-        QuestCache qc = (QuestCache)player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+        QuestCache qc = (QuestCache)player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
         boolean editMode = QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE);
         
         if(qc == null) return;
@@ -296,23 +311,6 @@ public class EventHandler
 					mpPlayer.addChatComponentMessage(new ChatComponentText(lives + " lives remaining!"));
 				}
 			}
-		}
-	}
-	
-	@ForgeSubscribe
-	public void onLivingDeath(LivingDeathEvent event)
-	{
-		if(event.entityLiving.worldObj.isRemote || !QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE))
-		{
-			return;
-		}
-		
-		if(event.entityLiving instanceof EntityPlayer)
-		{
-			UUID uuid = QuestingAPI.getQuestingUUID(((EntityPlayer)event.entityLiving));
-			
-            int lives = LifeDatabase.INSTANCE.getLives(uuid);
-            LifeDatabase.INSTANCE.setLives(uuid, lives - 1);
 		}
 	}
 	

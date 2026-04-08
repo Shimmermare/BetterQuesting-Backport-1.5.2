@@ -117,7 +117,7 @@ public class QuestInstance implements IQuest
 	public void detect(EntityPlayer player)
 	{
 		UUID playerID = QuestingAPI.getQuestingUUID(player);
-        QuestCache qc = (QuestCache)player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+        QuestCache qc = (QuestCache)player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
         if(qc == null) return;
         int questID = QuestDatabase.INSTANCE.getID(this);
 		
@@ -230,7 +230,7 @@ public class QuestInstance implements IQuest
 		}
 		
 		UUID pID = QuestingAPI.getQuestingUUID(player);
-        QuestCache qc = (QuestCache)player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+        QuestCache qc = (QuestCache)player.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
 		
         synchronized(completeUsers)
         {

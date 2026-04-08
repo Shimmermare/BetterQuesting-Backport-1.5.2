@@ -72,7 +72,7 @@ public class ParticipantInfo
     
     public void markDirty(@Nonnull List<Integer> questIDs) // Only marks quests dirty for the immediate participating player
     {
-         QuestCache qc = (QuestCache)PLAYER.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+         QuestCache qc = (QuestCache)PLAYER.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
         if(qc != null) {
             for(Integer id : questIDs) {
                 qc.markQuestDirty(id);
@@ -84,7 +84,7 @@ public class ParticipantInfo
     {
         if(ACTIVE_PLAYERS.size() <= 0 || questIDs.size() <= 0) return;
         for(EntityPlayer value : ACTIVE_PLAYERS) {
-            QuestCache qc = (QuestCache)value.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+            QuestCache qc = (QuestCache)value.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
             if(qc != null) {
                 for(Integer id : questIDs) {
                     qc.markQuestDirty(id);
@@ -98,7 +98,7 @@ public class ParticipantInfo
     {
         TreeSet<Integer> active = new TreeSet<Integer>();
         for(EntityPlayer p : ACTIVE_PLAYERS) {
-            QuestCache qc = (QuestCache)p.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+            QuestCache qc = (QuestCache)p.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
             if(qc != null) for(int value : qc.getActiveQuests()) active.add(value);
         }
         

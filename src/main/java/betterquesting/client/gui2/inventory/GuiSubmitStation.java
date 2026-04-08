@@ -73,7 +73,7 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
     public void refreshGui()
     {
         quests.clear();
-        QuestCache qc = (QuestCache)mc.thePlayer.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+        QuestCache qc = (QuestCache)mc.thePlayer.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
         if(qc != null) quests.addAll(QuestDatabase.INSTANCE.bulkLookup(qc.getActiveQuests()));
         filterQuests();
         
@@ -89,7 +89,7 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
     
         quests.clear();
         taskPanel = null;
-        QuestCache qc = (QuestCache)mc.thePlayer.getExtendedProperties(QuestCache.LOC_QUEST_CACHE.toString());
+        QuestCache qc = (QuestCache)mc.thePlayer.getExtendedProperties(QuestCache.LOC_QUEST_CACHE);
         if(qc != null) quests.addAll(QuestDatabase.INSTANCE.bulkLookup(qc.getActiveQuests()));
         filterQuests();
         
