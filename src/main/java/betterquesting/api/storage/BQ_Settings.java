@@ -19,4 +19,11 @@ public class BQ_Settings
 	public static int guiHeight = -1;
 	public static boolean questNotices = true;
 	public static boolean dirtyMode = true;
+	
+	public static int itemExtraLifeId = 8250;
+	public static int itemGuideBookId = 8251;
+	public static int itemPlaceholderId = 8252;
+	
+	public static int blockFluidPlaceholderId = 2320;
+	public static int blockSubmitStationId = 2321;
 }

@@ -27,6 +27,14 @@ public class ConfigHandler
         BQ_Settings.guiWidth = MathHelper.clamp_int(guiWidth, -1, Integer.MAX_VALUE);
 		int guiHeight = config.get("Max GUI Height", Configuration.CATEGORY_GENERAL, -1, "Clamps the max UI height (-1 to disable)").getInt();
         BQ_Settings.guiHeight = MathHelper.clamp_int(guiHeight, -1, Integer.MAX_VALUE);
+        
+        BQ_Settings.itemExtraLifeId = config.getItem("ExtraLife", BQ_Settings.itemExtraLifeId).getInt();
+        BQ_Settings.itemGuideBookId = config.getItem("GuideBook", BQ_Settings.itemGuideBookId).getInt();
+        BQ_Settings.itemPlaceholderId = config.getItem("ItemPlaceholder", BQ_Settings.itemPlaceholderId).getInt();
+        
+        BQ_Settings.blockFluidPlaceholderId = config.getBlock("FluidPlaceholder", BQ_Settings.blockFluidPlaceholderId).getInt();
+        BQ_Settings.blockSubmitStationId = config.getBlock("SubmitStation", BQ_Settings.blockSubmitStationId).getInt();
+        
 		config.save();
 	}
 }

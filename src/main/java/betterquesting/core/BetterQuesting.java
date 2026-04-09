@@ -3,6 +3,7 @@ package betterquesting.core;
 import betterquesting.api.placeholders.EntityPlaceholder;
 import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.api.placeholders.ItemPlaceholder;
+import betterquesting.api.storage.BQ_Settings;
 import betterquesting.backport.OreDictionaryHelper;
 import betterquesting.blocks.BlockSubmitStation;
 import betterquesting.blocks.TileSubmitStation;
@@ -67,13 +68,12 @@ public class BetterQuesting
 	
 	public static CreativeTabs tabQuesting = new CreativeTabQuesting();
 
-    // FIXME Make block and item IDs configurable
-	public static Item extraLife = new ItemExtraLife(8250);
-	public static Item guideBook = new ItemGuideBook(8251);
-    public static Item placeholder = new ItemPlaceholder(8252);
+	public static Item extraLife;
+	public static Item guideBook;
+    public static Item placeholder;
 
-    public static Block fluidPlaceholder = new FluidPlaceholder(2320);
-	public static Block submitStation = new BlockSubmitStation(2321);
+    public static Block fluidPlaceholder;
+	public static Block submitStation;
 
     public static File modConfigDir;
 
@@ -87,6 +87,13 @@ public class BetterQuesting
         File modConfigFile = new File(modConfigDir, "Main.cfg");
     	ConfigHandler.config = new Configuration(modConfigFile, true);
     	ConfigHandler.initConfigs();
+    	
+    	extraLife = new ItemExtraLife(BQ_Settings.itemExtraLifeId);
+    	guideBook = new ItemGuideBook(BQ_Settings.itemGuideBookId);
+    	placeholder = new ItemPlaceholder(BQ_Settings.itemPlaceholderId);
+    	
+    	fluidPlaceholder = new FluidPlaceholder(BQ_Settings.blockFluidPlaceholderId);
+    	submitStation = new BlockSubmitStation(BQ_Settings.blockSubmitStationId);
     	
     	proxy.registerHandlers();
     	
