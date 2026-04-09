@@ -3,6 +3,7 @@ package betterquesting.commands.admin;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.backport.ProfileMapper;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.network.handlers.NetQuestSync;
@@ -106,11 +107,11 @@ public class QuestCommandReset extends QuestCommandBase
 			
 			if(uuid != null)
 			{
-				sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.reset.player_all", pName));
+				sender.sendChatToPlayer(QuestTranslation.translate(sender, "betterquesting.cmd.reset.player_all", pName));
 				if(player != null) NetQuestSync.sendSync(player, null, false, true);
 			} else
 			{
-				sender.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.cmd.reset.all_all"));
+                sender.sendChatToPlayer(QuestTranslation.translate(sender, "betterquesting.cmd.reset.all_all"));
                 NetQuestSync.quickSync(-1, false, true);
 			}
 		} else
@@ -123,13 +124,13 @@ public class QuestCommandReset extends QuestCommandBase
 				if(uuid != null)
 				{
 					quest.resetUser(uuid, true); // Clear progress and state
-					sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.reset.player_single",
+					sender.sendChatToPlayer(QuestTranslation.translate(sender, "betterquesting.cmd.reset.player_single",
                             StatCollector.translateToLocal(quest.getProperty(NativeProps.NAME)), pName));
 					if(player != null) NetQuestSync.sendSync(player, new int[]{id}, false, true);
 				} else
 				{
 					quest.resetUser(null, true);
-					sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.reset.all_single",
+					sender.sendChatToPlayer(QuestTranslation.translate(sender, "betterquesting.cmd.reset.all_single",
                             StatCollector.translateToLocal(quest.getProperty(NativeProps.NAME))));
 					NetQuestSync.quickSync(id, false, true);
 				}

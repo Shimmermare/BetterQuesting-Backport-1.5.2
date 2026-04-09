@@ -82,8 +82,7 @@ public class QuestCommandComplete extends QuestCommandBase
         IQuest quest = QuestDatabase.INSTANCE.getValue(id);
         if(quest == null) throw getException(command);
         NetQuestEdit.setQuestStates(new int[]{id}, true, uuid);
-        // No server-side translations in 1.5.2
-        sender.sendChatToPlayer(StringTranslate.getInstance().translateKey("betterquesting.cmd.complete")
+        sender.sendChatToPlayer(QuestTranslation.translate(sender,"betterquesting.cmd.complete")
                 + " " + QuestTranslation.translate(quest.getProperty(NativeProps.NAME), pName));
 	}
 	

@@ -2,6 +2,7 @@ package betterquesting.items;
 
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.properties.NativeProps;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.core.BetterQuesting;
 import betterquesting.storage.LifeDatabase;
 import betterquesting.storage.QuestSettings;
@@ -68,7 +69,7 @@ public class ItemExtraLife extends Item
     			if(!world.isRemote)
     			{
                     player.sendChatToPlayer(EnumChatFormatting.RED +
-                            StringTranslate.getInstance().translateKey("betterquesting.gui.full_lives"));
+                            QuestTranslation.translate(player,"betterquesting.gui.full_lives"));
     			}
 	    		
 	    		return stack;
@@ -79,12 +80,12 @@ public class ItemExtraLife extends Item
     		if(!world.isRemote)
     		{
     			LifeDatabase.INSTANCE.setLives(uuid, lives + 1);
-                player.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.gui.remaining_lives")
+                player.sendChatToPlayer(QuestTranslation.translate(player,"betterquesting.gui.remaining_lives")
                                 + EnumChatFormatting.YELLOW + (lives + 1));
     		}
     	} else if(!world.isRemote)
     	{
-            player.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.msg.heart_disabled"));
+            player.sendChatToPlayer(QuestTranslation.translate(player,"betterquesting.msg.heart_disabled"));
     	}
     	
 		return stack;

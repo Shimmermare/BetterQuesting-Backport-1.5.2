@@ -449,13 +449,6 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
     {
         return false; // Halts packet handling if paused
     }
-
-    // FIXME: Restore behavior - why this was even used?
-    protected void drawItemStackTooltip(ItemStack stack, int x, int y)
-    {
-        FontRenderer font = stack.getItem().getFontRenderer(stack);
-        RenderUtils.drawHoveringText(stack, this.getItemToolTip(stack), x, y, width, height, -1, (font == null ? mc.fontRenderer : font));
-    }
     
     @SuppressWarnings("unchecked")
     private List<String> getItemToolTip(ItemStack stack)

@@ -68,8 +68,7 @@ public class QuestCommandDelete extends QuestCommandBase
             NetChapterSync.sendSync(null, null);
             SaveLoadHandler.INSTANCE.markDirty();
 
-            // No server-side translation on 1.5.2
-			sender.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.cmd.delete.all"));
+			sender.sendChatToPlayer(QuestTranslation.translate(sender,"betterquesting.cmd.delete.all"));
 		} else
 		{
 			try
@@ -78,8 +77,7 @@ public class QuestCommandDelete extends QuestCommandBase
 				IQuest quest = QuestDatabase.INSTANCE.getValue(id);
                 NetQuestEdit.deleteQuests(new int[]{id});
 
-                // No server-side translation on 1.5.2
-                sender.sendChatToPlayer(QuestTranslation.translate("betterquesting.cmd.delete.single",
+                sender.sendChatToPlayer(QuestTranslation.translate(sender,"betterquesting.cmd.delete.single",
                         QuestTranslation.translate(quest.getProperty(NativeProps.NAME))));
                 SaveLoadHandler.INSTANCE.markDirty();
 			} catch(Exception e)

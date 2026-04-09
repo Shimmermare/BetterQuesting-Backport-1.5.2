@@ -1,6 +1,7 @@
 package betterquesting.commands.admin;
 
 import betterquesting.api.properties.NativeProps;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.handlers.NetSettingSync;
@@ -76,7 +77,7 @@ public class QuestCommandHardcore extends QuestCommandBase
         SaveLoadHandler.INSTANCE.markDirty();
 
         String toggleKey = QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) ? "options.on" : "options.off";
-        sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.hardcore",
+        sender.sendChatToPlayer(QuestTranslation.translate(sender,"betterquesting.cmd.hardcore",
                 StatCollector.translateToLocal(toggleKey)));
         NetSettingSync.sendSync(null);
 	}

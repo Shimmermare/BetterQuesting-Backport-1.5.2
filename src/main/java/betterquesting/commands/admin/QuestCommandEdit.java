@@ -1,6 +1,7 @@
 package betterquesting.commands.admin;
 
 import betterquesting.api.properties.NativeProps;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.handlers.NetSettingSync;
@@ -75,7 +76,7 @@ public class QuestCommandEdit extends QuestCommandBase
 		QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, flag);
 
         String toggleKey = QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE) ? "options.on" : "options.off";
-		sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.edit",
+		sender.sendChatToPlayer(QuestTranslation.translate(sender,"betterquesting.cmd.edit",
                 StatCollector.translateToLocal(toggleKey)));
   
 		SaveLoadHandler.INSTANCE.markDirty();

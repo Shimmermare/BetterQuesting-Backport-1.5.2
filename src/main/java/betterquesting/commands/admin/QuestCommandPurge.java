@@ -4,6 +4,7 @@ import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineEntry;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.network.handlers.NetQuestEdit;
 import betterquesting.questing.QuestDatabase;
@@ -54,6 +55,6 @@ public class QuestCommandPurge extends QuestCommandBase
         for(n = 0; n < bulkIDs.length; n++) bulkIDs[n] = removeQueue.get(n);
         NetQuestEdit.deleteQuests(bulkIDs);
         
-        sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.purge_hidden", removed));
+        sender.sendChatToPlayer(QuestTranslation.translate(sender, "betterquesting.cmd.purge_hidden", removed));
     }
 }

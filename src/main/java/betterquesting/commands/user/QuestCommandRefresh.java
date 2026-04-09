@@ -3,6 +3,7 @@ package betterquesting.commands.user;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.network.handlers.NetBulkSync;
 import betterquesting.network.handlers.NetNameSync;
@@ -31,7 +32,7 @@ public class QuestCommandRefresh extends QuestCommandBase
 		if(server.isDedicatedServer() || !server.getServerOwner().equals(player.username))
 		{
             NetBulkSync.sendReset(player, true, true);
-			sender.sendChatToPlayer(StatCollector.translateToLocal("betterquesting.cmd.refresh"));
+            sender.sendChatToPlayer(QuestTranslation.translate(sender,"betterquesting.cmd.refresh"));
 		} else
         {
             boolean nameChanged = NameCache.INSTANCE.updateName(player);

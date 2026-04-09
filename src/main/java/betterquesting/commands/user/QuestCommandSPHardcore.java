@@ -1,6 +1,7 @@
 package betterquesting.commands.user;
 
 import betterquesting.api.properties.NativeProps;
+import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.handlers.SaveLoadHandler;
 import betterquesting.network.handlers.NetSettingSync;
@@ -24,14 +25,14 @@ public class QuestCommandSPHardcore extends QuestCommandBase
 	{
 		if(!server.isSinglePlayer() || !server.getServerOwner().equalsIgnoreCase(sender.getCommandSenderName()))
 		{
-			sender.sendChatToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("commands.generic.permission"));
+			sender.sendChatToPlayer(EnumChatFormatting.RED + QuestTranslation.translate(sender,"commands.generic.permission"));
 			return;
 		}
 		
 		QuestSettings.INSTANCE.setProperty(NativeProps.HARDCORE, true);
         SaveLoadHandler.INSTANCE.saveDatabases();
         
-		sender.sendChatToPlayer(StatCollector.translateToLocalFormatted("betterquesting.cmd.hardcore",
+		sender.sendChatToPlayer(QuestTranslation.translate(sender, "betterquesting.cmd.hardcore",
                 StatCollector.translateToLocal("options.on")));
 		NetSettingSync.sendSync(null);
 	}
