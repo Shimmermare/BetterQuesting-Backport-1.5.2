@@ -165,6 +165,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
 		if(useDefaultBG) this.drawDefaultBackground();
         
         GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 		GL11.glColor4f(1F, 1F, 1F, 1F);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		
@@ -178,6 +179,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene
 		}
 		
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glPopAttrib();
 		GL11.glPopMatrix();
 	}
 	
