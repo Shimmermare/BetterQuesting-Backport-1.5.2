@@ -1,9 +1,11 @@
-BetterQuesting
+BetterQuesting Unofficial 1.5.2 port
 ============
 
-A new and improved questing mod for Minecraft pack creators
+An unofficial port of BetterQuesting 3 from 1.7.10 to 1.5.2 made for [CakeHiTech Memories](https://github.com/Shimmermare/CakeHiTechMemories) modpack.
 
-## Comparison to 1.7.10 version
+Recommended to be used with [StandardQuestingPack port](https://github.com/Shimmermare/StandardQuestingPack-Backport-1.5.2).  
+
+## Comparison to 1.7.10 original
 
 ### Changes
 - Config file moved: `BetterQuesting.cfg` -> `BetterQuesting/Main.cfg`
