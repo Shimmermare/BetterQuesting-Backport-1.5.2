@@ -44,6 +44,7 @@ import betterquesting.storage.LifeDatabase;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -110,7 +111,15 @@ public class GuiPartyCreate extends GuiScreenCanvas implements IPEventListener, 
         PanelPlayerPortrait pnPortrait = new PanelPlayerPortrait(new GuiTransform(GuiAlign.TOP_CENTER, -32, 0, 64, 64, 0), mc.thePlayer).setDepth(-16F);
         cvLeftHalf.addPanel(pnPortrait);
         
-        cvLeftHalf.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_CENTER, 16, 48, 24, 24, 0), new ItemTexture(new BigItemStack(BetterQuesting.extraLife, LifeDatabase.INSTANCE.getLives(QuestingAPI.getQuestingUUID(mc.thePlayer))), true, true).setDepth(32F)));
+        cvLeftHalf.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_CENTER, 16, 48, 24, 24, 0), new ItemTexture(new BigItemStack(BetterQuesting.extraLife, LifeDatabase.INSTANCE.getLives(QuestingAPI.getQuestingUUID(mc.thePlayer))), true, true).setDepth(32F)) {
+            @Override
+            public void drawPanel(int mx, int my, float partialTick) {
+                // Fix for icon rendering behind player preview - unfortunately, unfixable by Z index
+                // Can break 3D things rendered after, but no such in this screen
+                GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+                super.drawPanel(mx, my, partialTick);
+            }
+        });
         
         PanelTextBox txName = new PanelTextBox(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(16, -44, 16, 28), 0), QuestTranslation.translate("betterquesting.gui.name"));
         txName.setColor(PresetColor.TEXT_HEADER.getColor());
