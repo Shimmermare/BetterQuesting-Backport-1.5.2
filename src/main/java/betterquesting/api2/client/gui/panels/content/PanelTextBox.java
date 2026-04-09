@@ -53,7 +53,7 @@ public class PanelTextBox implements IGuiPanel
 			this.transform.h = fr.FONT_HEIGHT * sl.size();
 		} else
 		{
-			lines = (bounds.getHeight() / fr.FONT_HEIGHT) - 1;
+			lines = (int)Math.max(0, Math.floor(bounds.getHeight() / (float)fr.FONT_HEIGHT) - 1);
 		}
 		
 		return this;
@@ -98,7 +98,7 @@ public class PanelTextBox implements IGuiPanel
 		
 		if(!autoFit)
 		{
-			lines = (int)Math.floor(bounds.getHeight() / (fr.FONT_HEIGHT * scale)) - 1;
+			lines = (int)Math.max(0, Math.floor(bounds.getHeight() / (fr.FONT_HEIGHT * scale)) - 1);
 			return;
 		}
 		

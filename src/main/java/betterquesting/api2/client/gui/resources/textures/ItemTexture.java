@@ -78,7 +78,7 @@ public class ItemTexture implements IGuiTexture
         color.applyGlColor();
         
         RenderUtils.RenderItemStack(Minecraft.getMinecraft(), stack.getBaseStack(), 0, 0, zDepth, (showCount && stack.stackSize > 1) ? ("" + stack.stackSize) : "", 0xFFFFFFFF);
-    
+
         GL11.glPopMatrix();
     }
     

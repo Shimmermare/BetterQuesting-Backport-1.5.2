@@ -58,6 +58,8 @@ public class RenderUtils
 		if(stack == null) return;
 		
 		GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
 	    float preZ = itemRender.zLevel;
 		
 		float r = (float)(color >> 16 & 255) / 255.0F;
@@ -124,7 +126,8 @@ public class RenderUtils
 		RenderHelper.disableStandardItemLighting();
 		
 	    itemRender.zLevel = preZ; // Just in case
-		
+
+        GL11.glPopAttrib();
         GL11.glPopMatrix();
 	}
 	
@@ -135,35 +138,35 @@ public class RenderUtils
 	
     public static void RenderEntity(float posX, float posY, float posZ, int scale, float rotation, float pitch, Entity entity)
     {
-    	try
-    	{
-	        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-	        GL11.glPushMatrix();
-	        GL11.glEnable(GL11.GL_DEPTH_TEST);
-	        GL11.glTranslatef(posX, posY, posZ);
-	        GL11.glScalef((float)-scale, (float)scale, (float)scale); // Not entirely sure why mobs are flipped but this is how vanilla GUIs fix it so...
-	        GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-	        GL11.glRotatef(pitch, 1F, 0F, 0F);
-	        GL11.glRotatef(rotation, 0F, 1F, 0F);
-	        float f3 = entity.rotationYaw;
-	        float f4 = entity.rotationPitch;
-	        RenderHelper.enableStandardItemLighting();
-	        RenderManager.instance.playerViewY = 180.0F;
-	        RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-	        entity.rotationYaw = f3;
-	        entity.rotationPitch = f4;
-	        GL11.glDisable(GL11.GL_DEPTH_TEST);
-	        GL11.glPopMatrix();
-	        RenderHelper.disableStandardItemLighting();
-	        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-	        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-	        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-	        GL11.glEnable(GL11.GL_TEXTURE_2D); // Breaks subsequent text rendering if not included
-    	} catch(Exception e)
-    	{
-    		// Hides rendering errors with entities which are common for invalid/technical entities
-    	}
+        try
+        {
+            GL11.glPushMatrix();
+            GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+            GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GL11.glTranslatef(posX, posY, posZ);
+            GL11.glScalef((float)-scale, (float)scale, (float)scale); // Not entirely sure why mobs are flipped but this is how vanilla GUIs fix it so...
+            GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(pitch, 1F, 0F, 0F);
+            GL11.glRotatef(rotation, 0F, 1F, 0F);
+            float f3 = entity.rotationYaw;
+            float f4 = entity.rotationPitch;
+            RenderHelper.enableStandardItemLighting();
+            RenderManager.instance.playerViewY = 180.0F;
+            RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+            entity.rotationYaw = f3;
+            entity.rotationPitch = f4;
+            RenderHelper.disableStandardItemLighting();
+        } catch(Exception e)
+        {
+            // Hides rendering errors with entities which are common for invalid/technical entities
+        } finally
+        {
+            GL11.glPopAttrib();
+            GL11.glPopMatrix();
+            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        }
     }
 	
 	public static void DrawLine(int x1, int y1, int x2, int y2, float width, int color)

@@ -192,7 +192,7 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
                 lifeCount = " x " + LifeDatabase.INSTANCE.getLives(mid);
             } else
             {
-                lifeCount = " x \u221E";
+                lifeCount = " x ∞";
             }
             
             PanelTextBox txLives = new PanelTextBox(new GuiRectangle(48, i * 32 + 20, cvWidth - 48 - 32, 12, 0), lifeCount);
