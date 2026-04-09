@@ -6,6 +6,6 @@ import net.minecraft.block.material.Material;
 public class FluidPlaceholder extends BlockStationary {
     public FluidPlaceholder(int i) {
         super(i, Material.water);
-        setUnlocalizedName("fluid_placeholder");
+        setUnlocalizedName("betterquesting.fluid_placeholder");
     }
 }

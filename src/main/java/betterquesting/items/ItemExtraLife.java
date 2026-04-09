@@ -30,7 +30,7 @@ public class ItemExtraLife extends Item
 	public ItemExtraLife(int id)
 	{
         super(id);
-		this.setUnlocalizedName("extra_life");
+		this.setUnlocalizedName("betterquesting.extra_life");
 		this.setCreativeTab(BetterQuesting.tabQuesting);
 		this.setHasSubtypes(true);
 	}

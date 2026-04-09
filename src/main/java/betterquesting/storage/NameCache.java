@@ -23,7 +23,6 @@ public final class NameCache implements INameCache
 	@Override
     public synchronized boolean updateName(@Nonnull EntityPlayerMP player)
     {
-        MinecraftServer server = player.mcServer;
         UUID playerUuid = ProfileMapper.getUuid(player);
         NBTTagCompound tag = cache.get(playerUuid);
         if(tag == null) {

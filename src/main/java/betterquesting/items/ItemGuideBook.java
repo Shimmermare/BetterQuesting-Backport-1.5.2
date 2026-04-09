@@ -14,7 +14,7 @@ public class ItemGuideBook extends Item
 	public ItemGuideBook(int id)
 	{
         super(id);
-		this.setUnlocalizedName("guide");
+		this.setUnlocalizedName("betterquesting.guide");
 		this.setCreativeTab(BetterQuesting.tabQuesting);
 	}
 

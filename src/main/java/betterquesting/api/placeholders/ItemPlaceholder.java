@@ -19,7 +19,7 @@ public class ItemPlaceholder extends Item
 	public ItemPlaceholder(int id)
 	{
         super(id);
-		this.setUnlocalizedName("betterquesting:placeholder");
+		this.setUnlocalizedName("betterquesting.placeholder");
 	}
 	
     /**
