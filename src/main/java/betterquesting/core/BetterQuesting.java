@@ -43,6 +43,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Mod(modid = BetterQuesting.MODID, name = BetterQuesting.NAME)
@@ -169,6 +170,9 @@ public class BetterQuesting
         @SuppressWarnings("unchecked")
         Map<String, String> languages = StringTranslate.getInstance().getLanguageList();
 
+        File configDir = new File(modConfigDir, "lang");
+        configDir.mkdirs();
+
         List<String> loaded = new ArrayList<String>();
         for (Map.Entry<String, String> entry : languages.entrySet()) {
             String lang = entry.getKey();
@@ -176,6 +180,16 @@ public class BetterQuesting
             if (this.getClass().getResource(file) != null) {
                 LanguageRegistry.instance().loadLocalization(file, lang, false);
                 loaded.add(lang);
+            }
+
+            File langFile = new File(configDir, lang + ".lang");
+            if (langFile.exists()) {
+                try {
+                    LanguageRegistry.instance().loadLocalization(langFile.toURI().toURL(), lang, false);
+                    loaded.add(lang);
+                } catch (Exception e) {
+                    logger.log(Level.SEVERE, "Failed to load language file from " + langFile, e);
+                }
             }
         }
 
