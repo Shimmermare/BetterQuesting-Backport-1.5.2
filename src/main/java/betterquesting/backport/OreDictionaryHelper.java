@@ -8,7 +8,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.*;
 
 /**
- * Because
+ * Because OreDictionary has no getOreIDs in 1.5.2, we need to track item-to-all-ids mapping separately.
  */
 public class OreDictionaryHelper {
 

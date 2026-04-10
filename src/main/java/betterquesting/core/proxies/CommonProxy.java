@@ -1,5 +1,6 @@
 package betterquesting.core.proxies;
 
+import betterquesting.backport.OreDictionaryHelper;
 import betterquesting.core.BetterQuesting;
 import betterquesting.core.ExpansionLoader;
 import betterquesting.handlers.EventHandler;
@@ -24,6 +25,7 @@ public class CommonProxy
 		ExpansionLoader.INSTANCE.initCommonAPIs();
 		
 		MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(new OreDictionaryHelper());
 		MinecraftForge.TERRAIN_GEN_BUS.register(EventHandler.INSTANCE);
 
         TickRegistry.registerTickHandler(new ServerTickHandler(), Side.SERVER);

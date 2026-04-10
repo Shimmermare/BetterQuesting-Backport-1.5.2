@@ -4,6 +4,7 @@ import betterquesting.backport.ItemUtils;
 import betterquesting.backport.NbtUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -21,7 +22,12 @@ public class ItemPlaceholder extends Item
         super(id);
 		this.setUnlocalizedName("betterquesting.placeholder");
 	}
-	
+
+    @Override
+    public void registerIcons(IconRegister par1IconRegister) {
+        this.itemIcon = par1IconRegister.registerIcon("betterquesting:placeholder");
+    }
+
     /**
      * allows items to add custom lines of information to the mouseover description
      */
