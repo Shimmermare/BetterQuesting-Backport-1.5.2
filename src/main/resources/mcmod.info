@@ -1,11 +1,11 @@
 [
 {
   "modid": "betterquesting",
-  "name": "Better Questing Unofficial 1.5.2 port",
-  "description": "A port of Better Questing 3 for 1.5.2",
+  "name": "Better Questing Unofficial",
+  "description": "A port of Better Questing 3 for 1.5.2. Please don't bother the original author with questions/requests about this port!",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://github.com/Shimmermare/BetterQuesting-Backport-1.5.2",
   "updateUrl": "",
   "authorList": ["Funwayguy"],
   "credits": "Thank you Patreons for all your support <3",
