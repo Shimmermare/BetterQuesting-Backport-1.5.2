@@ -21,6 +21,7 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Matrix4f;
 
 import java.awt.*;
@@ -37,7 +38,10 @@ public class RenderUtils
 {
 	public static final String REGEX_NUMBER = "[^\\.0123456789-]"; // I keep screwing this up so now it's reusable
     public static final RenderItem itemRender = new RenderItem();
-	
+
+    private static final FloatBuffer FLOAT_BUFFER_4_NATIVE = BufferUtils.createFloatBuffer(4);
+    private static final float[] FLOAT_ARRAY_4 = new float[4];
+
 	public static void RenderItemStack(Minecraft mc, ItemStack stack, int x, int y, String text)
 	{
 		RenderItemStack(mc, stack, x, y, 16F, text, 0xFFFFFFFF);
@@ -62,10 +66,39 @@ public class RenderUtils
 
 	    float preZ = itemRender.zLevel;
 		
+		float a = (float)(color >> 24 & 255) / 255.0F;
 		float r = (float)(color >> 16 & 255) / 255.0F;
 		float g = (float)(color >> 8 & 255) / 255.0F;
 		float b = (float)(color & 255) / 255.0F;
-		GL11.glColor3f(r, g, b);
+		GL11.glColor4f(r, g, b, a);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        // Stupid fix for alpha on ItemStacks
+        if (a < 1.0F)
+        {
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL13.GL_COMBINE);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_COMBINE_RGB, GL11.GL_MODULATE);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE0_RGB, GL11.GL_TEXTURE);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE1_RGB, GL13.GL_PRIMARY_COLOR);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND0_RGB, GL11.GL_SRC_COLOR);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND1_RGB, GL11.GL_SRC_COLOR);
+
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_COMBINE_ALPHA, GL11.GL_MODULATE);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE0_ALPHA, GL11.GL_TEXTURE);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE1_ALPHA, GL13.GL_CONSTANT);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND0_ALPHA, GL11.GL_SRC_ALPHA);
+            GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND1_ALPHA, GL11.GL_SRC_ALPHA);
+
+            FLOAT_ARRAY_4[0] = 1.0F;
+            FLOAT_ARRAY_4[1] = 1.0F;
+            FLOAT_ARRAY_4[2] = 1.0F;
+            FLOAT_ARRAY_4[3] = a;
+            FLOAT_BUFFER_4_NATIVE.put(FLOAT_ARRAY_4);
+            FLOAT_BUFFER_4_NATIVE.flip();
+            GL11.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, FLOAT_BUFFER_4_NATIVE);
+        }
+        
 		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -79,6 +112,11 @@ public class RenderUtils
 		try
 		{
 		    itemRender.renderItemAndEffectIntoGUI(font, mc.renderEngine, stack, x, y);
+            
+            if (a < 1.0F)
+            {
+                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+            }
 		    
 		    if (stack.stackSize != 1 || text != null)
 			{
@@ -107,7 +145,7 @@ public class RenderUtils
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GL11.glDisable(GL11.GL_BLEND);
 				
-				font.drawString(text, 0, 0, 16777215, true);
+				font.drawString(text, 0, 0, color, true);
 				
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
