@@ -41,6 +41,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 	public final GuiScreen parent;
 	
 	private IGuiPanel popup = null;
+	private int curMouseX, curMouseY;
 	
     public GuiContainerCanvas(GuiScreen parent, Container container)
     {
@@ -156,6 +157,19 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 	}
     
     @Override
+    public void drawScreen(int mx, int my, float partialTick)
+    {
+        curMouseX = mx;
+        curMouseY = my;
+        
+        boolean isPopupOpen = popup != null && popup.isEnabled();
+        int bmx = isPopupOpen ? -1 : mx;
+        int bmy = isPopupOpen ? -1 : my;
+        
+        super.drawScreen(bmx, bmy, partialTick);
+    }
+    
+    @Override
     protected void drawGuiContainerBackgroundLayer(float partialTick, int mx, int my)
     {
 		if(useDefaultBG) this.drawDefaultBackground();
@@ -163,8 +177,8 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
         GL11.glPushMatrix();
         GL11.glColor4f(1F, 1F, 1F, 1F);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-		
-		this.drawPanel(mx, my, partialTick);
+
+		this.drawPanel(curMouseX, curMouseY, partialTick);
 		
 		List<String> tt = this.getTooltip(mx, my);
 		
@@ -192,14 +206,18 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 	@Override
 	public void handleMouseInput()
 	{
-		super.handleMouseInput();
-		
+        boolean isPopupOpen = popup != null && popup.isEnabled();
+        if(!isPopupOpen)
+        {
+            super.handleMouseInput();
+        }
+
         int i = Mouse.getEventX() * width / mc.displayWidth;
         int j = height - Mouse.getEventY() * height / mc.displayHeight - 1;
         int k = Mouse.getEventButton();
         int SDX = (int)-Math.signum(Mouse.getEventDWheel());
         boolean flag = Mouse.getEventButtonState();
-        
+
         if(k >= 0 && k < 3 && mBtnState[k] != flag)
         {
         	if(flag)
@@ -252,15 +270,20 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 	@Override
 	public void drawPanel(int mx, int my, float partialTick)
 	{
+        boolean isPopupOpen = popup != null && popup.isEnabled();
+        // If popup is open, fake mouse pos for children so no highlights
+        int bmx = isPopupOpen ? -1 : mx;
+        int bmy = isPopupOpen ? -1 : my;
+        
 		for(IGuiPanel entry : guiPanels)
 		{
 			if(entry.isEnabled())
 			{
-				entry.drawPanel(mx, my, partialTick);
+				entry.drawPanel(bmx, bmy, partialTick);
 			}
 		}
 		
-		if(popup != null && popup.isEnabled())
+		if(isPopupOpen)
         {
             popup.drawPanel(mx, my, partialTick);
         }
@@ -408,8 +431,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
 		
 		if(popup != null && popup.isEnabled())
         {
-            tt = popup.getTooltip(mx, my);
-            if(tt != null) return tt;
+            return popup.getTooltip(mx, my);
         }
 		
 		while(pnIter.hasPrevious())
@@ -504,6 +526,8 @@ public class GuiContainerCanvas extends GuiContainer implements IScene
         {
             this.mc.displayGuiScreen(null);
             if(this.mc.currentScreen == null) this.mc.setIngameFocus();
+        } else {
+            this.closePopup();
         }
     }
 }
